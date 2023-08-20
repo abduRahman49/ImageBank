@@ -1,0 +1,5 @@
+django==4.2
+django-unicorn
+django-allauth
+djangorestframework==3.14.0
+django-filter

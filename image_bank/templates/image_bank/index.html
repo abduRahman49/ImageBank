@@ -1,0 +1,338 @@
+{% extends "image_bank/main.html" %}
+
+{% load static %}
+
+{% block extra_head %}
+  <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'image_bank/css/index.css' %}">
+{% endblock %}
+
+{% block navbar %}
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- Container wrapper -->
+    <div class="container-fluid">
+      <!-- Toggle button -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-mdb-toggle="collapse"
+        data-mdb-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+  
+      <!-- Collapsible wrapper -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- Navbar brand -->
+        <a class="navbar-brand mt-2 mt-lg-0" href="#">
+          <img
+            src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
+            height="15"
+            alt="MDB Logo"
+            loading="lazy"
+          />
+        </a>
+        <!-- Left links -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-page="home">Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-page="upload-images">Charger images</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-page="manage-images">Mes images</a>
+          </li>
+        </ul>
+        <!-- Left links -->
+      </div>
+      <!-- Collapsible wrapper -->
+  
+      <!-- Right elements -->
+      <div class="d-flex align-items-center">
+        <!-- Icon -->
+        <a class="text-reset me-3" href="#">
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+  
+        <!-- Notifications -->
+        <div class="dropdown">
+          <a
+            class="text-reset me-3 dropdown-toggle hidden-arrow"
+            href="#"
+            id="navbarDropdownMenuLink"
+            role="button"
+            data-mdb-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="fas fa-bell"></i>
+            <span class="badge rounded-pill badge-notification bg-danger">1</span>
+          </a>
+          <ul
+            class="dropdown-menu dropdown-menu-end"
+            aria-labelledby="navbarDropdownMenuLink"
+          >
+            <li>
+              <a class="dropdown-item" href="#">Some news</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Another news</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+          </ul>
+        </div>
+        <!-- Avatar -->
+        <div class="dropdown">
+          <a
+            class="dropdown-toggle d-flex align-items-center hidden-arrow"
+            href="#"
+            id="navbarDropdownMenuAvatar"
+            role="button"
+            data-mdb-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <img
+              src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+              class="rounded-circle"
+              height="25"
+              alt="Black and White Portrait of a Man"
+              loading="lazy"
+            />
+          </a>
+          <ul
+            class="dropdown-menu dropdown-menu-end"
+            aria-labelledby="navbarDropdownMenuAvatar"
+          >
+            <li>
+              <a class="dropdown-item" href="#">My profile</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Settings</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- Right elements -->
+    </div>
+    <!-- Container wrapper -->
+  </nav>
+  <!-- Navbar -->
+
+{% endblock %}
+
+{% block content %}
+
+{% load widget_tweaks %}
+
+    <div id="content">
+
+    </div>
+    
+    <template id="home-template">
+      <div class="container">
+        <div class="row">
+          <div id="sidebar" class="col-4">
+
+          </div>
+          <div class="col-8">
+            <div id="search-box" class="row">
+
+            </div>
+            <div id="images" class="row">
+              <div class="grid">
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <template id="upload-template">
+      <style>
+        .hidden {
+          display: none;
+        }
+      
+        .visible {
+          display: block;
+        }
+      </style>
+      <div class="container mt-5">
+        <form id="upload" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+            <div class="row">
+              <div class="col-md-6">
+                <label for="{{ form.name.id_for_label }}" class="form-label">Nom:</label>
+                {{ form.name|attr:"class:form-control" }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label for="{{ form.auteur.id_for_label }}" class="form-label">Auteur:</label>
+                {{ form.auteur|attr:"class:form-control" }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="input-group mt-3">
+                  <label class="input-group-text" for="{{ form.image.id_for_label }}"><i class="fas fa-cloud-upload-alt fa-lg text-primary fa-fw"></i></label>
+                  {{ form.image|attr:"class:form-control" }}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="input-group mt-3">
+                  <span class="input-group-text">Description</span>
+                  {{ form.description|attr:"class:form-control" }}
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <label for="{{ form.payment_required.id_for_label }}" class="form-label">Image payante:</label>
+                {{ form.payment_required|attr:"class:form-check-input" }}
+              </div>
+            </div>
+            <div class="row price_row">
+              <div class="col-md-6">
+                <label for="{{ form.price.id_for_label }}" class="form-label">Prix:</label>
+                {{ form.price|attr:"class:form-control" }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label for="{{ form.licence.id_for_label }}" class="form-label">Licence:</label>
+                {{ form.licence|attr:"class:form-control" }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label for="{{ form.tags.id_for_label }}" class="form-label">Tags:</label>
+                {{ form.tags|attr:"class:form-control"}}
+              </div>
+            </div>
+          <button type="submit" class="btn btn-primary mt-3">Charger</button>
+        </form>
+      </div>
+    </template>
+
+    <template id="manage-template">
+      <div class="container mt-5">
+                <!-- Gallery -->
+        <div id="content" class="row">
+   
+        </div>
+        <!-- Gallery -->
+        <div id="pagination" class="row">
+          
+        </div>
+      </div>
+
+      <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="container mt-5">
+              <form id="edit" method="post">
+                {% csrf_token %}
+                  <div class="row">
+                    <div class="col">
+                      <label for="name">Nom:</label>
+                      <input type="text" id="name" name="name" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <label for="auteur">Auteur:</label>
+                      <input type="text" id="auteur" name="auteur" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="input-group mt-3">
+                        <label class="input-group-text" for="image"><i class="fas fa-cloud-upload-alt fa-lg text-primary fa-fw"></i></label>
+                        <input type="file" id="image" name="image" class="form-control" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="input-group mt-3">
+                        <span class="input-group-text">Description</span>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col">
+                      <label for="payment_required" class="form-label">Image payante:</label>
+                      <input type="checkbox" id="payment_required" name="payment_required" class="form-check-input" />
+                    </div>
+                  </div>
+                  <div class="row price_row" style="display: none">
+                    <div class="col">
+                      <label for="price" class="form-label">Prix:</label>
+                      <input type="text" id="price" name="price" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <label for="licence" class="form-label">Licence:</label>
+                      <select id="licence" name="licence" class="form-select">
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <label for="tags" class="form-label">Tags:</label>
+                      <input type="text" id="tags" name="tags" class="form-control" />
+                    </div>
+                  </div>
+                <button type="submit" class="btn btn-primary mt-3">Modifier</button>
+              </form>
+            </div>
+            <div class="modal-footer d-flex justify-content-right">
+              <button type="button" class="btn btn-primary" data-mdb-dismiss="modal">Fermer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="modal-header position-relative">
+              <h5 class="modal-title position-absolute top-0 start-50 translate-middle-x" id="exampleModalLabel"><span class="text-light">Êtes-vous sûr ?</span></h5>
+              <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex justify-content-center">
+              <i class="fas fa-times fa-3x text-danger"></i>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+              <button type="button" class="btn btn-outline-danger" data-mdb-dismiss="modal">Non</button>
+              <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">Oui</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <script type="text/javascript" 
+            src="{% static 'image_bank/js/app.js' %}">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+{% endblock %}

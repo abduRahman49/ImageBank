@@ -1,0 +1,9 @@
+.modal-header {
+    background-color: #dc4c64;
+}
+
+.custom-image {
+    height: 310px; /* Set the desired height */
+    width: 416px; /* Set the desired width */
+    object-fit: cover; /* Maintain aspect ratio and cover container */
+  }
