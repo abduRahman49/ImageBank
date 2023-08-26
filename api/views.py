@@ -1,6 +1,7 @@
 from rest_framework import generics
 from image_bank.models import Image, Licence
 from rest_framework import viewsets
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import ImageSerializer, LicenceSerializer
 from .utilities import ImagePagination, LicencePagination
@@ -10,14 +11,13 @@ class ImageModelViewset(viewsets.ModelViewSet):
     serializer_class = ImageSerializer
     pagination_class = ImagePagination
     queryset = Image.objects.all()
+
+
+class ImageSearchAPIView(APIView):
     
-    
-    def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        status = request.query_params.get('status')
-        if status is not None:
-            queryset = queryset.filter(status=status)
-        serializer = self.get_serializer(queryset, many=True)
+    def get(self, request, *args, **kwargs):
+        queryset = Image.objects.filter(status='V')
+        serializer = ImageSerializer(queryset, many=True)
         return Response(serializer.data)
 
 class LicenceModelViewset(viewsets.ModelViewSet):

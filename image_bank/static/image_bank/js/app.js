@@ -37,7 +37,7 @@ class AccueilPage extends HTMLElement {
     }
 
     async fetchImagesForPage(page) {
-        const response = await fetch(`/api/images?status=V&page=${page}`);
+        const response = await fetch(`/api/images?page=${page}`);
         const data = await response.json();
         return data;
     }
@@ -45,6 +45,16 @@ class AccueilPage extends HTMLElement {
     async fetchAndDisplayImages(page) {
         const data = await this.fetchImagesForPage(page);
         this.images = data.results;
+    }
+
+    renderContent() {
+        const gridItems = [];
+        this.images.forEach(image => {
+            const gridItem = document.createElement('div');
+            gridItem.setAttribute('class', 'grid-item');
+            imageItems.appendChild(imageCard);
+            imageCard.image.src = image.image;
+        });
     }
 }
 
@@ -252,6 +262,7 @@ class ManagePage extends HTMLElement {
     renderContent() {
         // Clear the existing content section
         this.querySelector('#content').innerHTML = '';
+        console.log('images', this.images)
         this.images.forEach(image => {
             const columnWrapperDiv = document.createElement('div');
             columnWrapperDiv.classList.add('col-lg-4', 'col-md-12', 'mb-4', 'mb-lg-0');
