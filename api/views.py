@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework.pagination import PageNumberPagination
 from image_bank.models import Image, Licence
 from rest_framework import viewsets
 from rest_framework.views import APIView
@@ -14,11 +14,13 @@ class ImageModelViewset(viewsets.ModelViewSet):
 
 
 class ImageSearchAPIView(APIView):
-    
     def get(self, request, *args, **kwargs):
+        paginator = PageNumberPagination()
+        paginator.page_size = 10
         queryset = Image.objects.filter(status='V')
-        serializer = ImageSerializer(queryset, many=True)
-        return Response(serializer.data)
+        result_page = paginator.paginate_queryset(queryset, request)
+        serializer = ImageSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
 class LicenceModelViewset(viewsets.ModelViewSet):
     serializer_class = LicenceSerializer

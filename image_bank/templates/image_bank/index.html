@@ -142,17 +142,23 @@
     <template id="home-template">
       <div class="container">
         <div class="row">
-          <div id="sidebar" class="col-4">
+          <div id="sidebar">
 
           </div>
-          <div class="col-8">
+          <div class="col-9 mt-5">
             <div id="search-box" class="row">
-
+              <div class="col"><input type="text" id="format" name="format" class="form-control" placeholder="Format"></div>
+              <div class="col"><input type="text" id="orientation" name="orientation" class="form-control" placeholder="Orientation"></div>
+              <div class="col"><input type="text" id="resolution" name="resolution" class="form-control" placeholder="Resolution"></div>
+              <div class="col"><input type="text" id="taille" name="taille" class="form-control" placeholder="Taille"></div>
             </div>
-            <div id="images" class="row">
-              <div class="grid">
-
-              </div>
+            <div id="images" class="row mt-5">
+              <!-- Gallery -->
+                <div id="content" class="row">
+                
+                </div>
+            </div>
+              <!-- Gallery -->
             </div>
           </div>
         </div>
@@ -335,4 +341,5 @@
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 {% endblock %}

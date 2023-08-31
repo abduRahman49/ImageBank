@@ -29,15 +29,16 @@ class AccueilPage extends HTMLElement {
     }
 
     connectedCallback () {
-        
+        if(this.isConnected){
+            this.fetchAndDisplayImages(this.currentPage);
+        }
     }
 
     disconnectedCallback () {
-        
     }
 
     async fetchImagesForPage(page) {
-        const response = await fetch(`/api/images?page=${page}`);
+        const response = await fetch(`/api/images/search?page=${page}`);
         const data = await response.json();
         return data;
     }
@@ -45,15 +46,19 @@ class AccueilPage extends HTMLElement {
     async fetchAndDisplayImages(page) {
         const data = await this.fetchImagesForPage(page);
         this.images = data.results;
+        this.renderContent();
     }
 
     renderContent() {
-        const gridItems = [];
         this.images.forEach(image => {
-            const gridItem = document.createElement('div');
-            gridItem.setAttribute('class', 'grid-item');
-            imageItems.appendChild(imageCard);
-            imageCard.image.src = image.image;
+            const gridContainer = this.querySelector('#content')
+            const gridItem= document.createElement('div');
+            gridItem.setAttribute('class', 'col-md-3 mb-4');
+            const imageItem = document.createElement('img');
+            imageItem.setAttribute('class', 'img-thumbnail');
+            imageItem.src = image.image;
+            gridItem.appendChild(imageItem);
+            gridContainer.appendChild(gridItem);
         });
     }
 }

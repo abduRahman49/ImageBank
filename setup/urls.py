@@ -15,6 +15,7 @@ urlpatterns = [
     path('api/v1/images/<int:id>/json/', views.get_json_image),
     path('api/', include('api.urls')),
     path("__debug__/", include(debug_toolbar.urls)),
+    path('accounts/', include('allauth.urls')),
 ]
 
 if settings.DEBUG:
