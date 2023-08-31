@@ -3,3 +3,4 @@ django-allauth
 djangorestframework==3.14.0
 django-filter
 django-environ
+django-widget-tweaks==1.4.12
