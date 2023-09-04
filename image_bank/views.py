@@ -1,18 +1,70 @@
 import json
-from django.shortcuts import render
-from .forms import ImageForm
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from .forms import ImageForm, NewUserForm, RegisteredUserForm
 from .models import Licence, Tag, CustomUser, Image
 from api.serializers import ImageSerializer
 from django.http import JsonResponse
 from django.db.utils import IntegrityError
 from django.shortcuts import get_object_or_404
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.backends import ModelBackend
+from django.db.models import Q
+from django.contrib.auth import logout
 
 # Create your views here.
 def index(request):
     form = ImageForm()
     return render(request, 'image_bank/index.html', {'form': form})
 
+def signup(request):
+    if request.method == 'POST':
+        form = NewUserForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            try:
+                user = CustomUser.objects.create_user(data.get('username'), data.get('email'), data.get('password'))
+                # login(request, user)
+                return redirect(reverse('sign-in'))
+            except IntegrityError:
+                messages.add_message(request, messages.constants.ERROR, 'Utilisateur existe déjà')
+                return redirect(reverse('sign-up'))
+        else:
+            messages.add_message(request, messages.constants.ERROR, form.errors)
+            return redirect(reverse('sign-up'))
+    form = NewUserForm()
+    return render(request, 'image_bank/sign-up-cover.html', {'form': form})
 
+
+def signin(request):
+    if request.method == 'POST':
+        form = RegisteredUserForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            try:
+                user = CustomUser.objects.get(email=data.get('email'))
+                # login(request, user)
+                if user.check_password(data.get('password')):
+                    login(request, user)
+                    return redirect(reverse('index'))
+                else:
+                    messages.add_message(request, messages.constants.ERROR, 'Mot de passe incorrect')
+                return redirect(reverse('sign-in'))
+            except CustomUser.DoesNotExist:
+                messages.add_message(request, messages.constants.ERROR, 'Utilisateur n\'existe pas')
+                return redirect(reverse('sign-in'))
+        else:
+            messages.add_message(request, messages.constants.ERROR, form.errors)
+            return redirect(reverse('sign-in'))
+    form = RegisteredUserForm()
+    return render(request, 'image_bank/sign-in-cover.html', {'form': form})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect(reverse('sign-in'))
+    
 # define a function-based view that return a modelForm from an id sent by the client
 def get_json_image(request, id):
     try:
