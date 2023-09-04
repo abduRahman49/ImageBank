@@ -6,132 +6,78 @@
   <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <link rel="stylesheet" type="text/css" href="{% static 'image_bank/css/index.css' %}">
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  <!-- Nucleo Icons -->
+  <link href="{% static 'image_bank/assests/css/nucleo-icons.css' %}" rel="stylesheet" />
+  <link href="{% static 'image_bank/assets/css/nucleo-svg.css' %}" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <link href="{% static 'image_bank/assets/css/nucleo-svg.css' %}" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link id="pagestyle" href="{% static 'image_bank/assets/css/soft-design-system-pro.css' %}" rel="stylesheet" />
 {% endblock %}
 
-{% block navbar %}
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <!-- Container wrapper -->
-    <div class="container-fluid">
-      <!-- Toggle button -->
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-mdb-toggle="collapse"
-        data-mdb-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <i class="fas fa-bars"></i>
-      </button>
-  
-      <!-- Collapsible wrapper -->
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <!-- Navbar brand -->
-        <a class="navbar-brand mt-2 mt-lg-0" href="#">
-          <img
-            src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
-            height="15"
-            alt="MDB Logo"
-            loading="lazy"
-          />
-        </a>
-        <!-- Left links -->
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" href="#" data-page="home">Accueil</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" data-page="upload-images">Charger images</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" data-page="manage-images">Mes images</a>
-          </li>
-        </ul>
-        <!-- Left links -->
-      </div>
-      <!-- Collapsible wrapper -->
-  
-      <!-- Right elements -->
-      <div class="d-flex align-items-center">
-        <!-- Icon -->
-        <a class="text-reset me-3" href="#">
-          <i class="fas fa-shopping-cart"></i>
-        </a>
-  
-        <!-- Notifications -->
-        <div class="dropdown">
-          <a
-            class="text-reset me-3 dropdown-toggle hidden-arrow"
-            href="#"
-            id="navbarDropdownMenuLink"
-            role="button"
-            data-mdb-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <i class="fas fa-bell"></i>
-            <span class="badge rounded-pill badge-notification bg-danger">1</span>
+<!-- Navbar Light -->
+<div class="container position-sticky z-index-sticky top-0 bg-gradient-primary min-vh-100 mb-5">
+  {% block navbar %}
+  <div class="row">
+    <div class="col-12">
+      <nav
+        class="navbar navbar-expand-lg blur blur-rounded position-absolute my-3 top-0 border-bottom py-3 z-index-3 shadow my-3 py-2 start-0 end-0 mx-4">
+        <div class="container">
+          <a class="navbar-brand" href="https://demos.creative-tim.com/soft-ui-design-system-pro/presentation.html" rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom" target="_blank">
+            Soft UI PRO
           </a>
-          <ul
-            class="dropdown-menu dropdown-menu-end"
-            aria-labelledby="navbarDropdownMenuLink"
-          >
-            <li>
-              <a class="dropdown-item" href="#">Some news</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">Another news</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </li>
-          </ul>
+          
+          <a href="https://www.creative-tim.com/product/soft-ui-design-system-pro#pricingCard" class="btn btn-sm  bg-gradient-primary  btn-round mb-0 ms-auto d-lg-none d-block">Buy Now</a>
+          
+          <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon mt-2">
+              <span class="navbar-toggler-bar bar1"></span>
+              <span class="navbar-toggler-bar bar2"></span>
+              <span class="navbar-toggler-bar bar3"></span>
+            </span>
+          </button>
+          <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
+            <ul class="navbar-nav navbar-nav-hover mx-auto">
+              <li class="nav-item mx-2">
+                <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" data-page="home" role="button">
+                  Accueil
+                </a>
+              </li>
+
+              <li class="nav-item mx-2">
+                <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" data-page="upload-images" role="button">
+                  Charger images 
+                </a>
+              </li>
+              <li class="nav-item mx-2">
+                <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" data-page="manage-images" role="button">
+                  Mes images
+                </a>
+              </li>
+            </ul>
+
+            <ul class="navbar-nav d-lg-block d-none">
+              <li class="nav-item">
+                
+                <a href="https://www.creative-tim.com/product/soft-ui-design-system-pro#pricingCard" class="btn btn-sm  bg-gradient-primary  btn-round mb-0 me-1" role="button">Buy Now</a>
+                
+              </li>
+            </ul>
+          </div>
         </div>
-        <!-- Avatar -->
-        <div class="dropdown">
-          <a
-            class="dropdown-toggle d-flex align-items-center hidden-arrow"
-            href="#"
-            id="navbarDropdownMenuAvatar"
-            role="button"
-            data-mdb-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <img
-              src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-              class="rounded-circle"
-              height="25"
-              alt="Black and White Portrait of a Man"
-              loading="lazy"
-            />
-          </a>
-          <ul
-            class="dropdown-menu dropdown-menu-end"
-            aria-labelledby="navbarDropdownMenuAvatar"
-          >
-            <li>
-              <a class="dropdown-item" href="#">My profile</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">Settings</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">Logout</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <!-- Right elements -->
+      </nav>
     </div>
-    <!-- Container wrapper -->
-  </nav>
-  <!-- Navbar -->
-
+  </div>
 {% endblock %}
+</div>
 
 {% block content %}
+<div class="container mt-5">
+  <div class="row">
 
 {% load widget_tweaks %}
 
@@ -342,4 +288,28 @@
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-{% endblock %}
+
+    <!--  Core JS Files -->
+    <script src="{% static 'image_bank/assets/js/core/popper.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'image_bank/assets/js/core/bootstrap.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'image_bank/assets/js/plugins/perfect-scrollbar.min.js' %}"></script>
+    <!--  Plugin for TypedJS, full documentation here: https://github.com/mattboldt/typed.js/ -->
+    <script src="{% static 'image_bank/assets/js/plugins/typedjs.js' %}"></script>
+    <!--  Plugin for Parallax, full documentation here: https://github.com/wagerfield/parallax  -->
+    <script src="{% static 'image_bank/assets/js/plugins/parallax.min.js' %}"></script>
+    <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+    <script src="{% static 'image_bank/assets/js/plugins/nouislider.min.js' %}" type="text/javascript"></script>
+    <!--  Plugin for the GlideJS Carousel, full documentation here: http://kenwheeler.github.io/slick/ -->
+    <script src="{% static 'image_bank/assets/js/plugins/glidejs.min.js' %}" type="text/javascript"></script>
+    <!--  Plugin for the blob animation -->
+    <script src="{% static 'image_bank/assets/js/plugins/anime.min.js' %}" type="text/javascript"></script>
+    <!-- Chart JS -->
+    <script src="{% static 'image_bank/assets/js/plugins/chartjs.min.js' %}"></script>
+    <!-- Control Center for Soft UI Kit: parallax effects, scripts for the example pages etc -->
+    <!--  Google Maps Plugin    -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTTfWur0PDbZWPr7Pmq8K3jiDp0_xUziI"></script>
+    <script src="{% static 'image_bank/assets/js/soft-design-system-pro.min.js' %}" type="text/javascript"></script>
+  </div>
+  {% endblock %}
+</div>
+
