@@ -16,6 +16,7 @@
   <link href="{% static 'image_bank/assets/css/nucleo-svg.css' %}" rel="stylesheet" />
   <!-- CSS Files -->
   <link id="pagestyle" href="{% static 'image_bank/assets/css/soft-design-system-pro.css' %}" rel="stylesheet" />
+
 {% endblock %}
 
 
@@ -86,17 +87,51 @@
     </div>
     
     <template id="home-template">
-      <div class="container">
+      <style>
+        .moved-down {
+            position: relative; /* Set position to relative */
+            top: 100px; /* Adjust the value to move the component down */
+        }
+      </style>
+
+      <div class="container mb-5">
         <div class="row">
           <div id="sidebar">
 
           </div>
           <div class="col-9 mt-5">
-            <div id="search-box" class="row">
-              <div class="col"><input type="text" id="format" name="format" class="form-control" placeholder="Format"></div>
-              <div class="col"><input type="text" id="orientation" name="orientation" class="form-control" placeholder="Orientation"></div>
-              <div class="col"><input type="text" id="resolution" name="resolution" class="form-control" placeholder="Resolution"></div>
-              <div class="col"><input type="text" id="taille" name="taille" class="form-control" placeholder="Taille"></div>
+            <div class="container">
+              <div class="moved-down row bg-white shadow-lg mt-n6 border-radius-md pb-4 p-3 mx-sm-0 mx-1 position-relative">
+                <div class="col-lg-3 mt-lg-n2 mt-2">
+                  <label class="">Leave From</label>
+                  <select class="form-control" name="choices-button" id="choices-button">
+                    <option value="Choice 1" selected="">Brazil</option>
+                    <option value="Choice 2">Bucharest</option>
+                    <option value="Choice 3">London</option>
+                    <option value="Choice 4">USA</option>
+                  </select>
+                </div>
+                <div class="col-lg-3 mt-lg-n2 mt-2">
+                  <label class="">To</label>
+                  <select class="form-control" name="choices-remove-button" id="choices-remove-button">
+                    <option value="Choice 1" selected="">Italy</option>
+                    <option value="Choice 2">Spain</option>
+                    <option value="Choice 3">Denmark</option>
+                    <option value="Choice 4">Poland</option>
+                  </select>
+                </div>
+                <div class="col-lg-3 mt-lg-n2 mt-2">
+                  <label class="">Depart</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                    <input class="form-control datepicker" placeholder="Please select date" type="text">
+                  </div>
+                </div>
+                <div class="col-lg-3 mt-lg-n2 mt-2">
+                  <label class="">&nbsp;</label>
+                  <button type="button" class="btn bg-gradient-dark w-100 mb-0">Search</button>
+                </div>
+              </div>
             </div>
             <div id="images" class="row mt-5">
               <!-- Gallery -->
@@ -120,8 +155,12 @@
         .visible {
           display: block;
         }
+        .moved-down {
+            position: relative; /* Set position to relative */
+            top: 100px; /* Adjust the value to move the component down */
+        }
       </style>
-      <div class="container mt-5">
+      <div class="container moved-down">
         <form id="upload" method="post" enctype="multipart/form-data">
           {% csrf_token %}
             <div class="row">
@@ -182,7 +221,13 @@
     </template>
 
     <template id="manage-template">
-      <div class="container mt-5">
+      <style>
+        .moved-down {
+            position: relative; /* Set position to relative */
+            top: 100px; /* Adjust the value to move the component down */
+        }
+      </style>
+      <div class="container moved-down">
                 <!-- Gallery -->
         <div id="content" class="row">
           <div class="container">
