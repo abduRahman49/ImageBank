@@ -181,7 +181,6 @@ class ManagePage extends HTMLElement {
     submitEditForm (e) {
         e.preventDefault();
         const tags = [];
-        console.log(e.target.dataset.id);
         const tagElements = this.editModal.querySelector('tags').querySelectorAll('tag');
         tagElements.forEach(tag => {
             tags.push(tag.getAttribute('value'));
@@ -189,7 +188,6 @@ class ManagePage extends HTMLElement {
         const csrfToken = e.target.querySelector('input[name="csrfmiddlewaretoken"]').value;
         const formData = new FormData(e.target);
         formData.append('tags', tags);
-        console.log(e.target);
         fetch(`api/v1/edit/images/${e.target.dataset.id}/`, {
             method: 'POST',
             body: formData
@@ -218,7 +216,6 @@ class ManagePage extends HTMLElement {
 
     // Function used to transfer the image id to the modal
     transferImageIdToDeleteModal(image) {
-        console.log(this.deleteModal);
         this.deleteModal.querySelector('.btn.btn-danger').setAttribute('data-id', image.id);
     }
 
@@ -266,42 +263,41 @@ class ManagePage extends HTMLElement {
     
     renderContent() {
         // Clear the existing content section
-        this.querySelector('#content').innerHTML = '';
-        console.log('images', this.images)
+        // this.querySelector('#content').innerHTML = '';
         this.images.forEach(image => {
-            const columnWrapperDiv = document.createElement('div');
-            columnWrapperDiv.classList.add('col-lg-4', 'col-md-12', 'mb-4', 'mb-lg-0');
+            // const columnWrapperDiv = document.createElement('div');
+            // columnWrapperDiv.classList.add('col-lg-4', 'col-md-12', 'mb-4', 'mb-lg-0');
             
-            const imageCard = document.createElement('div');
-            imageCard.setAttribute('class', 'card mt-4 h-80');
-            imageCard.setAttribute('data-id', image.id);
+            // const imageCard = document.createElement('div');
+            // imageCard.setAttribute('class', 'card mt-4 h-80');
+            // imageCard.setAttribute('data-id', image.id);
             
-            const newImage = document.createElement('img');
-            newImage.classList.add('custom-image');
-            newImage.src = image.image;
-            newImage.alt = image.description;
-            imageCard.appendChild(newImage);
+            // const newImage = document.createElement('img');
+            // newImage.classList.add('custom-image');
+            // newImage.src = image.image;
+            // newImage.alt = image.description;
+            // imageCard.appendChild(newImage);
             
-            const cardBody = document.createElement('div');
-            cardBody.setAttribute('class', 'card-body container mt-5');
+            // const cardBody = document.createElement('div');
+            // cardBody.setAttribute('class', 'card-body container mt-5');
             
-            const buttonsWrapper = document.createElement('div');
-            buttonsWrapper.setAttribute('class', 'row');
+            // const buttonsWrapper = document.createElement('div');
+            // buttonsWrapper.setAttribute('class', 'row');
             
-            const editButtonWrapper = document.createElement('div');
-            editButtonWrapper.setAttribute('class', 'col');
+            // const editButtonWrapper = document.createElement('div');
+            // editButtonWrapper.setAttribute('class', 'col');
             const editIcon = document.createElement('i');
             editIcon.setAttribute('class', 'fas fa-edit');
             const editButton = document.createElement('a');
             editButton.setAttribute('class', 'btn btn-primary');
-            // editButton.addEventListener('click', this.openEditImageForm.bind(this, image));
+            editButton.addEventListener('click', this.openEditImageForm.bind(this, image));
             editButton.setAttribute('data-mdb-toggle', 'modal');
             editButton.setAttribute('data-mdb-target', '#editModal');
             editButton.addEventListener('click', this.populateEditModal.bind(this, image));
             editButton.appendChild(editIcon);
 
-            const deleteButtonWrapper = document.createElement('div');
-            deleteButtonWrapper.setAttribute('class', 'col');
+            // const deleteButtonWrapper = document.createElement('div');
+            // deleteButtonWrapper.setAttribute('class', 'col');
             const deleteIcon = document.createElement('i');
             deleteIcon.setAttribute('class', 'fas fa-trash');
             const deleteButton = document.createElement('a');
@@ -309,17 +305,72 @@ class ManagePage extends HTMLElement {
             deleteButton.setAttribute('data-mdb-toggle', 'modal');
             deleteButton.setAttribute('data-mdb-target', '#deleteModal');
             deleteButton.addEventListener('click', this.transferImageIdToDeleteModal.bind(this, image));
-            
             deleteButton.appendChild(deleteIcon);
-            editButtonWrapper.appendChild(editButton);
-            deleteButtonWrapper.appendChild(deleteButton);
-            buttonsWrapper.appendChild(editButtonWrapper);
-            buttonsWrapper.appendChild(deleteButtonWrapper);
-            cardBody.appendChild(buttonsWrapper);
-            imageCard.appendChild(cardBody);
-            columnWrapperDiv.appendChild(imageCard);
-            this.querySelector('#content').appendChild(columnWrapperDiv);
+            
+            // deleteButton.appendChild(deleteIcon);
+            // editButtonWrapper.appendChild(editButton);
+            // deleteButtonWrapper.appendChild(deleteButton);
+            // buttonsWrapper.appendChild(editButtonWrapper);
+            // buttonsWrapper.appendChild(deleteButtonWrapper);
+            // cardBody.appendChild(buttonsWrapper);
+            // imageCard.appendChild(cardBody);
+            // columnWrapperDiv.appendChild(imageCard);
+            // this.querySelector('#content').appendChild(columnWrapperDiv);
+            // const container = document.createElement('div');
+            // container.classList.add('col-lg-4', 'col-md-6');
+            // const card = document.createElement('div');
+            // card.classList.add('card', 'card-blog', 'card-plain', 'mb-4');
+            // const anchorContainer = document.createElement('div');
+            // anchorContainer.setAttribute('class', 'position-relative');
+            // const anchorElt = document.createElement('a');
+            // anchorElt.classList.add('d-block', 'blur-shadow-image');
+            // const imageElt = document.createElement('img');
+            // imageElt.classList.add('img-fluid', 'shadow', 'border-radius-lg');
+            // imageElt.src = image.image;
+            // anchorElt.appendChild(imageElt);
+            // anchorContainer.appendChild(anchorElt);
+            // card.appendChild(anchorContainer);
+            // container.appendChild(card);
+            // this.querySelector('#content').appendChild(container);
+            const tableRow = document.createElement('tr');
+            const tableDataImage = document.createElement('td');
+            const imageContainer = document.createElement('div');
+            const imageElt = document.createElement('img');
+            imageElt.src = image.image;
+            imageElt.classList.add('avatar', 'avatar-sm', 'me-3');
+            imageContainer.appendChild(imageElt);
+            tableDataImage.appendChild(imageContainer);
+            tableRow.appendChild(tableDataImage);
+            const tableDataAuteur = document.createElement('td');
+            const auteurParagraph = document.createElement('p');
+            auteurParagraph.classList.add('text-xs', 'font-weight-bold', 'mb-0')
+            auteurParagraph.innerText = image.auteur;
+            tableDataAuteur.appendChild(auteurParagraph);
+            tableRow.appendChild(tableDataAuteur);
+            const tableDataFormat = document.createElement('td');
+            const formatParagraph = document.createElement('p');
+            formatParagraph.classList.add('text-xs', 'font-weight-bold', 'mb-0');
+            formatParagraph.innerText = image.format;
+            tableDataFormat.appendChild(formatParagraph);
+            tableRow.appendChild(tableDataFormat);
+            const tableDataType = document.createElement('td');
+            const typeSpan = document.createElement('span');
+            typeSpan.innerText = image.payment_required ? 'Payant' : 'Gratuit';
+            typeSpan.classList.add('badge', 'badge-sm', image.payment_required ? 'badge-danger' : 'badge-success');
+            tableDataType.appendChild(typeSpan);
+            tableRow.appendChild(tableDataType);
+            const tableDataEdit = document.createElement('td');
+            tableDataEdit.setAttribute('class', 'align-middle');
+            tableDataEdit.appendChild(editButton);
+            tableRow.appendChild(tableDataEdit);
+            const tableDataDelete = document.createElement('td');
+            tableDataDelete.setAttribute('class', 'align-middle');
+            tableDataDelete.appendChild(deleteButton);
+            tableRow.appendChild(tableDataDelete);
+            this.querySelector('#content').querySelector('tbody').appendChild(tableRow);
+
         });
+        
     }
 
     // Function used to open the form to edit an image
