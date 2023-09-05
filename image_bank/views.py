@@ -125,7 +125,7 @@ def update_image(request, id):
         else:
             tags = []
 
-        form = ImageForm(post_data, request.FILES, instance=image)        
+        form = ImageForm(post_data, request.FILES, instance=image)
         if form.is_valid():
             instance = form.save(commit=False)
             try:
