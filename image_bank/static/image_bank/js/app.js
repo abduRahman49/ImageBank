@@ -263,29 +263,9 @@ class ManagePage extends HTMLElement {
     
     renderContent() {
         // Clear the existing content section
-        // this.querySelector('#content').innerHTML = '';
+        this.querySelector('#content').querySelector('tbody').innerHTML = '';
         this.images.forEach(image => {
-            // const columnWrapperDiv = document.createElement('div');
-            // columnWrapperDiv.classList.add('col-lg-4', 'col-md-12', 'mb-4', 'mb-lg-0');
-            
-            // const imageCard = document.createElement('div');
-            // imageCard.setAttribute('class', 'card mt-4 h-80');
-            // imageCard.setAttribute('data-id', image.id);
-            
-            // const newImage = document.createElement('img');
-            // newImage.classList.add('custom-image');
-            // newImage.src = image.image;
-            // newImage.alt = image.description;
-            // imageCard.appendChild(newImage);
-            
-            // const cardBody = document.createElement('div');
-            // cardBody.setAttribute('class', 'card-body container mt-5');
-            
-            // const buttonsWrapper = document.createElement('div');
-            // buttonsWrapper.setAttribute('class', 'row');
-            
-            // const editButtonWrapper = document.createElement('div');
-            // editButtonWrapper.setAttribute('class', 'col');
+            // Edit button creation
             const editIcon = document.createElement('i');
             editIcon.setAttribute('class', 'fas fa-edit');
             const editButton = document.createElement('a');
@@ -295,9 +275,7 @@ class ManagePage extends HTMLElement {
             editButton.setAttribute('data-mdb-target', '#editModal');
             editButton.addEventListener('click', this.populateEditModal.bind(this, image));
             editButton.appendChild(editIcon);
-
-            // const deleteButtonWrapper = document.createElement('div');
-            // deleteButtonWrapper.setAttribute('class', 'col');
+            // Delete button creation
             const deleteIcon = document.createElement('i');
             deleteIcon.setAttribute('class', 'fas fa-trash');
             const deleteButton = document.createElement('a');
@@ -306,32 +284,7 @@ class ManagePage extends HTMLElement {
             deleteButton.setAttribute('data-mdb-target', '#deleteModal');
             deleteButton.addEventListener('click', this.transferImageIdToDeleteModal.bind(this, image));
             deleteButton.appendChild(deleteIcon);
-            
-            // deleteButton.appendChild(deleteIcon);
-            // editButtonWrapper.appendChild(editButton);
-            // deleteButtonWrapper.appendChild(deleteButton);
-            // buttonsWrapper.appendChild(editButtonWrapper);
-            // buttonsWrapper.appendChild(deleteButtonWrapper);
-            // cardBody.appendChild(buttonsWrapper);
-            // imageCard.appendChild(cardBody);
-            // columnWrapperDiv.appendChild(imageCard);
-            // this.querySelector('#content').appendChild(columnWrapperDiv);
-            // const container = document.createElement('div');
-            // container.classList.add('col-lg-4', 'col-md-6');
-            // const card = document.createElement('div');
-            // card.classList.add('card', 'card-blog', 'card-plain', 'mb-4');
-            // const anchorContainer = document.createElement('div');
-            // anchorContainer.setAttribute('class', 'position-relative');
-            // const anchorElt = document.createElement('a');
-            // anchorElt.classList.add('d-block', 'blur-shadow-image');
-            // const imageElt = document.createElement('img');
-            // imageElt.classList.add('img-fluid', 'shadow', 'border-radius-lg');
-            // imageElt.src = image.image;
-            // anchorElt.appendChild(imageElt);
-            // anchorContainer.appendChild(anchorElt);
-            // card.appendChild(anchorContainer);
-            // container.appendChild(card);
-            // this.querySelector('#content').appendChild(container);
+            // Table rows and data population
             const tableRow = document.createElement('tr');
             const tableDataImage = document.createElement('td');
             const imageContainer = document.createElement('div');
