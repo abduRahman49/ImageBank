@@ -269,7 +269,7 @@ class ManagePage extends HTMLElement {
             const editIcon = document.createElement('i');
             editIcon.setAttribute('class', 'fas fa-edit');
             const editButton = document.createElement('a');
-            editButton.setAttribute('class', 'btn btn-primary');
+            editButton.setAttribute('class', 'btn btn-primary btn-sm');
             editButton.addEventListener('click', this.openEditImageForm.bind(this, image));
             editButton.setAttribute('data-mdb-toggle', 'modal');
             editButton.setAttribute('data-mdb-target', '#editModal');
@@ -279,7 +279,7 @@ class ManagePage extends HTMLElement {
             const deleteIcon = document.createElement('i');
             deleteIcon.setAttribute('class', 'fas fa-trash');
             const deleteButton = document.createElement('a');
-            deleteButton.setAttribute('class', 'btn btn-danger');
+            deleteButton.setAttribute('class', 'btn btn-danger btn-sm');
             deleteButton.setAttribute('data-mdb-toggle', 'modal');
             deleteButton.setAttribute('data-mdb-target', '#deleteModal');
             deleteButton.addEventListener('click', this.transferImageIdToDeleteModal.bind(this, image));
