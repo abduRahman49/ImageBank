@@ -12,8 +12,10 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required
 def index(request):
     form = ImageForm()
     return render(request, 'image_bank/index.html', {'form': form})
@@ -75,7 +77,7 @@ def get_json_image(request, id):
     serializer = ImageSerializer(instance=image)
     return JsonResponse({"image": serializer.data, "code_message": 200}, status=200)
 
-
+@login_required
 def upload_image(request):
     if request.method == 'POST':
         post_data = request.POST.copy()
@@ -110,6 +112,7 @@ def upload_image(request):
 
 
 # define a function-based view used to update an image sent by the client using it's id and form data
+@login_required
 def update_image(request, id):
     if request.method == 'POST':
         image = get_object_or_404(Image, pk=id)
