@@ -10,7 +10,6 @@ from allauth.account.views import SignupView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/', views.index, name='index'),
     path('accounts/singup/', views.signup, name='sign-up'),
     path('accounts/signin/', views.signin, name='sign-in'),
     path('accounts/logout/', views.logout_view, name='sign-out'),
@@ -21,6 +20,7 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path("__debug__/", include(debug_toolbar.urls)),
     path('accounts/', include('allauth.urls')),
+    path('home/', views.index, name='index'),
 ]
 
 if settings.DEBUG:

@@ -1,6 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 from django.contrib.auth.models import User
+from taggit.managers import TaggableManager
 
 
 # This is a custom model used for authentication purpose
@@ -60,8 +61,7 @@ class Image(models.Model):
     status = models.CharField(max_length=10, choices=STATUS.choices, default=STATUS.PENDING)
     payment_required = models.BooleanField(default=False)
     licence = models.CharField(max_length=100, blank=True)
-    # licence = models.ForeignKey(Licence, on_delete=models.CASCADE, related_name='licences')
     price = models.FloatField(blank=True, null=True)
-    tags = models.ManyToManyField(Tag, blank=True)
+    tags = TaggableManager()
     contributor = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='images')
     

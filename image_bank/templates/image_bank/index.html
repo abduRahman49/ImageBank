@@ -96,50 +96,46 @@
 
       <div class="container mb-5">
         <div class="row">
-          <div id="sidebar">
+          <div id="sidebar" class="col-3">
 
           </div>
           <div class="col-9 mt-5">
             <div class="container">
               <div class="moved-down row bg-white shadow-lg mt-n6 border-radius-md pb-4 p-3 mx-sm-0 mx-1 position-relative">
                 <div class="col-lg-3 mt-lg-n2 mt-2">
-                  <label class="">Leave From</label>
-                  <select class="form-control" name="choices-button" id="choices-button">
-                    <option value="Choice 1" selected="">Brazil</option>
-                    <option value="Choice 2">Bucharest</option>
-                    <option value="Choice 3">London</option>
-                    <option value="Choice 4">USA</option>
+                  <label class="">Type</label>
+                  <select class="form-control" name="choices-button" id="type-choices">
+                    <option value="" selected="" disabled>Choisir</option>
+                    <option value="0">Gratuit</option>
+                    <option value="1">Payant</option>
                   </select>
                 </div>
                 <div class="col-lg-3 mt-lg-n2 mt-2">
-                  <label class="">To</label>
-                  <select class="form-control" name="choices-remove-button" id="choices-remove-button">
-                    <option value="Choice 1" selected="">Italy</option>
-                    <option value="Choice 2">Spain</option>
-                    <option value="Choice 3">Denmark</option>
-                    <option value="Choice 4">Poland</option>
+                  <label class="">Licence</label>
+                  <select class="form-control" name="choices-remove-button" id="licence-choices">
+                    <option value="" selected="" disabled>Choisir</option>
+                    
                   </select>
                 </div>
                 <div class="col-lg-3 mt-lg-n2 mt-2">
-                  <label class="">Depart</label>
-                  <div class="input-group">
-                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                    <input class="form-control datepicker" placeholder="Please select date" type="text">
-                  </div>
+                  <label class="">Auteur</label>
+                  <select class="form-control" name="choices-button" id="auteur-choices">
+                    <option value="" selected="" disabled>Choisir</option>
+                  </select>
                 </div>
                 <div class="col-lg-3 mt-lg-n2 mt-2">
                   <label class="">&nbsp;</label>
-                  <button type="button" class="btn bg-gradient-dark w-100 mb-0">Search</button>
+                  <button id="search" type="button" class="btn bg-gradient-dark w-100 mb-0">Recherche</button>
                 </div>
               </div>
-            </div>
-            <div id="images" class="row mt-5">
+              <div id="images" class="row mt-5">
+                <!-- Gallery -->
+                  <div id="content" class="row">
+                    
+                  </div>
+              </div>
               <!-- Gallery -->
-                <div id="content" class="row">
-                
-                </div>
-            </div>
-              <!-- Gallery -->
+            </div>    
             </div>
           </div>
         </div>
@@ -212,7 +208,7 @@
             <div class="row">
               <div class="col-md-6">
                 <label for="{{ form.tags.id_for_label }}" class="form-label">Tags:</label>
-                {{ form.tags|attr:"class:form-control"}}
+                {{ form.tags }}
               </div>
             </div>
           <button type="submit" class="btn btn-primary mt-3">Charger</button>

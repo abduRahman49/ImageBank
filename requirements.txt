@@ -46,3 +46,4 @@ tinycss2==1.2.1
 tzdata==2023.3
 urllib3==2.0.3
 webencodings==0.5.1
+django-taggit==4.0.0

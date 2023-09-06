@@ -22,6 +22,8 @@ class AccueilPage extends HTMLElement {
     constructor() {
         super();
         this.images = [];
+        this.licences = [];
+        this.auteurs = [];
         this.currentPage = 1;
         this.template = document.querySelector('#home-template');
         this.templateContent = this.template.innerHTML;
@@ -44,12 +46,68 @@ class AccueilPage extends HTMLElement {
     }
 
     async fetchAndDisplayImages(page) {
-        const data = await this.fetchImagesForPage(page);
-        this.images = data.results;
+        const imageData = await this.fetchImagesForPage(page);
+        const licenceData = await this.fetchLicences();
+        const authorData = await this.fetchAuteurs();
+
+        this.images = imageData.results;
+        licenceData.results.forEach(element => {
+            this.licences.push(element.name);
+        });
+         authorData.results.forEach(element => {
+            this.auteurs.push(element.username);
+        })
+
         this.renderContent();
     }
 
+    async fetchLicences() {
+        const response = await fetch('/api/licences/');
+        const data = await response.json();
+        return data;
+    }
+
+    async fetchAuteurs() {
+        const response = await fetch('/api/auteurs/');
+        const data = await response.json();
+        return data;
+    }
+
+    searchImages() {
+        const auteur = this.querySelector('#auteur-choices').value;
+        const licence = this.querySelector('#licence-choices').value;
+        const type = this.querySelector('#type-choices').value === '0' ? false : true;
+        fetch('/api/images/search/?auteur=' + auteur + '&licence=' + licence + '&type=' + JSON.stringify(type)).then(response => response.json()).then(data => {
+            this.images = data.results
+            this.querySelector('#auteur-choices').value = '';
+            this.querySelector('#licence-choices').value = '';
+            this.querySelector('#type-choices').value = '';
+            // this.renderContent();
+            console.log(this.images);
+        }).catch(error => {
+            Toastify({text: error, duration: 3000}).showToast();
+        })
+    }
+
     renderContent() {
+        // populate licences in select field
+        this.querySelector('#search').addEventListener('click', this.searchImages.bind(this));
+        this.licences.forEach(licence => {
+            const option = document.createElement('option');
+            option.value = licence;
+            option.innerHTML = licence;
+            this.querySelector('#licence-choices').append(option);
+        })
+
+        // populate auteurs in select field
+        this.auteurs.forEach(auteur => {
+            const option = document.createElement('option');
+            option.value = auteur;
+            option.innerHTML = auteur;
+            this.querySelector('#auteur-choices').append(option);
+        })
+
+        // populate images
         this.images.forEach(image => {
             const gridContainer = this.querySelector('#content')
             const gridItem= document.createElement('div');
@@ -73,7 +131,7 @@ class UploadPage extends HTMLElement {
         this.div.innerHTML = this.templateContent;
         this.appendChild(this.div);
         this.querySelector('.price_row').classList.add('hidden');
-        this.tags = new Tagify(this.querySelector('#id_tags'));
+        // this.tags = new Tagify(this.querySelector('#id_tags'));
         this.querySelector('#id_tags').classList.add('hidden');
     }
 
@@ -270,7 +328,7 @@ class ManagePage extends HTMLElement {
             editIcon.setAttribute('class', 'fas fa-edit');
             const editButton = document.createElement('a');
             editButton.setAttribute('class', 'btn btn-primary btn-sm');
-            editButton.addEventListener('click', this.openEditImageForm.bind(this, image));
+            // editButton.addEventListener('click', this.openEditImageForm.bind(this, image));
             editButton.setAttribute('data-mdb-toggle', 'modal');
             editButton.setAttribute('data-mdb-target', '#editModal');
             editButton.addEventListener('click', this.populateEditModal.bind(this, image));

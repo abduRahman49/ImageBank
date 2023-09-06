@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from .forms import ImageForm, NewUserForm, RegisteredUserForm
 from .models import Licence, Tag, CustomUser, Image
-from api.serializers import ImageSerializer
+from api.serializers import ImageSerializer, CustomUserSerializer
 from django.http import JsonResponse
 from django.db.utils import IntegrityError
 from django.shortcuts import get_object_or_404
@@ -63,6 +63,7 @@ def signin(request):
     return render(request, 'image_bank/sign-in-cover.html', {'form': form})
 
 
+@login_required
 def logout_view(request):
     logout(request)
     return redirect(reverse('sign-in'))
@@ -76,6 +77,13 @@ def get_json_image(request, id):
     
     serializer = ImageSerializer(instance=image)
     return JsonResponse({"image": serializer.data, "code_message": 200}, status=200)
+
+
+def get_users(request):
+    users = CustomUser.objects.all()
+    serializer = CustomUserSerializer(users, many=True)
+    return JsonResponse({"users": serializer.data, "code_message": 200}, status=200)
+    
 
 @login_required
 def upload_image(request):

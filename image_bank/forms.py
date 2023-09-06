@@ -1,15 +1,21 @@
 from allauth.account.forms import SignupForm
 from django import forms
-from .models import Image, Licence
+from .models import Image, Licence, CustomUser
 from django.core import validators
+from taggit.forms import TagWidget
 
 
 class ImageForm(forms.ModelForm):
-    licence = forms.ModelChoiceField(queryset=Licence.objects.all())
+    licence = forms.ModelChoiceField(queryset=Licence.objects.only('name'))
+    auteur = forms.ModelChoiceField(queryset=CustomUser.objects.only('username'))
     
     class Meta:
         model = Image
         fields = ['name', 'auteur', 'image', 'payment_required', 'price', 'description', 'tags']
+        
+        widgets = {
+            'tags': TagWidget(attrs={'class': 'form-control'}),
+        }
 
 
 # class AppSignupForm(SignupForm):
