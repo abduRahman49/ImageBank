@@ -14,6 +14,7 @@ from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -22,47 +23,47 @@ def index(request):
     form = ImageForm()
     return render(request, 'image_bank/index.html', {'form': form})
 
-def signup(request):
+def signup_contributeur(request):
     if request.method == 'POST':
         form = NewUserForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
             try:
                 user = CustomUser.objects.create_user(data.get('username'), data.get('email'), data.get('password'))
-                # login(request, user)
-                return redirect(reverse('sign-in'))
+                user.role = "C"
+                user.save()
+                return redirect(reverse('sign-in-contributeur'))
             except IntegrityError:
-                messages.add_message(request, messages.constants.ERROR, 'Utilisateur existe déjà')
-                return redirect(reverse('sign-up'))
+                messages.add_message(request, messages.constants.ERROR, 'Utilisateur déjà existant')
+                return redirect(reverse('sign-up-contributeur'))
         else:
             messages.add_message(request, messages.constants.ERROR, form.errors)
-            return redirect(reverse('sign-up'))
+            return redirect(reverse('sign-up-contributeur'))
     form = NewUserForm()
-    return render(request, 'image_bank/sign-up-cover.html', {'form': form})
+    return render(request, 'image_bank/contributeur/sign-up-cover.html', {'form': form})
 
 
-def signin(request):
+def signin_contributeur(request):
     if request.method == 'POST':
         form = RegisteredUserForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
             try:
                 user = CustomUser.objects.get(email=data.get('email'))
-                # login(request, user)
                 if user.check_password(data.get('password')):
                     login(request, user)
                     return redirect(reverse('index'))
                 else:
                     messages.add_message(request, messages.constants.ERROR, 'Mot de passe incorrect')
-                return redirect(reverse('sign-in'))
+                return redirect(reverse('sign-in-contributeur'))
             except CustomUser.DoesNotExist:
                 messages.add_message(request, messages.constants.ERROR, 'Utilisateur n\'existe pas')
-                return redirect(reverse('sign-in'))
+                return redirect(reverse('sign-in-contributeur'))
         else:
             messages.add_message(request, messages.constants.ERROR, form.errors)
-            return redirect(reverse('sign-in'))
+            return redirect(reverse('sign-in-contributeur'))
     form = RegisteredUserForm()
-    return render(request, 'image_bank/sign-in-cover.html', {'form': form})
+    return render(request, 'image_bank/contributeur/sign-in-cover.html', {'form': form})
 
 
 @login_required

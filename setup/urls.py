@@ -10,8 +10,8 @@ from allauth.account.views import SignupView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/singup/', views.signup, name='sign-up'),
-    path('accounts/signin/', views.signin, name='sign-in'),
+    path('accounts/contributeur/singup/', views.signup_contributeur, name='sign-up-contributeur'),
+    path('accounts/contributeur/signin/', views.signin_contributeur, name='sign-in-contributeur'),
     path('accounts/logout/', views.logout_view, name='sign-out'),
     # path('users/signup', SignupView.as_view(), name='sign-up'),
     path('api/v1/upload/images/', views.upload_image),
