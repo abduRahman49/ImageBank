@@ -20,7 +20,7 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path("__debug__/", include(debug_toolbar.urls)),
     path('accounts/', include('allauth.urls')),
-    path('home/', views.index, name='index'),
+    path('', views.index, name='index'),
 ]
 
 if settings.DEBUG:

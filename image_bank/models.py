@@ -47,7 +47,7 @@ class Image(models.Model):
         CREATIVE_COMMONS_NM_PCII = "CCNMNPCCI", _("Creative commons - Pas d'utilisation commerciale, Partage des conditions initiales à l'identique")
         CREATIVE_COMMONS_PCII = "CCNPCCI", _("Creative commons - Partage des conditions initiales à l'identique")
         
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, null=True)
     auteur = models.CharField(max_length=200)
     title = models.CharField(max_length=200)
     image = models.ImageField(upload_to='images/')
@@ -62,6 +62,7 @@ class Image(models.Model):
     payment_required = models.BooleanField(default=False)
     licence = models.CharField(max_length=100, blank=True)
     price = models.FloatField(blank=True, null=True)
-    tags = TaggableManager()
+    tags = models.ManyToManyField(Tag, blank=True)
+    new_tags = TaggableManager()
     contributor = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='images')
     

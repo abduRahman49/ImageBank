@@ -1,40 +1,57 @@
+
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <title></title>
-    <!-- Font Awesome -->
-<link
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-rel="stylesheet"
-/>
-<!-- Google Fonts -->
-<link
-href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-rel="stylesheet"
-/>
-<!-- MDB -->
-<link
-href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css"
-rel="stylesheet"
-/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- htmx -->
+    <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'image_bank/assets/img/apple-icon.png'%}">
+    <link rel="icon" type="image/png" href="{% static 'image_bank/assets/img/favicon.png'%}">
+    <title>
+    Soft UI Design System PRO by Creative Tim
+    </title>
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <!-- Nucleo Icons -->
+    <link href="{% static 'image_bank/assets/css/nucleo-icons.css'%}" rel="stylesheet" />
+    <link href="{% static 'image_bank/assets/css/nucleo-svg.css'%}" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="{% static 'image_bank/assets/css/nucleo-svg.css'%}" rel="stylesheet" />
+    <!-- CSS Files -->
+    <link id="pagestyle" href="{% static 'image_bank/assets/css/soft-design-system-pro.css'%}" rel="stylesheet" />
+    <!-- Nepcha Analytics (nepcha.com) -->
+    <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
+    <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
     {% block extra_head %}
     {% endblock %}
 </head>
 <body>
-    {% csrf_token %}
+{% block content %}
 
-    {% block navbar %}
+{% endblock %}
 
-    {% endblock %}
-
-    {% block content %}
-
-    {% endblock %}
-    <!-- MDB -->
-<script
-type="text/javascript"
-src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"
-></script>
-
+<script src="{% static 'image_bank/assets/js/core/popper.min.js'%}" type="text/javascript"></script>
+<script src="{% static 'image_bank/assets/js/core/bootstrap.min.js'%}" type="text/javascript"></script>
+<script src="{% static 'image_bank/assets/js/plugins/perfect-scrollbar.min.js'%}"></script>
+<!--  Plugin for TypedJS, full documentation here: https://github.com/mattboldt/typed.js/ -->
+<script src="{% static 'image_bank/assets/js/plugins/typedjs.js'%}"></script>
+<!--  Plugin for Parallax, full documentation here: https://github.com/wagerfield/parallax  -->
+<script src="{% static 'image_bank/assets/js/plugins/parallax.min.js'%}"></script>
+<!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+<script src="{% static 'image_bank/assets/js/plugins/nouislider.min.js'%}" type="text/javascript"></script>
+<!--  Plugin for the GlideJS Carousel, full documentation here: http://kenwheeler.github.io/slick/ -->
+<script src="{% static 'image_bank/assets/js/plugins/glidejs.min.js'%}" type="text/javascript"></script>
+<!--  Plugin for the blob animation -->
+<script src="{% static 'image_bank/assets/js/plugins/anime.min.js'%}" type="text/javascript"></script>
+<!-- Chart JS -->
+<script src="{% static 'image_bank/assets/js/plugins/chartjs.min.js'%}"></script>
+<!-- Control Center for Soft UI Kit: parallax effects, scripts for the example pages etc -->
+<!--  Google Maps Plugin    -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTTfWur0PDbZWPr7Pmq8K3jiDp0_xUziI"></script>
+<script src="{% static 'image_bank/assets/js/soft-design-system-pro.min.js'%}" type="text/javascript"></script>
 </body>
 </html>

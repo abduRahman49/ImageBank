@@ -1,4 +1,5 @@
 import json
+from PIL import Image as PImage
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .forms import ImageForm, NewUserForm, RegisteredUserForm
@@ -13,6 +14,7 @@ from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 @login_required
@@ -102,8 +104,13 @@ def upload_image(request):
         if form.is_valid():
             instance = form.save(commit=False)
             try:
+                with PImage.open(request.FILES['image']) as image:
+                    instance.width = image.width
+                    instance.height = image.height
+                    instance.format = image.format
+                    instance.taille = image.size
                 # To change later with the current user's id
-                instance.contributor = CustomUser.objects.get(pk=3)
+                instance.contributor = CustomUser.objects.get(pk=request.user.id)
                 instance.save()
             except IntegrityError:
                 return JsonResponse({"message": "Utilisateur existe déjà", "code_message": 200}, status=200)
@@ -138,7 +145,7 @@ def update_image(request, id):
             instance = form.save(commit=False)
             try:
                 # To change later with the current user's id
-                instance.contributor = CustomUser.objects.get(pk=3)
+                instance.contributor = CustomUser.objects.get(pk=request.user.id)
                 if licence:
                     instance.licence = Licence.objects.get(pk=int(licence)).name
                 else:

@@ -28,38 +28,71 @@ class AccueilPage extends HTMLElement {
         this.template = document.querySelector('#home-template');
         this.templateContent = this.template.innerHTML;
         this.innerHTML = this.templateContent;
+        this.setAttribute('images', this.images);
     }
 
     connectedCallback () {
         if(this.isConnected){
-            this.fetchAndDisplayImages(this.currentPage);
+            // this.fetchAndDisplayImages(this.currentPage);
+            const licencesFulfilled = this.fetchLicences();
+            licencesFulfilled.then(licences => {
+                licences.results.forEach(licence => {
+                    // this.licences.push(licence.name);
+                    const option = document.createElement('option');
+                    option.value = licence.name;
+                    option.innerHTML = licence.name;
+                    this.querySelector('#licence-choices').append(option);
+                })
+            })
+
+            const auteursFulfilled = this.fetchAuteurs();
+            auteursFulfilled.then(auteurs => {
+                auteurs.results.forEach(auteur => {
+                    // this.auteurs.push(auteur.name);
+                    const option = document.createElement('option');
+                    option.value = auteur.username;
+                    option.innerHTML = auteur.username;
+                    this.querySelector('#auteur-choices').append(option);
+                })
+            })
+            // console.log(this.licences);
         }
+
+        
     }
 
     disconnectedCallback () {
+        // pass for now;
     }
 
-    async fetchImagesForPage(page) {
-        const response = await fetch(`/api/images/search?page=${page}`);
-        const data = await response.json();
-        return data;
+    static get observedAttributes () {
+        return ['images'];
     }
 
-    async fetchAndDisplayImages(page) {
-        const imageData = await this.fetchImagesForPage(page);
-        const licenceData = await this.fetchLicences();
-        const authorData = await this.fetchAuteurs();
+    // attributeChangedCallback (name, oldValue, newValue) {
+    //     if(name === 'images' && oldValue !== newValue){
+    //         console.log('nouvelle valeur', newValue);
+    //         this.fetchAndDisplayImages(this.currentPage, newValue);
+    //     } else if(name === 'images' && oldValue === newValue){
+    //         // do nothing
+    //         console.log('attributs identiques');
+    //     }
+    // }
 
-        this.images = imageData.results;
-        licenceData.results.forEach(element => {
-            this.licences.push(element.name);
-        });
-         authorData.results.forEach(element => {
-            this.auteurs.push(element.username);
-        })
+    // async fetchImagesForPage(page) {
+    //     // const response = await fetch(`/api/images/search?page=${page}`);
+    //     const response = await fetch(`/api/images/search/`, {
+    //         method: 
+    //     });
+    //     const data = await response.json();
+    //     return data;
+    // }
 
-        this.renderContent();
-    }
+    // async fetchAndDisplayImages(page) {
+    //     const imageData = await this.fetchImagesForPage(page);
+    //     this.images = imageData.results;
+    //     this.renderContent();
+    // }
 
     async fetchLicences() {
         const response = await fetch('/api/licences/');
@@ -73,52 +106,33 @@ class AccueilPage extends HTMLElement {
         return data;
     }
 
-    searchImages() {
-        const auteur = this.querySelector('#auteur-choices').value;
-        const licence = this.querySelector('#licence-choices').value;
-        const type = this.querySelector('#type-choices').value === '0' ? false : true;
-        fetch('/api/images/search/?auteur=' + auteur + '&licence=' + licence + '&type=' + JSON.stringify(type)).then(response => response.json()).then(data => {
-            this.images = data.results
-            this.querySelector('#auteur-choices').value = '';
-            this.querySelector('#licence-choices').value = '';
-            this.querySelector('#type-choices').value = '';
-            // this.renderContent();
-            console.log(this.images);
-        }).catch(error => {
-            Toastify({text: error, duration: 3000}).showToast();
-        })
-    }
-
-    renderContent() {
+    // renderContent() {
         // populate licences in select field
-        this.querySelector('#search').addEventListener('click', this.searchImages.bind(this));
-        this.licences.forEach(licence => {
-            const option = document.createElement('option');
-            option.value = licence;
-            option.innerHTML = licence;
-            this.querySelector('#licence-choices').append(option);
-        })
+        // this.licences.forEach(licence => {
+        //     const option = document.createElement('option');
+        //     option.value = licence;
+        //     option.innerHTML = licence;
+        //     this.querySelector('#licence-choices').append(option);
+        // })
 
         // populate auteurs in select field
-        this.auteurs.forEach(auteur => {
-            const option = document.createElement('option');
-            option.value = auteur;
-            option.innerHTML = auteur;
-            this.querySelector('#auteur-choices').append(option);
-        })
+        // this.auteurs.forEach(auteur => {
+        //     const option = document.createElement('option');
+        //     option.value = auteur;
+        //     option.innerHTML = auteur;
+        //     this.querySelector('#auteur-choices').append(option);
+        // })
 
         // populate images
-        this.images.forEach(image => {
-            const gridContainer = this.querySelector('#content')
-            const gridItem= document.createElement('div');
-            gridItem.setAttribute('class', 'col-md-3 mb-4');
-            const imageItem = document.createElement('img');
-            imageItem.setAttribute('class', 'img-thumbnail');
-            imageItem.src = image.image;
-            gridItem.appendChild(imageItem);
-            gridContainer.appendChild(gridItem);
-        });
-    }
+        // this.images.forEach(image => {
+        //     const anchor = document.createElement('a');
+        //     anchor.setAttribute('target', '_blank');
+        //     const imageElt = document.createElement('img');
+        //     imageElt.setAttribute('src', image.image);
+        //     anchor.appendChild(imageElt);
+        //     this.querySelector('#my-gallery').appendChild(anchor);
+        // });
+    // }
 }
 
 class UploadPage extends HTMLElement {

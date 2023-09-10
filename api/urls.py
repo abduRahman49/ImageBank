@@ -8,7 +8,7 @@ router.register(r'licences', LicenceModelViewset)
 router.register(r'auteurs', AuteurModelViewset)
 
 urlpatterns = [
-    path('images/search/', ImageSearchAPIView.as_view())
+    path('images/search/', ImageSearchAPIView.as_view(), name='search-images'),
 ]
 
 urlpatterns += router.urls

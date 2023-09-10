@@ -1,0 +1,21 @@
+{% if images %}
+    <ul>
+    {% for image in images %}
+    <!-- <div class="cursor-pointer">
+        <div class="card card-background tilt" data-tilt="">
+        <div class="full-background" style="background-image: url('{{ image.image }}')"></div> -->
+        <!-- <div class="card-body pt-7 text-center">
+            
+            <h1 class="text-white up mb-0">Search and Discover!</h1>
+            <p class="lead up">Website visitors</p>
+            <button type="button" class="btn btn-white btn-lg mt-3 up">Get Started</button>
+        </div> -->
+        <!-- </div>
+    </div> -->
+    <li>{{ image }}</li>
+
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Pas de résultats</p>
+{% endif %}

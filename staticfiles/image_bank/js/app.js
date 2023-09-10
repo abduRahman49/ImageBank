@@ -22,45 +22,117 @@ class AccueilPage extends HTMLElement {
     constructor() {
         super();
         this.images = [];
+        this.licences = [];
+        this.auteurs = [];
         this.currentPage = 1;
         this.template = document.querySelector('#home-template');
         this.templateContent = this.template.innerHTML;
         this.innerHTML = this.templateContent;
+        this.setAttribute('images', this.images);
     }
 
     connectedCallback () {
         if(this.isConnected){
-            this.fetchAndDisplayImages(this.currentPage);
+            // this.fetchAndDisplayImages(this.currentPage);
+            const licencesFulfilled = this.fetchLicences();
+            licencesFulfilled.then(licences => {
+                licences.results.forEach(licence => {
+                    // this.licences.push(licence.name);
+                    const option = document.createElement('option');
+                    option.value = licence.name;
+                    option.innerHTML = licence.name;
+                    this.querySelector('#licence-choices').append(option);
+                })
+            })
+
+            const auteursFulfilled = this.fetchAuteurs();
+            auteursFulfilled.then(auteurs => {
+                auteurs.results.forEach(auteur => {
+                    // this.auteurs.push(auteur.name);
+                    const option = document.createElement('option');
+                    option.value = auteur.username;
+                    option.innerHTML = auteur.username;
+                    this.querySelector('#auteur-choices').append(option);
+                })
+            })
+            // console.log(this.licences);
         }
+
+        
     }
 
     disconnectedCallback () {
+        // pass for now;
     }
 
-    async fetchImagesForPage(page) {
-        const response = await fetch(`/api/images/search?page=${page}`);
+    static get observedAttributes () {
+        return ['images'];
+    }
+
+    // attributeChangedCallback (name, oldValue, newValue) {
+    //     if(name === 'images' && oldValue !== newValue){
+    //         console.log('nouvelle valeur', newValue);
+    //         this.fetchAndDisplayImages(this.currentPage, newValue);
+    //     } else if(name === 'images' && oldValue === newValue){
+    //         // do nothing
+    //         console.log('attributs identiques');
+    //     }
+    // }
+
+    // async fetchImagesForPage(page) {
+    //     // const response = await fetch(`/api/images/search?page=${page}`);
+    //     const response = await fetch(`/api/images/search/`, {
+    //         method: 
+    //     });
+    //     const data = await response.json();
+    //     return data;
+    // }
+
+    // async fetchAndDisplayImages(page) {
+    //     const imageData = await this.fetchImagesForPage(page);
+    //     this.images = imageData.results;
+    //     this.renderContent();
+    // }
+
+    async fetchLicences() {
+        const response = await fetch('/api/licences/');
         const data = await response.json();
         return data;
     }
 
-    async fetchAndDisplayImages(page) {
-        const data = await this.fetchImagesForPage(page);
-        this.images = data.results;
-        this.renderContent();
+    async fetchAuteurs() {
+        const response = await fetch('/api/auteurs/');
+        const data = await response.json();
+        return data;
     }
 
-    renderContent() {
-        this.images.forEach(image => {
-            const gridContainer = this.querySelector('#content')
-            const gridItem= document.createElement('div');
-            gridItem.setAttribute('class', 'col-md-3 mb-4');
-            const imageItem = document.createElement('img');
-            imageItem.setAttribute('class', 'img-thumbnail');
-            imageItem.src = image.image;
-            gridItem.appendChild(imageItem);
-            gridContainer.appendChild(gridItem);
-        });
-    }
+    // renderContent() {
+        // populate licences in select field
+        // this.licences.forEach(licence => {
+        //     const option = document.createElement('option');
+        //     option.value = licence;
+        //     option.innerHTML = licence;
+        //     this.querySelector('#licence-choices').append(option);
+        // })
+
+        // populate auteurs in select field
+        // this.auteurs.forEach(auteur => {
+        //     const option = document.createElement('option');
+        //     option.value = auteur;
+        //     option.innerHTML = auteur;
+        //     this.querySelector('#auteur-choices').append(option);
+        // })
+
+        // populate images
+        // this.images.forEach(image => {
+        //     const anchor = document.createElement('a');
+        //     anchor.setAttribute('target', '_blank');
+        //     const imageElt = document.createElement('img');
+        //     imageElt.setAttribute('src', image.image);
+        //     anchor.appendChild(imageElt);
+        //     this.querySelector('#my-gallery').appendChild(anchor);
+        // });
+    // }
 }
 
 class UploadPage extends HTMLElement {
@@ -73,7 +145,7 @@ class UploadPage extends HTMLElement {
         this.div.innerHTML = this.templateContent;
         this.appendChild(this.div);
         this.querySelector('.price_row').classList.add('hidden');
-        this.tags = new Tagify(this.querySelector('#id_tags'));
+        // this.tags = new Tagify(this.querySelector('#id_tags'));
         this.querySelector('#id_tags').classList.add('hidden');
     }
 
@@ -181,7 +253,6 @@ class ManagePage extends HTMLElement {
     submitEditForm (e) {
         e.preventDefault();
         const tags = [];
-        console.log(e.target.dataset.id);
         const tagElements = this.editModal.querySelector('tags').querySelectorAll('tag');
         tagElements.forEach(tag => {
             tags.push(tag.getAttribute('value'));
@@ -189,7 +260,6 @@ class ManagePage extends HTMLElement {
         const csrfToken = e.target.querySelector('input[name="csrfmiddlewaretoken"]').value;
         const formData = new FormData(e.target);
         formData.append('tags', tags);
-        console.log(e.target);
         fetch(`api/v1/edit/images/${e.target.dataset.id}/`, {
             method: 'POST',
             body: formData
@@ -218,7 +288,6 @@ class ManagePage extends HTMLElement {
 
     // Function used to transfer the image id to the modal
     transferImageIdToDeleteModal(image) {
-        console.log(this.deleteModal);
         this.deleteModal.querySelector('.btn.btn-danger').setAttribute('data-id', image.id);
     }
 
@@ -266,60 +335,67 @@ class ManagePage extends HTMLElement {
     
     renderContent() {
         // Clear the existing content section
-        this.querySelector('#content').innerHTML = '';
-        console.log('images', this.images)
+        this.querySelector('#content').querySelector('tbody').innerHTML = '';
         this.images.forEach(image => {
-            const columnWrapperDiv = document.createElement('div');
-            columnWrapperDiv.classList.add('col-lg-4', 'col-md-12', 'mb-4', 'mb-lg-0');
-            
-            const imageCard = document.createElement('div');
-            imageCard.setAttribute('class', 'card mt-4 h-80');
-            imageCard.setAttribute('data-id', image.id);
-            
-            const newImage = document.createElement('img');
-            newImage.classList.add('custom-image');
-            newImage.src = image.image;
-            newImage.alt = image.description;
-            imageCard.appendChild(newImage);
-            
-            const cardBody = document.createElement('div');
-            cardBody.setAttribute('class', 'card-body container mt-5');
-            
-            const buttonsWrapper = document.createElement('div');
-            buttonsWrapper.setAttribute('class', 'row');
-            
-            const editButtonWrapper = document.createElement('div');
-            editButtonWrapper.setAttribute('class', 'col');
+            // Edit button creation
             const editIcon = document.createElement('i');
             editIcon.setAttribute('class', 'fas fa-edit');
             const editButton = document.createElement('a');
-            editButton.setAttribute('class', 'btn btn-primary');
+            editButton.setAttribute('class', 'btn btn-primary btn-sm');
             // editButton.addEventListener('click', this.openEditImageForm.bind(this, image));
             editButton.setAttribute('data-mdb-toggle', 'modal');
             editButton.setAttribute('data-mdb-target', '#editModal');
             editButton.addEventListener('click', this.populateEditModal.bind(this, image));
             editButton.appendChild(editIcon);
-
-            const deleteButtonWrapper = document.createElement('div');
-            deleteButtonWrapper.setAttribute('class', 'col');
+            // Delete button creation
             const deleteIcon = document.createElement('i');
             deleteIcon.setAttribute('class', 'fas fa-trash');
             const deleteButton = document.createElement('a');
-            deleteButton.setAttribute('class', 'btn btn-danger');
+            deleteButton.setAttribute('class', 'btn btn-danger btn-sm');
             deleteButton.setAttribute('data-mdb-toggle', 'modal');
             deleteButton.setAttribute('data-mdb-target', '#deleteModal');
             deleteButton.addEventListener('click', this.transferImageIdToDeleteModal.bind(this, image));
-            
             deleteButton.appendChild(deleteIcon);
-            editButtonWrapper.appendChild(editButton);
-            deleteButtonWrapper.appendChild(deleteButton);
-            buttonsWrapper.appendChild(editButtonWrapper);
-            buttonsWrapper.appendChild(deleteButtonWrapper);
-            cardBody.appendChild(buttonsWrapper);
-            imageCard.appendChild(cardBody);
-            columnWrapperDiv.appendChild(imageCard);
-            this.querySelector('#content').appendChild(columnWrapperDiv);
+            // Table rows and data population
+            const tableRow = document.createElement('tr');
+            const tableDataImage = document.createElement('td');
+            const imageContainer = document.createElement('div');
+            const imageElt = document.createElement('img');
+            imageElt.src = image.image;
+            imageElt.classList.add('avatar', 'avatar-sm', 'me-3');
+            imageContainer.appendChild(imageElt);
+            tableDataImage.appendChild(imageContainer);
+            tableRow.appendChild(tableDataImage);
+            const tableDataAuteur = document.createElement('td');
+            const auteurParagraph = document.createElement('p');
+            auteurParagraph.classList.add('text-xs', 'font-weight-bold', 'mb-0')
+            auteurParagraph.innerText = image.auteur;
+            tableDataAuteur.appendChild(auteurParagraph);
+            tableRow.appendChild(tableDataAuteur);
+            const tableDataFormat = document.createElement('td');
+            const formatParagraph = document.createElement('p');
+            formatParagraph.classList.add('text-xs', 'font-weight-bold', 'mb-0');
+            formatParagraph.innerText = image.format;
+            tableDataFormat.appendChild(formatParagraph);
+            tableRow.appendChild(tableDataFormat);
+            const tableDataType = document.createElement('td');
+            const typeSpan = document.createElement('span');
+            typeSpan.innerText = image.payment_required ? 'Payant' : 'Gratuit';
+            typeSpan.classList.add('badge', 'badge-sm', image.payment_required ? 'badge-danger' : 'badge-success');
+            tableDataType.appendChild(typeSpan);
+            tableRow.appendChild(tableDataType);
+            const tableDataEdit = document.createElement('td');
+            tableDataEdit.setAttribute('class', 'align-middle');
+            tableDataEdit.appendChild(editButton);
+            tableRow.appendChild(tableDataEdit);
+            const tableDataDelete = document.createElement('td');
+            tableDataDelete.setAttribute('class', 'align-middle');
+            tableDataDelete.appendChild(deleteButton);
+            tableRow.appendChild(tableDataDelete);
+            this.querySelector('#content').querySelector('tbody').appendChild(tableRow);
+
         });
+        
     }
 
     // Function used to open the form to edit an image
