@@ -15,6 +15,7 @@ from django.db.models import Q
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -71,7 +72,10 @@ def index_contributeur(request):
 
 
 def images_contributeur(request):
-    return render(request, 'image_bank/contributeur/mes-images.html', {'images': Image.objects.all()})
+    paginator = Paginator(Image.objects.all(), 4)
+    page_number = request.GET.get('page', 1)
+    page_object = paginator.get_page(page_number)
+    return render(request, 'image_bank/contributeur/mes-images.html', {'images': page_object})
 
 
 @login_required

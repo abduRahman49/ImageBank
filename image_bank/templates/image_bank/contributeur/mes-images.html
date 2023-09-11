@@ -67,7 +67,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                        {% for image in images %}
+                    {% for image in images %}
                       <tr>
                         <td>
                           <div class="d-flex px-2 py-1">
@@ -99,6 +99,23 @@
                     {% endfor %}
                     </tbody>
                   </table>
+                </div>
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if images.has_previous %}
+                            <a href="?page=1">&laquo; first</a>
+                            <a href="?page={{ images.previous_page_number }}">previous</a>
+                        {% endif %}
+                
+                        <span class="current">
+                            Page {{ images.number }} of {{ images.paginator.num_pages }}.
+                        </span>
+                
+                        {% if images.has_next %}
+                            <a href="?page={{ images.next_page_number }}">next</a>
+                            <a href="?page={{ images.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
                 </div>
               </div>
             </div>
