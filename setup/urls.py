@@ -14,6 +14,8 @@ urlpatterns = [
     path('accounts/contributeur/signin/', views.signin_contributeur, name='sign-in-contributeur'),
     path('accounts/logout/', views.logout_view, name='sign-out'),
     # path('users/signup', SignupView.as_view(), name='sign-up'),
+    path('contributeur/index/', views.index_contributeur, name='index-contributeur'),
+    path('contributeur/images/', views.images_contributeur, name='images-contributeur'),
     path('api/v1/upload/images/', views.upload_image),
     path('api/v1/edit/images/<int:id>/', views.update_image),
     path('api/v1/images/<int:id>/json/', views.get_json_image),

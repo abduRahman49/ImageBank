@@ -1,0 +1,110 @@
+{% extends "image_bank/main.html" %}
+{% load static %}
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'image_bank/css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<header>
+    <nav class="navbar navbar-expand-lg  blur blur-rounded top-0  z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
+        <div class="container-fluid px-0">
+        <a class="navbar-brand font-weight-bolder ms-sm-3" href=" https://demos.creative-tim.com/soft-ui-design-system-pro/presentation.html " rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom" target="_blank">
+            SEN NATAAL
+        </a>
+        <a href="https://www.creative-tim.com/product/soft-ui-design-system-pro#pricingCard" class="btn btn-sm  bg-gradient-dark  btn-round mb-0 ms-auto d-lg-none d-block">Buy Now</a>
+        <button class="navbar-toggler shadow-none ms-md-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon mt-2">
+            <span class="navbar-toggler-bar bar1"></span>
+            <span class="navbar-toggler-bar bar2"></span>
+            <span class="navbar-toggler-bar bar3"></span>
+            </span>
+        </button>
+        <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
+            <ul class="navbar-nav navbar-nav-hover mx-auto">
+            <li class="nav-item dropdown dropdown-hover mx-2">
+                <a role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuPages" data-bs-toggle="dropdown" aria-expanded="false">
+                Accueil
+                </a>
+            </li>
+            <li class="nav-item dropdown dropdown-hover mx-2">
+                <a role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuAccount" data-bs-toggle="dropdown" aria-expanded="false">
+                Charger images
+                </a>
+            </li>
+            <li class="nav-item dropdown dropdown-hover mx-2">
+                <a hx-get="{% url 'images-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuBlocks" data-bs-toggle="dropdown" aria-expanded="false">
+                Mes images
+                </a>
+            </li>
+            </ul>
+            <ul class="navbar-nav d-lg-block d-none">
+            <li class="nav-item">
+                <a href="https://demos.creative-tim.com/soft-ui-design-system-pro/presentation.html#pricing-soft-ui" class="btn btn-sm  bg-gradient-dark  btn-round mb-0 me-1" onclick="smoothToPricing('pricing-soft-ui')">Buy Now</a>
+            </li>
+            </ul>
+        </div>
+        </div>
+    </nav>
+</header>
+<main>
+    {% block dynamic_content %}
+    <section class="pt-5 mt-5">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-10">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table align-items-center mb-0">
+                    <caption>Table d'images chargées par le contributeur</caption>
+                    <thead>
+                      <tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Aperçu</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Auteur</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Type</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Format</th>
+                        <th class="text-secondary opacity-7"></th>
+                        <th class="text-secondary opacity-7"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for image in images %}
+                      <tr>
+                        <td>
+                          <div class="d-flex px-2 py-1">
+                            <div>
+                              <img src="{{ image.image.url }}" alt="{{ image.description }}" class="avatar avatar-sm me-3">
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <p class="text-xs font-weight-bold mb-0">{{ image.auteur }}</p>
+                        </td>
+                        <td class="text-xs font-weight-bold mb-0">
+                          <span {% if image.payment_required %} class="badge badge-sm badge-success" {% else %} class="badge badge-sm badge-secondary" {% endif %}>{% if image.payment_required %} Payant {% else %} Gratuit {% endif %}</span>
+                        </td>
+                        <td>
+                            <p class="text-xs font-weight-bold mb-0">{{ image.format }}</p>
+                          </td>
+                        <td class="align-middle">
+                          <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                            Modifier
+                          </a>
+                        </td>
+                        <td class="align-middle">
+                            <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                              Supprimer
+                            </a>
+                          </td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    {% endblock %}
+</main>
+{% endblock %}

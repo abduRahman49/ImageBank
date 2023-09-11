@@ -52,7 +52,7 @@ def signin_contributeur(request):
                 user = CustomUser.objects.get(email=data.get('email'))
                 if user.check_password(data.get('password')):
                     login(request, user)
-                    return redirect(reverse('index'))
+                    return redirect(reverse('index-contributeur'))
                 else:
                     messages.add_message(request, messages.constants.ERROR, 'Mot de passe incorrect')
                 return redirect(reverse('sign-in-contributeur'))
@@ -64,6 +64,14 @@ def signin_contributeur(request):
             return redirect(reverse('sign-in-contributeur'))
     form = RegisteredUserForm()
     return render(request, 'image_bank/contributeur/sign-in-cover.html', {'form': form})
+
+
+def index_contributeur(request):
+    return render(request, 'image_bank/contributeur/index.html')
+
+
+def images_contributeur(request):
+    return render(request, 'image_bank/contributeur/mes-images.html', {'images': Image.objects.all()})
 
 
 @login_required

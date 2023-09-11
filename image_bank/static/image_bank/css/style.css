@@ -1,0 +1,23 @@
+
+/* Default styles for desktop */
+.my-position {
+  position: absolute;
+  top: 35%;
+  left: 45%;
+}
+
+/* Mobile-specific styles within a media query */
+@media (max-width: 768px) {
+  .my-position {
+    top: 20%; /* New top position for mobile */
+    left: 45%; /* New left position for mobile */
+  }
+}
+
+/* Tablet-specific styles within a media query */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .my-position {
+    top: 15px; /* New top position for tablets */
+    left: 25px; /* New left position for tablets */
+  }
+}
