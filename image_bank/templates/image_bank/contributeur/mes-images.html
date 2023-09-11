@@ -2,6 +2,7 @@
 {% load static %}
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'image_bank/css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.9/tagify.css" integrity="sha512-yWu5jVw5P8+IsI7tK+Uuc7pFfQvWiBfFfVlT5r0KP6UogGtZEc4BxDIhNwUysMKbLjqCezf6D8l6lWNQI6MR7Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 {% endblock %}
 
 {% block content %}
@@ -86,16 +87,16 @@
                             <p class="text-xs font-weight-bold mb-0">{{ image.format }}</p>
                           </td>
                         <td class="align-middle">
-                            <a href="#" class="btn bg-gradient-dark btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModalForm{{ image.id }}">
+                            <a href="#" class="btn bg-gradient-dark btn-sm" data-bs-toggle="modal" data-bs-target="#editModalForm{{ image.id }}">
                                 <i class="fas fa-edit"></i>
                             </a>
                         </td>
                         <td class="align-middle">
-                            <a href="#" class="btn bg-gradient-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModalForm{{ image.id }}">
+                            <a href="#" class="btn bg-gradient-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModalForm{{ image.id }}">
                                 <i class="fa fa-trash" aria-hidden="true"></i>
                             </a>
                         </td>
-                          <div class="modal fade" id="exampleModalForm{{ image.id }}" tabindex="-1" aria-labelledby="exampleModalForm" aria-hidden="true">
+                          <div class="modal fade" id="editModalForm{{ image.id }}" tabindex="-1" aria-labelledby="editModalForm" aria-hidden="true">
                             <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
                               <div class="modal-content">
                                 <div class="modal-body p-0">
@@ -106,25 +107,34 @@
                                     </div>
                                     <div class="card-body">
                                       <form role="form text-start">
+                                        {% csrf_token %}
                                         <label>Nom</label>
                                         <div class="input-group mb-3">
-                                          <input type="text" class="form-control" value="{{ image.name }}" aria-label="nom" >
+                                          <input type="text" class="form-control" name="name" value="{{ image.name }}" aria-label="nom" >
                                         </div>
                                         <label>Auteur</label>
                                         <div class="input-group mb-3">
-                                          <input type="text" class="form-control" value="{{ image.auteur }}" aria-label="auteur" >
+                                          <input type="text" class="form-control" name="auteur" value="{{ image.auteur }}" aria-label="auteur" >
+                                        </div>
+                                        <label>Image</label>
+                                        <div class="input-group mb-3">
+                                          <input type="file" class="form-control" name="image" value="{{ image.image }}" aria-label="image" >
                                         </div>
                                         <div class="form-check form-switch">
-                                          <input class="form-check-input" type="checkbox" name="payment_required" {% if image.payment_required %} checked {% endif %} >
-                                          <label class="form-check-label" for="rememberMe">Image payante ?</label>
+                                          <input id="payment" class="form-check-input" type="checkbox" name="payment_required" {% if image.payment_required %} checked {% endif %} >
+                                          <label>Image payante ?</label>
                                         </div>
-                                        <div class="input-group mb-3" style="display: none;">
-                                            <input type="text" class="form-control" value="{{ image.price }}" aria-label="price" >
-                                           <label>Prix</label>
+                                        <div class="form-group mb-4 price" {% if not image.payment_required %} style="display: none;" {% else %} style="display: block;" {% endif %}>
+                                            <label>Prix</label>
+                                            <input type="number" class="form-control" name="price" value="{{ image.price }}" >
                                         </div>
                                         <div class="form-group mb-4">
-                                            <label>Description</label>
+                                           <label>Description</label>
                                            <textarea name="description" class="form-control" id="description" rows="4" >{{ image.description }}</textarea>
+                                        </div>
+                                        <label>Tags</label>
+                                        <div class="input-group mb-3">
+                                          <input id="tags" name="tags" type="text" class="form-control tag-input" value="{% for tag in image.new_tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}" aria-label="tags" >
                                         </div>
                                         <div class="text-center">
                                           <button type="button" class="btn bg-gradient-info mt-4 mb-0">Modifier</button>
@@ -165,5 +175,36 @@
         </div>
       </section>
     {% endblock %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.9/tagify.min.js" integrity="sha512-E6nwMgRlXtH01Lbn4sgPAn+WoV2UoEBlpgg9Ghs/YYOmxNpnOAS49+14JMxIKxKSH3DqsAUi13vo/y1wo9S/1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript">
+        const tagElements = document.querySelectorAll('.tag-input');
+        tagElements.forEach(tagElement => {
+            new Tagify(tagElement);
+        });
+
+        // Function to toggle the price field visibility for a specific modal
+        function togglePriceField(modalId) {
+            const paymentCheckbox = document.querySelector(`#${modalId} #payment`);
+            const priceField = document.querySelector(`#${modalId} .price`);
+
+            paymentCheckbox.addEventListener('change', () => {
+                if (paymentCheckbox.checked) {
+                    priceField.style.display = 'block';
+                } else {
+                    priceField.style.display = 'none';
+                }
+            });
+        }
+
+        // Call the function for each modal
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            togglePriceField(modal.getAttribute('id'));
+        })
+        // togglePriceField('exampleModalForm1');
+        // togglePriceField('exampleModalForm2');
+// Repeat for other modals as needed
+
+    </script>
 </main>
 {% endblock %}
