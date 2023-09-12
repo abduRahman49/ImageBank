@@ -14,8 +14,12 @@ class ImageForm(forms.ModelForm):
         fields = ['name', 'auteur', 'image', 'payment_required', 'price', 'description', 'tags', 'new_tags']
         
         widgets = {
-            'new_tags': TagWidget(attrs={'class': 'form-control'}),
+            'new_tags': TagWidget(attrs={'class': 'form-control tag-input'}),
         }
+        
+    def __init__(self, *args, **kwargs):
+        super(ImageForm, self).__init__(*args, **kwargs)
+        self.fields['new_tags'].required = False
 
 
 class NewUserForm(forms.Form):

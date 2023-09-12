@@ -14,7 +14,7 @@ from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.core.paginator import Paginator
 
 
@@ -75,7 +75,8 @@ def images_contributeur(request):
     paginator = Paginator(Image.objects.all(), 4)
     page_number = request.GET.get('page', 1)
     page_object = paginator.get_page(page_number)
-    return render(request, 'image_bank/contributeur/mes-images.html', {'images': page_object})
+    form = ImageForm()
+    return render(request, 'image_bank/contributeur/mes-images.html', {'images': page_object, 'form': form})
 
 
 @login_required
@@ -144,35 +145,28 @@ def upload_image(request):
 def update_image(request, id):
     if request.method == 'POST':
         image = get_object_or_404(Image, pk=id)
-        post_data = request.POST.copy()
-        tags_data = post_data.get('tags')
-        licence = post_data.get('licence')
-        if tags_data:
-            del post_data['tags']
-            tags = [Tag.objects.create(name=tag_name) for tag_name in tags_data.split(',')]
-        else:
-            tags = []
-
-        form = ImageForm(post_data, request.FILES, instance=image)
+        form = ImageForm(request.POST, request.FILES, instance=image)
         if form.is_valid():
             instance = form.save(commit=False)
             try:
-                # To change later with the current user's id
                 instance.contributor = CustomUser.objects.get(pk=request.user.id)
-                if licence:
-                    instance.licence = Licence.objects.get(pk=int(licence)).name
-                else:
-                    instance.licence = ""
-                if tags:
-                    instance.tags.set(tags)
                 instance.save()
-                return JsonResponse({"message": "Image modifiée avec succès", "code_message": 200}, status=200)
+                form.save_m2m()
+                return JsonResponse(
+                    {"message": "Image modifiée avec succès", "code_message": 200},
+                )
             except CustomUser.DoesNotExist:
                 return JsonResponse({"message": "Utilisateur n'existe pas", "code_message": 400}, status=400)
-            except Licence.DoesNotExist:
-                return JsonResponse({"message": "Licence non trouvée", "code_message": 400}, status=400)
         else:
-            print(form.errors)
-            return JsonResponse({"message": "Formulaire non valide", "code_message": 400}, status=400)
+            return JsonResponse({"message": f"{form.errors}", "code_message": 400}, status=400)
     else:
         return JsonResponse({"message": "Méthode non autorisée", "code_message": 400}, status=400)
+    
+
+@login_required
+def delete_image(request, id):
+    image = get_object_or_404(Image, pk=id)
+    image.delete()
+    return JsonResponse(
+        {"message": "Image supprimée avec succès", "code_message": 200},
+    )
