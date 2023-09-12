@@ -156,7 +156,7 @@
                                     </div>
                                   </div>
                                   <div class="modal-footer">
-                                      <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">Fermer</button>
+                                      <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal" hx-get="{% url 'images-contributeur' %}" hx-target="#content">Fermer</button>
                                   </div>
                                 </div>
                               </div>
@@ -180,7 +180,7 @@
                                   <hr class="horizontal light">
                                   <div class="modal-footer justify-content-between border-0">
                                     <button type="button" class="btn btn-white my-1" hx-get="{% url 'delete-image' image.id %}" hx-trigger="click" hx-swap="none">Je confirme</button>
-                                    <button type="button" class="btn btn-link text-white my-1" data-bs-dismiss="modal">Fermer</button>
+                                    <button type="button" class="btn btn-link text-white my-1" data-bs-dismiss="modal" hx-get="{% url 'images-contributeur' %}" hx-target="#content">Fermer</button>
                                   </div>
                                 </div>
                               </div>
@@ -252,6 +252,9 @@
 
           htmx.on('htmx:afterRequest', function (event) {
             event.preventDefault();
+            document.querySelectorAll('.edit-modal').forEach(modal => {
+              togglePriceField(modal.getAttribute('id'));
+            })
             if (event.detail.xhr.status === 200) { // Check if the request was successful (status code 200)
               // Assuming your response JSON contains a 'message' field
               const response = JSON.parse(event.detail.xhr.responseText);
