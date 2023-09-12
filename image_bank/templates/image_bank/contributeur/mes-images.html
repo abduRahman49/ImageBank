@@ -108,7 +108,7 @@
                                         <p class="mb-0">Veuillez modifier les informations souhaitées</p>
                                       </div>
                                       <div class="card-body">
-                                        <form role="form text-start" hx-post="{% url 'edit-image' image.id %}" hx-trigger="submit">
+                                        <form role="form text-start" hx-post="{% url 'edit-image' image.id %}" hx-trigger="submit" hx-swap="none">
                                           {% csrf_token %}
                                           <label>Nom</label>
                                           <div class="input-group mb-3">
@@ -179,7 +179,7 @@
                                   </div>
                                   <hr class="horizontal light">
                                   <div class="modal-footer justify-content-between border-0">
-                                    <button type="button" class="btn btn-white my-1" hx-get="{% url 'delete-image' image.id %}" hx-trigger="click">Je confirme</button>
+                                    <button type="button" class="btn btn-white my-1" hx-get="{% url 'delete-image' image.id %}" hx-trigger="click" hx-swap="none">Je confirme</button>
                                     <button type="button" class="btn btn-link text-white my-1" data-bs-dismiss="modal">Fermer</button>
                                   </div>
                                 </div>
@@ -261,8 +261,8 @@
             } else if (event.detail.xhr.status === 400) { // If there was an error (status code 400)
               // Assuming your response JSON contains an 'error' field
               const response = JSON.parse(event.detail.xhr.responseText);
-              if (response.error) {
-                showToast(response.error, 'error'); // Show an error toast message
+              if (response.message) {
+                showToast(response.message, 'error'); // Show an error toast message
               }
             }
           });
