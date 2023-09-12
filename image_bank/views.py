@@ -1,3 +1,4 @@
+import numpy as np
 from PIL import Image as PImage
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -14,6 +15,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.core.paginator import Paginator
+
 
 
 # Create your views here.
@@ -110,7 +112,7 @@ def upload_image(request):
                     instance.width = image.width
                     instance.height = image.height
                     instance.format = image.format
-                    instance.taille = image.size
+                    instance.taille = np.multiply(*image.size)
                 # To change later with the current user's id
                 instance.contributor = CustomUser.objects.get(pk=request.user.id)
                 instance.save()
