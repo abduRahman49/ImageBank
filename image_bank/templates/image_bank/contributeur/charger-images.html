@@ -126,8 +126,7 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.9/tagify.min.js" integrity="sha512-E6nwMgRlXtH01Lbn4sgPAn+WoV2UoEBlpgg9Ghs/YYOmxNpnOAS49+14JMxIKxKSH3DqsAUi13vo/y1wo9S/1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
       <script src="{% static 'image_bank/assets/js/plugins/choices.min.js' %}"></script>
       <script type="text/javascript">
-        window.addEventListener('DOMContentLoaded', () => {
-      
+
         const paymentCheckbox = document.querySelector("#id_payment_required");
         const priceField = document.querySelector(".price");
 
@@ -139,20 +138,33 @@
             }
         });
 
+        function initializeTagInputs() {
+            const choices = new Choices('#id_new_tags', {
+            searchEnabled: false
+            });
+        }
 
-          function showToast(message, type) {
-            Toastify({
-              text: message,
-              duration: 3000, // Set the duration for how long the toast message should appear (in milliseconds)
-              gravity: 'top', // Set the position where the toast should appear
-              position: 'center', // Set the position where the toast should appear
-              close: true, // Allow users to close the toast manually
-              backgroundColor: type === 'error' ? 'red' : 'green', // Customize the background color based on the message type
-            }).showToast();
-          }
+        function reinitializeTagInputs() {
+            initializeTagInputs();
+        }
 
-          htmx.on('htmx:afterRequest', function (event) {
+        function showToast(message, type) {
+        Toastify({
+            text: message,
+            duration: 3000, // Set the duration for how long the toast message should appear (in milliseconds)
+            gravity: 'top', // Set the position where the toast should appear
+            position: 'center', // Set the position where the toast should appear
+            close: true, // Allow users to close the toast manually
+            backgroundColor: type === 'error' ? 'red' : 'green', // Customize the background color based on the message type
+        }).showToast();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initializeTagInputs();
+            
+            htmx.on('htmx:afterRequest', function (event) {
             event.preventDefault();
+            reinitializeTagInputs();
             document.querySelectorAll('.edit-modal').forEach(modal => {
               togglePriceField(modal.getAttribute('id'));
             })
@@ -171,22 +183,6 @@
             }
           });
         })
-          // const formTags = document.querySelector('#id_new_tags');
-          // const tagElements = document.querySelectorAll('.tag-input');
-          // tagElements.forEach(tagElement => {
-          //     const tagify = new Tagify(tagElement);
-          //     tagify.on('add', (e) => {
-          //       if(formTags.value !== '' || formTags.value === null){
-          //         console.log('valeur', e.detail.data.value);
-          //         console.log('tags', formTags.value);
-          //         formTags.value += ', ' + e.detail.data.value;
-          //       } else {
-          //         console.log('valeur', e.detail.data.value);
-          //         console.log('tags', formTags.value);
-          //         formTags.value += e.detail.data.value;
-          //       }
-          //     })
-          // });
 
       </script>
   </main>

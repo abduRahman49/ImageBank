@@ -233,9 +233,10 @@
 
           // Call the function for each modal
           const modals = document.querySelectorAll('.edit-modal');
-          console.log(modals);
           modals.forEach(modal => {
-              console.log(modal.getAttribute('id'));
+                const choices = new Choices(modal.querySelector('#id_new_tags'), {
+                searchEnabled: false
+              });
               togglePriceField(modal.getAttribute('id'));
           })
 
@@ -253,6 +254,9 @@
           htmx.on('htmx:afterRequest', function (event) {
             event.preventDefault();
             document.querySelectorAll('.edit-modal').forEach(modal => {
+              const choices = new Choices(modal.querySelector('#id_new_tags'), {
+                searchEnabled: false
+              });
               togglePriceField(modal.getAttribute('id'));
             })
             if (event.detail.xhr.status === 200) { // Check if the request was successful (status code 200)
