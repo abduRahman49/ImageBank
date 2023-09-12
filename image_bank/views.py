@@ -1,20 +1,18 @@
-import json
 from PIL import Image as PImage
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .forms import ImageForm, NewUserForm, RegisteredUserForm
-from .models import Licence, Tag, CustomUser, Image
+from .models import CustomUser, Image
 from api.serializers import ImageSerializer, CustomUserSerializer
 from django.http import JsonResponse
 from django.db.utils import IntegrityError
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.backends import ModelBackend
+from django.contrib.auth import login
 from django.db.models import Q
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.core.paginator import Paginator
 
 
@@ -104,17 +102,7 @@ def get_users(request):
 @login_required
 def upload_image(request):
     if request.method == 'POST':
-        post_data = request.POST.copy()
-        tags_data = post_data.get('tags')
-        licence = post_data.get('licence')
-        if tags_data:
-            del post_data['tags']
-            tags = [Tag.objects.create(name=tag_name) for tag_name in tags_data.split(',')]
-        else:
-            tags = []
-        
-        form = ImageForm(post_data, request.FILES)
-        
+        form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
             instance = form.save(commit=False)
             try:
@@ -126,18 +114,15 @@ def upload_image(request):
                 # To change later with the current user's id
                 instance.contributor = CustomUser.objects.get(pk=request.user.id)
                 instance.save()
+                form.save_m2m()
+                return JsonResponse({"message": "Image chargée avec succès", "code_message": 200}, status=200)
             except IntegrityError:
                 return JsonResponse({"message": "Utilisateur existe déjà", "code_message": 200}, status=200)
-            if licence:
-                instance.licence = Licence.objects.get(pk=int(licence)).name
-            if tags:
-                instance.tags.add(*tags)
-            instance.save()
-            return JsonResponse({"message": "Image chargée avec succès", "code_message": 200}, status=200)
         else:
-            return JsonResponse({"message": "Formulaire non valide", "code_message": 400}, status=400)
+            return JsonResponse({"message": f"{form.errors}", "code_message": 400}, status=400)
     else:
-        return JsonResponse({"message": "Méthode non autorisée", "code_message": 400}, status=400)
+        form = ImageForm()
+        return render(request, "image_bank/contributeur/charger-images.html", {'form': form})
 
 
 # define a function-based view used to update an image sent by the client using it's id and form data

@@ -29,7 +29,7 @@
                   </a>
               </li>
               <li class="nav-item dropdown dropdown-hover mx-2">
-                  <a role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuAccount" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a hx-get="{% url 'upload-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuAccount" data-bs-toggle="dropdown" aria-expanded="false">
                   Charger images
                   </a>
               </li>
@@ -286,27 +286,6 @@
           //       }
           //     })
           // });
-
-          // // Function to toggle the price field visibility for a specific modal
-          // function togglePriceField(modalId) {
-          //     const paymentCheckbox = document.querySelector(`#${modalId} #id_payment_required`);
-          //     const priceField = document.querySelector(`#${modalId} .price`);
-
-          //     paymentCheckbox.addEventListener('change', () => {
-          //         if (paymentCheckbox.checked) {
-          //             priceField.style.display = 'block';
-          //         } else {
-          //             priceField.style.display = 'none';
-          //         }
-          //     });
-          // }
-
-          // Call the function for each modal
-          // const modals = document.querySelectorAll('.modal');
-          // console.log(modals);
-          // modals.forEach(modal => {
-          //     togglePriceField(modal.getAttribute('id'));
-          // })
 
       </script>
   </main>

@@ -1,0 +1,194 @@
+{% extends "image_bank/main.html" %}
+{% load static %}
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'image_bank/css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.9/tagify.css" integrity="sha512-yWu5jVw5P8+IsI7tK+Uuc7pFfQvWiBfFfVlT5r0KP6UogGtZEc4BxDIhNwUysMKbLjqCezf6D8l6lWNQI6MR7Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block content %}
+<div id="content">
+  <header>
+      <nav class="navbar navbar-expand-lg  blur blur-rounded top-0  z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
+          <div class="container-fluid px-0">
+          <a class="navbar-brand font-weight-bolder ms-sm-3" href=" https://demos.creative-tim.com/soft-ui-design-system-pro/presentation.html " rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom" target="_blank">
+              SEN NATAAL
+          </a>
+          <a href="https://www.creative-tim.com/product/soft-ui-design-system-pro#pricingCard" class="btn btn-sm  bg-gradient-dark  btn-round mb-0 ms-auto d-lg-none d-block">Buy Now</a>
+          <button class="navbar-toggler shadow-none ms-md-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon mt-2">
+              <span class="navbar-toggler-bar bar1"></span>
+              <span class="navbar-toggler-bar bar2"></span>
+              <span class="navbar-toggler-bar bar3"></span>
+              </span>
+          </button>
+          <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
+              <ul class="navbar-nav navbar-nav-hover mx-auto">
+              <li class="nav-item dropdown dropdown-hover mx-2">
+                  <a role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuPages" data-bs-toggle="dropdown" aria-expanded="false">
+                  Accueil
+                  </a>
+              </li>
+              <li class="nav-item dropdown dropdown-hover mx-2">
+                  <a hx-get="{% url 'upload-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuAccount" data-bs-toggle="dropdown" aria-expanded="false">
+                  Charger images
+                  </a>
+              </li>
+              <li class="nav-item dropdown dropdown-hover mx-2">
+                  <a hx-get="{% url 'images-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuBlocks" data-bs-toggle="dropdown" aria-expanded="false">
+                  Mes images
+                  </a>
+              </li>
+              </ul>
+              <ul class="navbar-nav d-lg-block d-none">
+              <li class="nav-item">
+                  <a href="https://demos.creative-tim.com/soft-ui-design-system-pro/presentation.html#pricing-soft-ui" class="btn btn-sm  bg-gradient-dark  btn-round mb-0 me-1" onclick="smoothToPricing('pricing-soft-ui')">Buy Now</a>
+              </li>
+              </ul>
+          </div>
+          </div>
+      </nav>
+  </header>
+  <main>
+      {% block dynamic_content %}
+      <section class="pt-5 mt-5">
+        <div class="container pt-4">
+          <div class="row">
+            <div class="col-lg-7 mx-auto d-flex justify-content-center flex-column">
+              <div class="card d-flex justify-content-center p-4 shadow-lg">
+                <div class="text-center">
+                  <h3 class="text-gradient text-primary">Charger des images</h3>
+                  <p class="mb-0">
+                    Renseignez les informations du formulaire et cliquez sur envoyer
+                  </p>
+                </div>
+                <div class="card card-plain">
+                  <form hx-post="{% url 'upload-contributeur' %}" hx-trigger="submit" hx-swap="none" role="form" enctype="multipart/form-data" method="post" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="card-body pb-2">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label>Nom</label>
+                          <div class="input-group mb-4">
+                            <input name="name" id="id_name" class="form-control" placeholder="Intitulé image" aria-label="Full Name" type="text" >
+                          </div>
+                        </div>
+                        <div class="col-md-6 ps-md-2">
+                          <label>Auteur</label>
+                          <select class="form-control" name="auteur" id="id_auteur" placeholder="Auteur">
+                            {% for auteur in form.auteur.field.queryset %}
+                            <option value="{{ auteur.pk }}">{{ auteur.username }}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      <label>Image</label>
+                        <div class="input-group mb-3">
+                            <input id="id_image" type="file" class="form-control" name="image" aria-label="image" >
+                        </div>
+                      <div class="form-group mb-0 mt-md-0 mt-4">
+                        <label>Description</label>
+                        <textarea name="description" id="id_description" class="form-control" rows="4" placeholder="Describe your problem in at least 250 characters"></textarea>
+                      </div>
+                      <div class="form-check form-switch mt-3">
+                        <input id="id_payment_required" class="form-check-input" type="checkbox" name="payment_required" {% if image.payment_required %} checked {% endif %} >
+                        <label>Image payante ?</label>
+                      </div>
+                      <div class="form-group mb-4 price" style="display: none;">
+                          <label>Prix</label>
+                          <input type="number" class="form-control" name="price" id="id_price" >
+                      </div>
+                      <div class="form-group mb-4">
+                        <label>Licence</label>
+                        <select class="form-control" name="licence" id="id_licence" placeholder="Licence">
+                            {% for licence in form.licence.field.queryset %}
+                            <option value="{{ licence.pk }}">{{ licence.name }}</option>
+                            {% endfor %}
+                        </select>
+                      </div>
+                      <label>Tags</label>
+                      <div class="input-group mb-3">
+                        <input id="id_new_tags" name="new_tags" type="text" class="form-control tag-input" aria-label="tags" >
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12 text-center">
+                          <button type="submit" class="btn bg-gradient-primary mt-3 mb-0">Envoyer</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      {% endblock %}
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.9/tagify.min.js" integrity="sha512-E6nwMgRlXtH01Lbn4sgPAn+WoV2UoEBlpgg9Ghs/YYOmxNpnOAS49+14JMxIKxKSH3DqsAUi13vo/y1wo9S/1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script src="{% static 'image_bank/assets/js/plugins/choices.min.js' %}"></script>
+      <script type="text/javascript">
+        window.addEventListener('DOMContentLoaded', () => {
+      
+        const paymentCheckbox = document.querySelector("#id_payment_required");
+        const priceField = document.querySelector(".price");
+
+        paymentCheckbox.addEventListener('change', () => {
+            if (paymentCheckbox.checked) {
+                priceField.style.display = 'block';
+            } else {
+                priceField.style.display = 'none';
+            }
+        });
+
+
+          function showToast(message, type) {
+            Toastify({
+              text: message,
+              duration: 3000, // Set the duration for how long the toast message should appear (in milliseconds)
+              gravity: 'top', // Set the position where the toast should appear
+              position: 'center', // Set the position where the toast should appear
+              close: true, // Allow users to close the toast manually
+              backgroundColor: type === 'error' ? 'red' : 'green', // Customize the background color based on the message type
+            }).showToast();
+          }
+
+          htmx.on('htmx:afterRequest', function (event) {
+            event.preventDefault();
+            document.querySelectorAll('.edit-modal').forEach(modal => {
+              togglePriceField(modal.getAttribute('id'));
+            })
+            if (event.detail.xhr.status === 200) { // Check if the request was successful (status code 200)
+              // Assuming your response JSON contains a 'message' field
+              const response = JSON.parse(event.detail.xhr.responseText);
+              if (response.message) {
+                showToast(response.message, 'success'); // Show a success toast message
+              }
+            } else if (event.detail.xhr.status === 400) { // If there was an error (status code 400)
+              // Assuming your response JSON contains an 'error' field
+              const response = JSON.parse(event.detail.xhr.responseText);
+              if (response.message) {
+                showToast(response.message, 'error'); // Show an error toast message
+              }
+            }
+          });
+        })
+          // const formTags = document.querySelector('#id_new_tags');
+          // const tagElements = document.querySelectorAll('.tag-input');
+          // tagElements.forEach(tagElement => {
+          //     const tagify = new Tagify(tagElement);
+          //     tagify.on('add', (e) => {
+          //       if(formTags.value !== '' || formTags.value === null){
+          //         console.log('valeur', e.detail.data.value);
+          //         console.log('tags', formTags.value);
+          //         formTags.value += ', ' + e.detail.data.value;
+          //       } else {
+          //         console.log('valeur', e.detail.data.value);
+          //         console.log('tags', formTags.value);
+          //         formTags.value += e.detail.data.value;
+          //       }
+          //     })
+          // });
+
+      </script>
+  </main>
+</div>
+{% endblock %}
