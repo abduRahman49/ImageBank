@@ -18,7 +18,6 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator
 
 
-
 resolutions = {
     'low': Q(taille__lt=480000),
     'medium': Q(taille__gte=480000) and Q(taille__lt=2073600),
