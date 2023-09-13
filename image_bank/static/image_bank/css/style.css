@@ -22,7 +22,7 @@
   }
 }
 
-#main-content {
+/* #main-content {
   display: flex;
   flex-direction: row;
 }
@@ -39,4 +39,4 @@
 #main-content .images {
 	flex: 1;
 	margin: 8px;
-}
+} */

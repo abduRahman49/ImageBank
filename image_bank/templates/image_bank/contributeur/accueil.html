@@ -3,6 +3,40 @@
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'image_bank/css/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.9/tagify.css" integrity="sha512-yWu5jVw5P8+IsI7tK+Uuc7pFfQvWiBfFfVlT5r0KP6UogGtZEc4BxDIhNwUysMKbLjqCezf6D8l6lWNQI6MR7Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+      /* Basic styles for layout */
+      body {
+          margin: 0;
+          padding: 0;
+          font-family: Arial, sans-serif;
+      }
+      .container {
+          display: flex;
+          flex-wrap: wrap;
+      }
+      .filter-card {
+          flex: 1;
+          max-width: 300px;
+          padding: 20px;
+          background-color: #f0f0f0;
+      }
+      .image-section {
+          flex: 3;
+          padding: 20px;
+          background-color: #ffffff;
+      }
+
+      /* Responsive layout */
+      @media screen and (max-width: 768px) {
+          .container {
+              flex-direction: column;
+          }
+          .filter-card, .image-section {
+              flex: 1;
+              max-width: none;
+          }
+      }
+  </style>
 {% endblock %}
 
 {% block content %}
@@ -50,109 +84,71 @@
   </header>
   <main id="main-content">
       {% block dynamic_content %}
-        <!-- <div class="container">
-            <div class="row">
-                <div class="col-4">
-
-                </div>
-                <div class="col-8">
-                    <div class="row">
-                          <div class="container mt-7 pt-7">
-                            <div class="row bg-white shadow-lg mt-n6 border-radius-md pb-4 p-3 mx-sm-0 mx-1 position-relative">
-                              <div class="col-lg-3 mt-lg-n2 mt-2">
-                                <label class="">Leave From</label>
-                                <select class="form-control" name="choices-button" id="choices-button">
-                                  <option value="Choice 1" selected="">Brazil</option>
-                                  <option value="Choice 2">Bucharest</option>
-                                  <option value="Choice 3">London</option>
-                                  <option value="Choice 4">USA</option>
-                                </select>
-                              </div>
-                              <div class="col-lg-3 mt-lg-n2 mt-2">
-                                <label class="">To</label>
-                                <select class="form-control" name="choices-remove-button" id="choices-remove-button">
-                                  <option value="Choice 1" selected="">Italy</option>
-                                  <option value="Choice 2">Spain</option>
-                                  <option value="Choice 3">Denmark</option>
-                                  <option value="Choice 4">Poland</option>
-                                </select>
-                              </div>
-                              <div class="col-lg-3 mt-lg-n2 mt-2">
-                                <label class="">Depart</label>
-                                <div class="input-group">
-                                  <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                  <input class="form-control datepicker" placeholder="Please select date" type="text">
-                                </div>
-                              </div>
-                              <div class="col-lg-3 mt-lg-n2 mt-2">
-                                <label class="">&nbsp;</label>
-                                <button type="button" class="btn bg-gradient-dark w-100 mb-0">Search</button>
-                              </div>
-                            </div>
-                          </div>
-                    </div>
-                    <div class="row">
-                        Word!
-                    </div>
-                </div>
+        <div class="container mt-7 pt-7">
+          <div class="row bg-white shadow-lg mt-n6 border-radius-md pb-4 p-3 mx-sm-0 mx-1 position-relative">
+            <div class="col-lg-3 mt-lg-n2 mt-2">
+              <label class="">Resolution</label>
+              <select class="form-control" name="choices-button" id="choices-button">
+                <option value="Choice 1" disabled selected="">Choisir</option>
+                <option value="low">Faible</option>
+                <option value="medium">Moyenne</option>
+                <option value="high">Haute</option>
+              </select>
             </div>
-        </div> -->
-        <section class="tags">
-
-        </section>
-
-        <section class="images">
-          <div class="container mt-7 pt-7">
-            <div class="row bg-white shadow-lg mt-n6 border-radius-md pb-4 p-3 mx-sm-0 mx-1 position-relative">
-              <div class="col-lg-3 mt-lg-n2 mt-2">
-                <label class="">Resolution</label>
-                <select class="form-control" name="choices-button" id="choices-button">
-                  <option value="Choice 1" disabled selected="">Choisir</option>
-                  <option value="low">Faible</option>
-                  <option value="medium">Moyenne</option>
-                  <option value="high">Haute</option>
-                </select>
-              </div>
-              <div class="col-lg-3 mt-lg-n2 mt-2">
-                <label class="">Format</label>
-                <select class="form-control" name="choices-remove-button" id="choices-remove-button">
-                  <option value="Choice 1" disabled selected="">Choisir</option>
-                  {% for format in formats %}
-                    <option value="{{ format }}">{{ format }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div class="col-lg-3 mt-lg-n2 mt-2">
-                <label class="">Paiement</label>
-                <select class="form-control" name="choices-remove-button" id="choices-remove-button">
-                  <option value="Choice 1" disabled selected="">Choisir</option>
-                  <option value="0">Gratuit</option>
-                  <option value="1">Payant</option>
-                </select>
-              </div>
-              <div class="col-lg-3 mt-lg-n2 mt-2">
-                <label class="">&nbsp;</label>
-                <button type="button" class="btn bg-gradient-dark w-100 mb-0">Rechercher</button>
-              </div>
-            </div>
-
-            <div class="row">
-                {% for image in images %}
-                  <div class="col-lg-3 col-sm-6">
-                    <div class="card card-plain card-blog mt-4">
-                      <div class="card-image border-radius-lg position-relative">
-                        <a href="javascript:;">
-                          <div class="blur-shadow-image">
-                            <img class="img border-radius-lg move-on-hover" src="{{image.image.url}}" alt="{{image.description}}">
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
+            <div class="col-lg-3 mt-lg-n2 mt-2">
+              <label class="">Format</label>
+              <select class="form-control" name="choices-remove-button" id="choices-remove-button">
+                <option value="Choice 1" disabled selected="">Choisir</option>
+                {% for format in formats %}
+                  <option value="{{ format }}">{{ format }}</option>
                 {% endfor %}
+              </select>
+            </div>
+            <div class="col-lg-3 mt-lg-n2 mt-2">
+              <label class="">Paiement</label>
+              <select class="form-control" name="choices-remove-button" id="choices-remove-button">
+                <option value="Choice 1" disabled selected="">Choisir</option>
+                <option value="0">Gratuit</option>
+                <option value="1">Payant</option>
+              </select>
+            </div>
+            <div class="col-lg-3 mt-lg-n2 mt-2">
+              <label class="">&nbsp;</label>
+              <button type="button" class="btn bg-gradient-dark w-100 mb-0">Rechercher</button>
             </div>
           </div>
-        </section>
+        </div>
+        <div class="container mt-5 pt-5">
+          <!-- Filter Card (on the left) -->
+          <div class="filter-card card shadow-lg">
+              <h2>Filter Images</h2>
+              <!-- Add filter options, search bar, etc. here -->
+          </div>
+
+          <!-- Image Section (on the right) -->
+          <div class="image-section">
+              <!-- Display searched images here -->
+              <!-- Use CSS grid or other layout techniques to display images -->
+              <!-- Example: -->
+              <div class="row">
+              {% for image in images %}
+              <div class="col-lg-3 col-sm-6">
+                <div class="card card-plain card-blog mt-4">
+                  <div class="card-image border-radius-lg position-relative">
+                    <a href="javascript:;">
+                      <div class="blur-shadow-image">
+                        <img class="img border-radius-lg move-on-hover" src="{{ image.image.url }}" alt="{{ image.description }}">
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+              </div>
+              <!-- Add more images as needed -->
+          </div>
+      </div>
+
       {% endblock %}
       <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.9/tagify.min.js" integrity="sha512-E6nwMgRlXtH01Lbn4sgPAn+WoV2UoEBlpgg9Ghs/YYOmxNpnOAS49+14JMxIKxKSH3DqsAUi13vo/y1wo9S/1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
       <script src="{% static 'image_bank/assets/js/plugins/choices.min.js' %}"></script>
