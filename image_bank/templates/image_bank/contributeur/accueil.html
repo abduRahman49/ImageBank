@@ -110,38 +110,41 @@
   <main class="pt-7">
       {% block dynamic_content %}
         <div class="container-fluid mt-7">
-          <div class="row bg-white shadow-lg mt-n6 border-radius-md pb-4 p-3 mx-sm-0 mx-1 position-relative">
-            <div class="col-lg-3 mt-lg-n2 mt-2">
-              <label class="">Resolution</label>
-              <select class="form-control" name="choices-button" id="choices-button">
-                <option value="Choice 1" disabled selected="">Choisir</option>
-                <option value="low">Faible</option>
-                <option value="medium">Moyenne</option>
-                <option value="high">Haute</option>
-              </select>
+          <form hx-post="{% url 'recherche-images' %}" hx-trigger="submit" hx-target="#images">
+            {% csrf_token %}
+            <div class="row bg-white shadow-lg mt-n6 border-radius-md pb-4 p-3 mx-sm-0 mx-1 position-relative">
+              <div class="col-lg-3 mt-lg-n2 mt-2">
+                <label class="">Resolution</label>
+                <select class="form-control" name="resolution" id="choices-button">
+                  <option value="" disabled selected="">Choisir</option>
+                  <option value="low">Faible</option>
+                  <option value="medium">Moyenne</option>
+                  <option value="high">Haute</option>
+                </select>
+              </div>
+              <div class="col-lg-3 mt-lg-n2 mt-2">
+                <label class="">Format</label>
+                <select class="form-control" name="format" id="choices-remove-button">
+                  <option value="" disabled selected="">Choisir</option>
+                  {% for format in formats %}
+                    <option value="{{ format }}">{{ format }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-lg-3 mt-lg-n2 mt-2">
+                <label class="">Paiement</label>
+                <select class="form-control" name="paiement" id="choices-remove-button">
+                  <option value="" disabled selected="">Choisir</option>
+                  <option value="0">Gratuit</option>
+                  <option value="1">Payant</option>
+                </select>
+              </div>
+              <div class="col-lg-3 mt-lg-n2 mt-2">
+                <label class="">&nbsp;</label>
+                <button type="submit" class="btn bg-gradient-dark w-100 mb-0">Rechercher</button>
+              </div>
             </div>
-            <div class="col-lg-3 mt-lg-n2 mt-2">
-              <label class="">Format</label>
-              <select class="form-control" name="choices-remove-button" id="choices-remove-button">
-                <option value="Choice 1" disabled selected="">Choisir</option>
-                {% for format in formats %}
-                  <option value="{{ format }}">{{ format }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <div class="col-lg-3 mt-lg-n2 mt-2">
-              <label class="">Paiement</label>
-              <select class="form-control" name="choices-remove-button" id="choices-remove-button">
-                <option value="Choice 1" disabled selected="">Choisir</option>
-                <option value="0">Gratuit</option>
-                <option value="1">Payant</option>
-              </select>
-            </div>
-            <div class="col-lg-3 mt-lg-n2 mt-2">
-              <label class="">&nbsp;</label>
-              <button type="button" class="btn bg-gradient-dark w-100 mb-0">Rechercher</button>
-            </div>
-          </div>
+          </form>
         </div>
         <div class="container mt-5 pt-5">
           <!-- Filter Card (on the left) -->
@@ -155,7 +158,7 @@
           </div>
 
           <!-- Image Section (on the right) -->
-          <div class="image-section">
+          <div id="images" class="image-section">
               <!-- Display searched images here -->
               <!-- Use CSS grid or other layout techniques to display images -->
               <!-- Example: -->
@@ -174,7 +177,25 @@
               </div>
               {% endfor %}
               </div>
-              <!-- Add more images as needed -->
+              <div class="row mt-3 ml-2">
+                <div class="pagination">
+                  <span class="step-links">
+                      {% if images.has_previous %}
+                          <a href="?page=1">&laquo; premier</a>
+                          <a href="?page={{ images.previous_page_number }}">précédent</a>
+                      {% endif %}
+              
+                      <span class="current">
+                          Page {{ images.number }} sur {{ images.paginator.num_pages }}.
+                      </span>
+              
+                      {% if images.has_next %}
+                          <a href="?page={{ images.next_page_number }}">suivant</a>
+                          <a href="?page={{ images.paginator.num_pages }}">dernier &raquo;</a>
+                      {% endif %}
+                  </span>
+              </div>
+              </div>
           </div>
       </div>
 

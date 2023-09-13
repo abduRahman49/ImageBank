@@ -19,6 +19,17 @@ from django.core.paginator import Paginator
 
 
 
+resolutions = {
+    'low': Q(taille__lt=480000),
+    'medium': Q(taille__gte=480000) and Q(taille__lt=2073600),
+    'high': Q(taille__gte=2073600)
+}
+
+paiements = {
+    "0": False,
+    "1": True
+}
+
 # Create your views here.
 @login_required
 def index(request):
@@ -68,10 +79,12 @@ def signin_contributeur(request):
     return render(request, 'image_bank/contributeur/sign-in-cover.html', {'form': form})
 
 
+@login_required
 def index_contributeur(request):
     return render(request, 'image_bank/contributeur/index.html')
 
 
+@login_required
 def images_contributeur(request):
     paginator = Paginator(Image.objects.all(), 4)
     page_number = request.GET.get('page', 1)
@@ -160,6 +173,7 @@ def delete_image(request, id):
     )
     
 
+@login_required
 def accueil_images(request):
     paginator = Paginator(Image.objects.all(), 4)
     page_number = request.GET.get('page', 1)
@@ -168,3 +182,24 @@ def accueil_images(request):
     formats = Image.objects.exclude(expression).values_list('format', flat=True).distinct()
     tags = Tag.objects.filter(image__isnull=False).distinct()
     return render(request, 'image_bank/contributeur/accueil.html', {'images': page_object, 'formats': formats, 'tags': tags})
+
+
+@login_required
+def search_images(request):
+    resolution = request.POST.get('resolution')
+    format_image = request.POST.get('format')
+    paiement = request.POST.get('paiement')
+    
+    queryset = Image.objects.filter(status='P')
+    if resolution is not None and resolution != "":
+        queryset = queryset.filter(resolutions.get(resolution))
+    if format_image is not None and format_image != "":
+        queryset = queryset.filter(format__icontains=format_image)
+    if paiement is not None and paiement != "":
+        queryset = queryset.filter(payment_required=paiements.get(paiement))
+    
+    paginator = Paginator(queryset, 4)
+    page_number = request.GET.get('page', 1)
+    page_object = paginator.get_page(page_number)
+    return render(request, 'image_bank/contributeur/resultats-recherche.html', {'images': page_object})
+    
