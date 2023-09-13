@@ -10,6 +10,17 @@
           padding: 0;
           font-family: Arial, sans-serif;
       }
+
+      /* Remove list-style from ul */
+      ul {
+          list-style: none;
+      }
+
+      /* Or, remove list-style from li */
+      ul li {
+          list-style: none;
+      }
+
       .container {
           display: flex;
           flex-wrap: wrap;
@@ -25,6 +36,20 @@
           padding: 20px;
           background-color: #ffffff;
       }
+
+      .tags {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px; /* Adjust the gap as needed */
+      }
+
+      .tags .badge {
+          /* Add styling for the tags here */
+          padding: 6px 12px;
+          font-size: 14px;
+          /* Add more styles as needed */
+      }
+
 
       /* Responsive layout */
       @media screen and (max-width: 768px) {
@@ -121,8 +146,12 @@
         <div class="container mt-5 pt-5">
           <!-- Filter Card (on the left) -->
           <div class="filter-card card shadow-lg">
-              <h2>Filter Images</h2>
-              <!-- Add filter options, search bar, etc. here -->
+              <h4>Filtres</h4>
+              <ul class="tags">
+                {% for tag in tags %}
+                  <li><span class="badge rounded-pill badge-primary">{{ tag.name }}</span></li>
+                {% endfor %}
+              </ul>
           </div>
 
           <!-- Image Section (on the right) -->

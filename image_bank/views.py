@@ -5,6 +5,7 @@ from django.urls import reverse
 from .forms import ImageForm, NewUserForm, RegisteredUserForm
 from .models import CustomUser, Image
 from api.serializers import ImageSerializer, CustomUserSerializer
+from taggit.models import Tag
 from django.http import JsonResponse
 from django.db.utils import IntegrityError
 from django.shortcuts import get_object_or_404
@@ -165,4 +166,5 @@ def accueil_images(request):
     page_object = paginator.get_page(page_number)
     expression = Q(format=None) | Q(format="")
     formats = Image.objects.exclude(expression).values_list('format', flat=True).distinct()
-    return render(request, 'image_bank/contributeur/accueil.html', {'images': page_object, 'formats': formats})
+    tags = Tag.objects.filter(image__isnull=False).distinct()
+    return render(request, 'image_bank/contributeur/accueil.html', {'images': page_object, 'formats': formats, 'tags': tags})
