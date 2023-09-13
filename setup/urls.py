@@ -16,6 +16,7 @@ urlpatterns = [
     # path('users/signup', SignupView.as_view(), name='sign-up'),
     path('contributeur/index/', views.index_contributeur, name='index-contributeur'),
     path('contributeur/images/', views.images_contributeur, name='images-contributeur'),
+    path('contributeur/accueil/', views.accueil_images, name='accueil-images'),
     path('api/v1/upload/images/', views.upload_image, name="upload-contributeur"),
     path('api/v1/edit/images/<int:id>/', views.update_image, name="edit-image"),
     path('api/v1/delete/images/<int:id>/', views.delete_image, name="delete-image"),

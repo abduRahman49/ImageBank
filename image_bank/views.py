@@ -157,3 +157,12 @@ def delete_image(request, id):
     return JsonResponse(
         {"message": "Image supprimée avec succès", "code_message": 200},
     )
+    
+
+def accueil_images(request):
+    paginator = Paginator(Image.objects.all(), 4)
+    page_number = request.GET.get('page', 1)
+    page_object = paginator.get_page(page_number)
+    expression = Q(format=None) | Q(format="")
+    formats = Image.objects.exclude(expression).values_list('format', flat=True).distinct()
+    return render(request, 'image_bank/contributeur/accueil.html', {'images': page_object, 'formats': formats})

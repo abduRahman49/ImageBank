@@ -21,3 +21,22 @@
     left: 25px; /* New left position for tablets */
   }
 }
+
+#main-content {
+  display: flex;
+  flex-direction: row;
+}
+
+#main-content .tags {
+	border-radius: 4px;
+	box-shadow: 0px 0px 4px gray;
+	margin: 8px;
+	padding: 8px;
+	min-width: 300px;
+	min-height: 400px;
+}
+
+#main-content .images {
+	flex: 1;
+	margin: 8px;
+}
