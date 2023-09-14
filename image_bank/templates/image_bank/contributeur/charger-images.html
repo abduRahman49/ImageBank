@@ -159,11 +159,10 @@
         }).showToast();
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
+        // window.addEventListener('DOMContentLoaded', () => {
             initializeTagInputs();
             
             htmx.on('htmx:afterRequest', function (event) {
-            event.preventDefault();
             reinitializeTagInputs();
             if (event.detail.xhr.status === 200) { // Check if the request was successful (status code 200)
               // Assuming your response JSON contains a 'message' field
@@ -179,7 +178,7 @@
               }
             }
           });
-        })
+        // })
 
       </script>
   </main>

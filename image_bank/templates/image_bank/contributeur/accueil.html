@@ -204,26 +204,6 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.9/tagify.min.js" integrity="sha512-E6nwMgRlXtH01Lbn4sgPAn+WoV2UoEBlpgg9Ghs/YYOmxNpnOAS49+14JMxIKxKSH3DqsAUi13vo/y1wo9S/1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
       <script src="{% static 'image_bank/assets/js/plugins/choices.min.js' %}"></script>
       <script type="text/javascript">
-
-        function showToast(message, type) {
-          Toastify({
-              text: message,
-              duration: 3000, // Set the duration for how long the toast message should appear (in milliseconds)
-              gravity: 'top', // Set the position where the toast should appear
-              position: 'center', // Set the position where the toast should appear
-              close: true, // Allow users to close the toast manually
-              backgroundColor: type === 'error' ? 'red' : 'green', // Customize the background color based on the message type
-          }).showToast();
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            
-            htmx.on('htmx:afterRequest', function (event) {
-            event.preventDefault();
-
-          });
-        })
-
       </script>
   </main>
 </div>

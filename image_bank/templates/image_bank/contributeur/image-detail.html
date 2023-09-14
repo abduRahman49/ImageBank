@@ -163,39 +163,11 @@
       {% endblock %}
       <script src="{% static 'image_bank/assets/js/plugins/choices.min.js' %}"></script>
       <script type="text/javascript">
-        window.addEventListener('DOMContentLoaded', () => {
-            const backButton = document.querySelector('.fa-arrow-left');
-            backButton.addEventListener('click', () => {
+        // window.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('.fa-arrow-left').addEventListener('click', (e) => {
                 window.history.back();
             })
-          function showToast(message, type) {
-            Toastify({
-              text: message,
-              duration: 3000, // Set the duration for how long the toast message should appear (in milliseconds)
-              gravity: 'top', // Set the position where the toast should appear
-              position: 'center', // Set the position where the toast should appear
-              close: true, // Allow users to close the toast manually
-              backgroundColor: type === 'error' ? 'red' : 'green', // Customize the background color based on the message type
-            }).showToast();
-          }
-
-          htmx.on('htmx:afterRequest', function (event) {
-            event.preventDefault();
-            if (event.detail.xhr.status === 200) { // Check if the request was successful (status code 200)
-              // Assuming your response JSON contains a 'message' field
-              const response = JSON.parse(event.detail.xhr.responseText);
-              if (response.message) {
-                showToast(response.message, 'success'); // Show a success toast message
-              }
-            } else if (event.detail.xhr.status === 400) { // If there was an error (status code 400)
-              // Assuming your response JSON contains an 'error' field
-              const response = JSON.parse(event.detail.xhr.responseText);
-              if (response.message) {
-                showToast(response.message, 'error'); // Show an error toast message
-              }
-            }
-          });
-        })
+        // })
 
       </script>
   </main>
