@@ -1,5 +1,6 @@
 {% extends "image_bank/main.html" %}
 {% load static %}
+{% load watermark %}
 {% load random_class %}
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'image_bank/css/style.css' %}">
@@ -80,68 +81,6 @@
   <main>
       {% block dynamic_content %}
         <section>
-            <!-- <div class="container mt-7 mb-5 pt-7">
-                <div class="card">
-                <div class="row g-0">
-                    <div class="col-md-7 border-end">
-                        <div class="d-flex flex-column justify-content-center">
-                            <div class="main_image">
-                                <img src="{{ image.image.url }}" alt="main_product_image" width="350">
-                            </div>
-                            <div class="image_tags mt-3">
-                                <ul class="tags">
-                                    {% for tag in image.new_tags.all %}
-                                        <li><span class="{% random_class %}">{{ tag.name }}</span></li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="p-3 right-side">
-                            <div class="d-flex justify-content-between align-items-center">
-                            <h3>IIlana</h3>
-                            <span class="heart"><i class='bx bx-heart'></i></span>
-                            </div>
-                            <div class="mt-2 pr-3 content">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
-                            </div>
-                            <h3>$430.99</h3>
-                            <div class="ratings d-flex flex-row align-items-center">
-                                <div class="d-flex flex-row">
-                                    <i class='bx bxs-star' ></i><i class='bx bxs-star' ></i>
-                                    <i class='bx bxs-star' ></i>	<i class='bx bxs-star' ></i>
-                                    <i class='bx bx-star' ></i>
-                                </div>
-                                <span>441 reviews</span>
-                            </div>
-                            <div class="mt-5">
-                                <span class="fw-bold">Color</span>
-                                <div class="colors">
-                                    <ul id="marker">
-                                        <li id="marker-1"></li>
-                                        <li id="marker-2"></li>
-                                        <li id="marker-3"></li>
-                                        <li id="marker-4"></li>
-                                        <li id="marker-5"></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="buttons d-flex flex-row mt-5 gap-3">
-                                <button class="btn btn-outline-dark">Buy Now</button>
-                                <button class="btn btn-dark">Add to Basket</button>
-                            </div>
-                            <div class="search-option">	<i class='bx bx-search-alt-2 first-search'></i>
-                                <div class="inputs">
-                                    <input type="text" name="">
-                                </div>
-                                <i class='bx bx-share-alt share'></i>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                    </div>
-                </div> -->
                 <div class="container-fluid py-4 mt-7 pt-7">
                     <div class="row">
                         <div class="col-12">
@@ -150,7 +89,7 @@
                             <h5 class="mb-4">Détails Image</h5>
                             <div class="row">
                             <div class="col-xl-5 col-lg-6 text-center">
-                            <img class="w-100 border-radius-lg shadow-lg mx-auto" src="{{ image.image.url }}" alt="chair">
+                            <img class="w-100 border-radius-lg shadow-lg mx-auto" {% if image.payment_required %} src="{{ image.image.url | watermark:"django_test,opacity=10,tile=1,rotation=45" }}" {% else %} src="{{ image.image.url }}" {% endif %} alt="chair">
                             <div class="my-gallery d-flex mt-4 pt-2" itemscope itemtype="http://schema.org/ImageGallery">
                             <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
                             <a href="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/chair-pink.jpg" itemprop="contentUrl" data-size="500x600">

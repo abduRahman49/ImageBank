@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.auth0',
     'allauth.socialaccount.providers.google',
     'taggit',
+    "watermarker",
 ]
 
 MIDDLEWARE = [
