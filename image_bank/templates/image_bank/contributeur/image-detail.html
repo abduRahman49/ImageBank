@@ -74,7 +74,9 @@
         <section>
                 <div class="container-fluid py-4 mt-5 pt-5">
                     <div class="row">
-                      <a><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                      <div class="col-12">
+                        <a><i class="fa fa-arrow-left fa-2x" aria-hidden="true" style="margin-left: 15px;"></i></a>
+                      </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
@@ -144,10 +146,10 @@
                             </div>
                             <div class="row mt-4">
                             <div class="col-lg-5">
-                            <button class="btn bg-gradient-primary mb-0 mt-lg-auto w-100" type="button" name="button">Télécharger</button>
+                            <button class="btn bg-gradient-primary mb-0 mt-lg-auto w-100" type="button" name="button"><i class="fa fa-download" aria-hidden="true"></i> Télécharger</button>
                             </div>
                             <div class="col-lg-5">
-                              <button class="btn bg-gradient-dark mb-0 mt-lg-auto w-100" type="button" name="button">Voir</button>
+                              <button class="btn bg-gradient-dark mb-0 mt-lg-auto w-100" type="button" name="button"><i class="fa fa-eye" aria-hidden="true"></i> Voir</button>
                             </div>
                             </div>
                             </div>
@@ -162,7 +164,10 @@
       <script src="{% static 'image_bank/assets/js/plugins/choices.min.js' %}"></script>
       <script type="text/javascript">
         window.addEventListener('DOMContentLoaded', () => {
-
+            const backButton = document.querySelector('.fa-arrow-left');
+            backButton.addEventListener('click', () => {
+                window.history.back();
+            })
           function showToast(message, type) {
             Toastify({
               text: message,
