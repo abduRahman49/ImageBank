@@ -21,6 +21,16 @@
       ul li {
           list-style: none;
       }
+
+      /* CSS */
+      .enlarge-image {
+          width: 100%; /* Set the width of the container that holds the image */
+          max-width: 100%; /* Ensure the image doesn't exceed its original size */
+          height: auto; /* Allow the height to adjust proportionally */
+          transform: scale(0.7); /* Increase the size by 20% (adjust the value as needed) */
+          transform-origin: center; /* Scale from the center of the image */
+      }
+
     </style>
     {% endblock %}
 
@@ -70,10 +80,10 @@
   <main>
       {% block dynamic_content %}
         <section>
-            <div class="container mt-7 mb-5 pt-7">
+            <!-- <div class="container mt-7 mb-5 pt-7">
                 <div class="card">
                 <div class="row g-0">
-                    <div class="col-md-6 border-end">
+                    <div class="col-md-7 border-end">
                         <div class="d-flex flex-column justify-content-center">
                             <div class="main_image">
                                 <img src="{{ image.image.url }}" alt="main_product_image" width="350">
@@ -87,7 +97,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <div class="p-3 right-side">
                             <div class="d-flex justify-content-between align-items-center">
                             <h3>IIlana</h3>
@@ -131,7 +141,152 @@
                     </div>
                     </div>
                     </div>
+                </div> -->
+                <div class="container-fluid py-4 mt-7 pt-7">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                            <div class="card-body">
+                            <h5 class="mb-4">Product Details</h5>
+                            <div class="row">
+                            <div class="col-xl-5 col-lg-6 text-center">
+                            <img class="w-100 border-radius-lg shadow-lg mx-auto" src="{{ image.image.url }}" alt="chair">
+                            <div class="my-gallery d-flex mt-4 pt-2" itemscope itemtype="http://schema.org/ImageGallery">
+                            <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                            <a href="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/chair-pink.jpg" itemprop="contentUrl" data-size="500x600">
+                            <img class="w-75 min-height-100 max-height-100 border-radius-lg shadow" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/chair-pink.jpg" alt="Image description" />
+                            </a>
+                            </figure>
+                            <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                            <a href="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/black-chair.jpg" itemprop="contentUrl" data-size="500x600">
+                            <img class="w-75 min-height-100 max-height-100 border-radius-lg shadow" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/black-chair.jpg" itemprop="thumbnail" alt="Image description" />
+                            </a>
+                            </figure>
+                            <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                            <a href="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/chair-steel.jpg" itemprop="contentUrl" data-size="500x600">
+                            <img class="w-75 min-height-100 max-height-100 border-radius-lg shadow" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/chair-steel.jpg" itemprop="thumbnail" alt="Image description" />
+                            </a>
+                            </figure>
+                            <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                            <a href="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/chair-wood.jpg" itemprop="contentUrl" data-size="500x600">
+                            <img class="w-75 min-height-100 max-height-100 border-radius-lg shadow" src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/chair-wood.jpg" itemprop="thumbnail" alt="Image description" />
+                            </a>
+                            </figure>
+                            </div>
+                            
+                            <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+                            
+                            <div class="pswp__bg"></div>
+                            
+                            <div class="pswp__scroll-wrap">
+                            
+                            
+                            <div class="pswp__container">
+                            <div class="pswp__item"></div>
+                            <div class="pswp__item"></div>
+                            <div class="pswp__item"></div>
+                            </div>
+                            
+                            <div class="pswp__ui pswp__ui--hidden">
+                            <div class="pswp__top-bar">
+                            
+                            <div class="pswp__counter"></div>
+                            <button class="btn btn-white btn-sm pswp__button pswp__button--close">Close (Esc)</button>
+                            <button class="btn btn-white btn-sm pswp__button pswp__button--fs">Fullscreen</button>
+                            <button class="btn btn-white btn-sm pswp__button pswp__button--arrow--left">Prev
+                            </button>
+                            <button class="btn btn-white btn-sm pswp__button pswp__button--arrow--right">Next
+                            </button>
+                            
+                            
+                            <div class="pswp__preloader">
+                            <div class="pswp__preloader__icn">
+                            <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+                            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                            <div class="pswp__share-tooltip"></div>
+                            </div>
+                            <div class="pswp__caption">
+                            <div class="pswp__caption__center"></div>
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+                            <div class="col-lg-5 mx-auto">
+                            <h3 class="mt-lg-0 mt-4">Minimal Bar Stool</h3>
+                            <div class="rating">
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star-half-alt" aria-hidden="true"></i>
+                            </div>
+                            <br>
+                            <h6 class="mb-0 mt-3">Price</h6>
+                            <h5>$1,419</h5>
+                            <span class="badge badge-success">In Stock</span>
+                            <br>
+                            <label class="mt-4">Description</label>
+                            <ul>
+                            <li>The most beautiful curves of this swivel stool adds an elegant touch to any environment</li>
+                            <li>Memory swivel seat returns to original seat position</li>
+                            <li>Comfortable integrated layered chair seat cushion design</li>
+                            <li>Fully assembled! No assembly required</li>
+                            </ul>
+                            <div class="row mt-4">
+                            <div class="col-lg-5 mt-lg-0 mt-2">
+                            <label>Frame Material</label>
+                            <select class="form-control" name="choices-material" id="choices-material">
+                            <option value="Choice 1" selected>Wood</option>
+                            <option value="Choice 2">Steel</option>
+                            <option value="Choice 3">Aluminium</option>
+                            <option value="Choice 4">Carbon</option>
+                            </select>
+                            </div>
+                            <div class="col-lg-5 mt-lg-0 mt-2">
+                            <label>Color</label>
+                            <select class="form-control" name="choices-colors" id="choices-colors">
+                            <option value="Choice 1" selected>White</option>
+                            <option value="Choice 2">Gray</option>
+                            <option value="Choice 3">Black</option>
+                            <option value="Choice 4">Blue</option>
+                            <option value="Choice 5">Red</option>
+                            <option value="Choice 6">Pink</option>
+                            </select>
+                            </div>
+                            <div class="col-lg-2">
+                            <label>Quantity</label>
+                            <select class="form-control" name="choices-quantity" id="choices-quantity">
+                            <option value="Choice 1" selected>1</option>
+                            <option value="Choice 2">2</option>
+                            <option value="Choice 3">3</option>
+                            <option value="Choice 4">4</option>
+                            <option value="Choice 5">5</option>
+                            <option value="Choice 6">6</option>
+                            <option value="Choice 7">7</option>
+                            <option value="Choice 8">8</option>
+                            <option value="Choice 9">9</option>
+                            <option value="Choice 10">10</option>
+                            </select>
+                            </div>
+                            </div>
+                            <div class="row mt-4">
+                            <div class="col-lg-5">
+                            <button class="btn bg-gradient-primary mb-0 mt-lg-auto w-100" type="button" name="button">Add to cart</button>
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            </div>
         </section>
       {% endblock %}
       <script src="{% static 'image_bank/assets/js/plugins/choices.min.js' %}"></script>
