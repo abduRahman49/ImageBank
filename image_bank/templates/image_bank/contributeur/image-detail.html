@@ -147,7 +147,7 @@
                         <div class="col-12">
                             <div class="card">
                             <div class="card-body">
-                            <h5 class="mb-4">Product Details</h5>
+                            <h5 class="mb-4">Détails Image</h5>
                             <div class="row">
                             <div class="col-xl-5 col-lg-6 text-center">
                             <img class="w-100 border-radius-lg shadow-lg mx-auto" src="{{ image.image.url }}" alt="chair">
@@ -218,26 +218,34 @@
                             </div>
                             </div>
                             <div class="col-lg-5 mx-auto">
-                            <h3 class="mt-lg-0 mt-4">Minimal Bar Stool</h3>
+                            <h3 class="mt-lg-0 mt-4">{{ image.name | title }}</h3>
                             <div class="rating">
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star-half-alt" aria-hidden="true"></i>
+                                
+                                {% for tag in image.new_tags.all %}
+                                    <span class="{% random_class %}">{{ tag.name }}</span>
+                                {% endfor %}
+                                
                             </div>
                             <br>
-                            <h6 class="mb-0 mt-3">Price</h6>
-                            <h5>$1,419</h5>
+                            {% if image.payment_required %}
+                            <h6 class="mb-0 mt-3">Prix</h6>
+                            <h5>{{ image.price }} CFA</h5>
                             <span class="badge badge-success">In Stock</span>
+                            {% else %}
+                            <h6 class="mb-0 mt-3">Prix</h6>
+                            <span class="badge badge-success">Gratuite</span>
+                            {% endif %}
                             <br>
                             <label class="mt-4">Description</label>
-                            <ul>
+                            <!-- <ul>
                             <li>The most beautiful curves of this swivel stool adds an elegant touch to any environment</li>
                             <li>Memory swivel seat returns to original seat position</li>
                             <li>Comfortable integrated layered chair seat cushion design</li>
                             <li>Fully assembled! No assembly required</li>
-                            </ul>
+                            </ul> -->
+                            <textarea name="text" id="text" rows="4" class="form-control" disabled>
+                                {{ image.description }}
+                            </textarea>
                             <div class="row mt-4">
                             <div class="col-lg-5 mt-lg-0 mt-2">
                             <label>Frame Material</label>
