@@ -202,3 +202,7 @@ def search_images(request):
     page_object = paginator.get_page(page_number)
     return render(request, 'image_bank/contributeur/resultats-recherche.html', {'images': page_object})
     
+
+def detail_image(request, id):
+    image = get_object_or_404(Image, pk=id)
+    return render(request, "image_bank/contributeur/image-detail.html", {'image': image})
