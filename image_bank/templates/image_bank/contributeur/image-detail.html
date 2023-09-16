@@ -5,13 +5,13 @@
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'image_bank/css/style.css' %}">
     <style>
-      .rating {
+      .tags {
           display: flex;
           flex-wrap: wrap;
           gap: 8px; /* Adjust the gap as needed */
       }
 
-      .rating .badge {
+      .tags .badge {
           /* Add styling for the tags here */
           padding: 6px 12px;
           font-size: 10px;
@@ -99,7 +99,7 @@
                             </div>
                             <div class="col-lg-5 mx-auto">
                             <h3 class="mt-lg-0 mt-4">{{ image.name | title }}</h3>
-                            <div class="rating">
+                            <div class="tags">
                                 {% for tag in image.new_tags.all %}
                                   <span class="{% random_class %}">{{ tag.name }}</span>
                                 {% endfor %}

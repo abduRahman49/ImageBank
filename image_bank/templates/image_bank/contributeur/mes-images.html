@@ -3,6 +3,7 @@
 
 {% block content %}
 <div id="content">
+  <input type="hidden" id="my-images" >
   <header>
       <nav class="navbar navbar-expand-lg  blur blur-rounded top-0  z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
           <div class="container-fluid px-0">
@@ -20,17 +21,17 @@
           <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
               <ul class="navbar-nav navbar-nav-hover mx-auto">
               <li class="nav-item dropdown dropdown-hover mx-2">
-                  <a hx-get="{% url 'accueil-images' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" hx-swap="morphdom"  role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuPages" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a hx-get="{% url 'accueil-images' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" hx-swap="outerHTML"  role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuPages" data-bs-toggle="dropdown" aria-expanded="false">
                   Accueil
                   </a>
               </li>
               <li class="nav-item dropdown dropdown-hover mx-2">
-                  <a hx-get="{% url 'upload-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" hx-swap="morphdom"  role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuAccount" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a hx-get="{% url 'upload-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" hx-swap="outerHTML"  role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuAccount" data-bs-toggle="dropdown" aria-expanded="false">
                   Charger images
                   </a>
               </li>
               <li class="nav-item dropdown dropdown-hover mx-2">
-                  <a hx-get="{% url 'images-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" hx-swap="morphdom"  role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuBlocks" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a hx-get="{% url 'images-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" hx-swap="outerHTML"  role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuBlocks" data-bs-toggle="dropdown" aria-expanded="false">
                   Mes images
                   </a>
               </li>
@@ -235,83 +236,101 @@
           </div>
         </div>
       {% endblock %}
-      <script src="{% static 'image_bank/assets/js/plugins/choices.min.js' %}"></script>
-      <script type="text/javascript">
-        window.addEventListener('DOMContentLoaded', () => {
-          // const win = navigator.platform.indexOf('Win') > -1;
-          // if (win && document.querySelector('#sidenav-scrollbar')) {
-          //   var options = {
-          //     damping: '0.5'
-          //   }
-          //   Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-          // }
-
-          const plugin = document.querySelector('#plugin-control');
-          const pluginToControl = document.querySelector('#plugin-to-control');
-            plugin.addEventListener('click', () => {
-            pluginToControl.classList.toggle('show');
-          });
-
-          const pluginControlTwo = document.querySelector('.fixed-plugin-close-button');
-          pluginControlTwo.addEventListener('click', () => {
-            pluginToControl.classList.toggle('show');
-          })
-          function togglePriceField(modalId) {
-              const paymentCheckbox = document.querySelector(`#${modalId} #id_payment_required`);
-              const priceField = document.querySelector(`#${modalId} .price`);
-
-              paymentCheckbox.addEventListener('change', () => {
-                  if (paymentCheckbox.checked) {
-                      priceField.style.display = 'block';
-                  } else {
-                      priceField.style.display = 'none';
-                  }
-              });
-          }
-
-          // Call the function for each modal
-         document.querySelectorAll('.edit-modal').forEach(modal => {
-              const choices = new Choices(modal.querySelector('#id_new_tags'), {
-                searchEnabled: false
-              });
-              togglePriceField(modal.getAttribute('id'));
-          })
-
-          function showToast(message, type) {
-            Toastify({
-              text: message,
-              duration: 3000, // Set the duration for how long the toast message should appear (in milliseconds)
-              gravity: 'top', // Set the position where the toast should appear
-              position: 'center', // Set the position where the toast should appear
-              close: true, // Allow users to close the toast manually
-              backgroundColor: type === 'error' ? 'red' : 'green', // Customize the background color based on the message type
-            }).showToast();
-          }
-
-          htmx.on('htmx:afterRequest', function (event) {
-            document.querySelectorAll('.edit-modal').forEach(modal => {
-              const choices = new Choices(modal.querySelector('#id_new_tags'), {
-                searchEnabled: false
-              });
-              togglePriceField(modal.getAttribute('id'));
-            })
-            if (event.detail.xhr.status === 200) { // Check if the request was successful (status code 200)
-              // Assuming your response JSON contains a 'message' field
-              const response = JSON.parse(event.detail.xhr.responseText);
-              if (response.message) {
-                showToast(response.message, 'success'); // Show a success toast message
-              }
-            } else if (event.detail.xhr.status === 400) { // If there was an error (status code 400)
-              // Assuming your response JSON contains an 'error' field
-              const response = JSON.parse(event.detail.xhr.responseText);
-              if (response.message) {
-                showToast(response.message, 'error'); // Show an error toast message
-              }
-            }
-          });
-        })
-
-      </script>
   </main>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'image_bank/assets/js/plugins/choices.min.js' %}"></script>
+<script type="text/javascript">
+    function togglePlugin() {
+      console.log("toggling plugin");
+      const plugin = document.querySelector('#plugin-control');
+      const pluginToControl = document.querySelector('#plugin-to-control');
+        plugin.addEventListener('click', () => {
+        pluginToControl.classList.toggle('show');
+      });
+
+      const pluginControlTwo = document.querySelector('.fixed-plugin-close-button');
+      pluginControlTwo.addEventListener('click', () => {
+        pluginToControl.classList.toggle('show');
+      })
+    }
+
+    function reTogglePlugin() {
+      console.log("retoggling plugin");
+      togglePlugin();
+    }
+    
+    function togglePriceField(modalId) {
+        const paymentCheckbox = document.querySelector(`#${modalId} #id_payment_required`);
+        const priceField = document.querySelector(`#${modalId} .price`);
+
+        paymentCheckbox.addEventListener('change', () => {
+            if (paymentCheckbox.checked) {
+                priceField.style.display = 'block';
+            } else {
+                priceField.style.display = 'none';
+            }
+        });
+    }
+
+    // Call the function for each modal
+  function initChoices() {
+    console.log('initializing choices');
+    document.querySelectorAll('.edit-modal').forEach(modal => {
+        if(!modal.classList.contains('choice-initialized')) {
+          const choices = new Choices(modal.querySelector('#id_new_tags'), {
+          searchEnabled: false
+        });
+        }
+        modal.classList.add('choice-initialized');
+        togglePriceField(modal.getAttribute('id'));
+    })
+  }
+
+  function reinitChoices() {
+    console.log('reinitializing choices');
+    initChoices();
+  }
+
+    function showToast(message, type) {
+      Toastify({
+        text: message,
+        duration: 3000, // Set the duration for how long the toast message should appear (in milliseconds)
+        gravity: 'top', // Set the position where the toast should appear
+        position: 'center', // Set the position where the toast should appear
+        close: true, // Allow users to close the toast manually
+        backgroundColor: type === 'error' ? 'red' : 'green', // Customize the background color based on the message type
+      }).showToast();
+    }
+
+    initChoices();
+    togglePlugin();
+
+    document.addEventListener('htmx:afterSwap', function (event) {
+      if(document.querySelector('#my-images')) {
+        reinitChoices();
+        reTogglePlugin();
+      }
+    });
+
+    document.addEventListener('htmx:afterRequest', function (event) {
+      if (event.detail.xhr.status === 200) { // Check if the request was successful (status code 200)
+        // Assuming your response JSON contains a 'message' field
+        const response = JSON.parse(event.detail.xhr.responseText);
+        if (response.message) {
+          showToast(response.message, 'success'); // Show a success toast message
+        }
+      } else if (event.detail.xhr.status === 400) { // If there was an error (status code 400)
+        // Assuming your response JSON contains an 'error' field
+        const response = JSON.parse(event.detail.xhr.responseText);
+        if (response.message) {
+          showToast(response.message, 'error'); // Show an error toast message
+        }
+      }
+    })
+  // })
+
+</script>
 {% endblock %}

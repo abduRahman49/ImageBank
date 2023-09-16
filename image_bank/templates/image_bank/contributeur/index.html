@@ -2,7 +2,6 @@
 {% load static %}
 
 {% block content %}
-<div id="content">
     <header>
         <nav class="navbar navbar-expand-lg  blur blur-rounded top-0  z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
             <div class="container-fluid px-0">
@@ -36,8 +35,10 @@
                 </li>
                 </ul>
                 <ul class="navbar-nav d-lg-block d-none">
-                <li class="nav-item">
-                    <a href="https://demos.creative-tim.com/soft-ui-design-system-pro/presentation.html#pricing-soft-ui" class="btn btn-sm  bg-gradient-dark  btn-round mb-0 me-1" onclick="smoothToPricing('pricing-soft-ui')">Buy Now</a>
+                <li class="nav-item px-3 d-flex align-items-center">
+                    <a id="plugin-control" href="javascript:;" class="nav-link text-white p-0">
+                        <span class="bi text-dark" fs-3><i class="fa fa-user 3x fixed-plugin-button-nav cursor-pointer"></i></span>
+                    </a>
                 </li>
                 </ul>
             </div>
@@ -46,8 +47,9 @@
     </header>
     <main>
         {% block dynamic_content %}
-
+            <div id="content">
+            
+            </div>
         {% endblock %}
     </main>
-</div>
 {% endblock %}

@@ -1,206 +1,161 @@
-{% extends "image_bank/main.html" %}
+{% extends "image_bank/index.html" %}
 {% load static %}
 {% load watermark %}
 {% load random_class %}
 {% block extra_head %}
-    <link rel="stylesheet" href="{% static 'image_bank/css/style.css' %}">
-    <style>
-      /* Basic styles for layout */
-      body {
-          margin: 0;
-          padding: 0;
-          font-family: Arial, sans-serif;
-      }
+<style>
+  /* Basic styles for layout */
+  body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+  }
 
-      /* Remove list-style from ul */
+  /* Remove list-style from ul */
 
-      /* Or, remove list-style from li */
-      ul li {
-          list-style: none;
-      }
+  /* Or, remove list-style from li */
+  ul li {
+      list-style: none;
+  }
 
+  .container {
+      display: flex;
+      flex-wrap: wrap;
+  }
+  .filter-card {
+      flex: 1;
+      max-width: 300px;
+      padding: 20px;
+      background-color: #f0f0f0;
+  }
+  .image-section {
+      flex: 3;
+      padding: 20px;
+      background-color: #ffffff;
+  }
+
+  .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px; /* Adjust the gap as needed */
+  }
+
+  .tags .badge {
+      /* Add styling for the tags here */
+      padding: 6px 12px;
+      font-size: 14px;
+      /* Add more styles as needed */
+  }
+
+
+  /* Responsive layout */
+  @media screen and (max-width: 768px) {
       .container {
-          display: flex;
-          flex-wrap: wrap;
+          flex-direction: column;
       }
-      .filter-card {
+      .filter-card, .image-section {
           flex: 1;
-          max-width: 300px;
-          padding: 20px;
-          background-color: #f0f0f0;
+          max-width: none;
       }
-      .image-section {
-          flex: 3;
-          padding: 20px;
-          background-color: #ffffff;
-      }
-
-      .tags {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 8px; /* Adjust the gap as needed */
-      }
-
-      .tags .badge {
-          /* Add styling for the tags here */
-          padding: 6px 12px;
-          font-size: 14px;
-          /* Add more styles as needed */
-      }
-
-
-      /* Responsive layout */
-      @media screen and (max-width: 768px) {
-          .container {
-              flex-direction: column;
-          }
-          .filter-card, .image-section {
-              flex: 1;
-              max-width: none;
-          }
-      }
-  </style>
+  }
+</style>
 {% endblock %}
 
-{% block content %}
-<div id="content">
-  <header>
-      <nav class="navbar navbar-expand-lg  blur blur-rounded top-0  z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
-          <div class="container-fluid px-0">
-          <a class="navbar-brand font-weight-bolder ms-sm-3" href=" https://demos.creative-tim.com/soft-ui-design-system-pro/presentation.html " rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom" target="_blank">
-              SEN NATAAL
-          </a>
-          <a href="https://www.creative-tim.com/product/soft-ui-design-system-pro#pricingCard" class="btn btn-sm  bg-gradient-dark  btn-round mb-0 ms-auto d-lg-none d-block">Buy Now</a>
-          <button class="navbar-toggler shadow-none ms-md-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon mt-2">
-              <span class="navbar-toggler-bar bar1"></span>
-              <span class="navbar-toggler-bar bar2"></span>
-              <span class="navbar-toggler-bar bar3"></span>
-              </span>
-          </button>
-          <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
-              <ul class="navbar-nav navbar-nav-hover mx-auto">
-              <li class="nav-item dropdown dropdown-hover mx-2">
-                  <a hx-get="{% url 'accueil-images' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" hx-swap="morphdom" role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuPages" data-bs-toggle="dropdown" aria-expanded="false">
-                  Accueil
-                  </a>
-              </li>
-              <li class="nav-item dropdown dropdown-hover mx-2">
-                  <a hx-get="{% url 'upload-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" hx-swap="morphdom" role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuAccount" data-bs-toggle="dropdown" aria-expanded="false">
-                  Charger images
-                  </a>
-              </li>
-              <li class="nav-item dropdown dropdown-hover mx-2">
-                  <a hx-get="{% url 'images-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" hx-swap="morphdom" role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuBlocks" data-bs-toggle="dropdown" aria-expanded="false">
-                  Mes images
-                  </a>
-              </li>
-              </ul>
-              <ul class="navbar-nav d-lg-block d-none">
-              <li class="nav-item">
-                  <a href="https://demos.creative-tim.com/soft-ui-design-system-pro/presentation.html#pricing-soft-ui" class="btn btn-sm  bg-gradient-dark  btn-round mb-0 me-1" onclick="smoothToPricing('pricing-soft-ui')">Buy Now</a>
-              </li>
-              </ul>
+{% block dynamic_content %}
+  <div id="content">
+    <section class="mt-7 pt-7">
+    <div class="container-fluid">
+      <form hx-post="{% url 'recherche-images' %}" hx-trigger="submit" hx-target="#images">
+        {% csrf_token %}
+        <div class="row bg-white shadow-lg mt-n6 border-radius-md pb-4 p-3 mx-sm-0 mx-1 position-relative">
+          <div class="col-lg-3 mt-lg-n2 mt-2">
+            <label class="">Resolution</label>
+            <select class="form-control" name="resolution" id="choices-button">
+              <option value="" disabled selected="">Choisir</option>
+              <option value="low">Faible</option>
+              <option value="medium">Moyenne</option>
+              <option value="high">Haute</option>
+            </select>
           </div>
-          </div>
-      </nav>
-  </header>
-  <main class="pt-7">
-      {% block dynamic_content %}
-        <div class="container-fluid mt-7">
-          <form hx-post="{% url 'recherche-images' %}" hx-trigger="submit" hx-target="#images">
-            {% csrf_token %}
-            <div class="row bg-white shadow-lg mt-n6 border-radius-md pb-4 p-3 mx-sm-0 mx-1 position-relative">
-              <div class="col-lg-3 mt-lg-n2 mt-2">
-                <label class="">Resolution</label>
-                <select class="form-control" name="resolution" id="choices-button">
-                  <option value="" disabled selected="">Choisir</option>
-                  <option value="low">Faible</option>
-                  <option value="medium">Moyenne</option>
-                  <option value="high">Haute</option>
-                </select>
-              </div>
-              <div class="col-lg-3 mt-lg-n2 mt-2">
-                <label class="">Format</label>
-                <select class="form-control" name="format" id="choices-remove-button">
-                  <option value="" disabled selected="">Choisir</option>
-                  {% for format in formats %}
-                    <option value="{{ format }}">{{ format }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div class="col-lg-3 mt-lg-n2 mt-2">
-                <label class="">Paiement</label>
-                <select class="form-control" name="paiement" id="choices-remove-button">
-                  <option value="" disabled selected="">Choisir</option>
-                  <option value="0">Gratuit</option>
-                  <option value="1">Payant</option>
-                </select>
-              </div>
-              <div class="col-lg-3 mt-lg-n2 mt-2">
-                <label class="">&nbsp;</label>
-                <button type="submit" class="btn bg-gradient-dark w-100 mb-0">Rechercher</button>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="container mt-5 pt-5" style="display: flex; flex-wrap: wrap;">
-          <!-- Filter Card (on the left) -->
-          <div class="filter-card card shadow-lg" style="flex: 1;max-width: 300px;padding: 20px;background-color: #f0f0f0;">
-              <ul class="tags">
-                {% for tag in tags %}
-                  <li style="list-style: none"><span class="{% random_class %}" style="padding: 6px 12px;font-size: 14px;">{{ tag.name }}</span></li>
-                {% endfor %}
-              </ul>
-          </div>
-
-          <!-- Image Section (on the right) -->
-          <div id="images" class="image-section" style="flex: 3;padding: 20px;background-color: #ffffff;">
-              <!-- Display searched images here -->
-              <!-- Use CSS grid or other layout techniques to display images -->
-              <!-- Example: -->
-              <div class="row">
-              {% for image in images %}
-              <div class="col-lg-3 col-sm-6">
-                <div class="card card-plain card-blog mt-4">
-                  <div class="card-image border-radius-lg position-relative">
-                    <a href="javascript:;" hx-get="{% url 'detail-image' image.id %}" hx-trigger="click" hx-target="#content" hx-push-url="true">
-                      <div class="blur-shadow-image">
-                        <img class="img border-radius-lg move-on-hover" {% if image.payment_required %} src="{{ image.image.url | watermark:"django_test,opacity=10,tile=1,rotation=45" }}" {% else %} src="{{ image.image.url }}" {% endif %} alt="{{ image.description }}">
-                      </div>
-                    </a>
-                  </div>
-                </div>
-              </div>
+          <div class="col-lg-3 mt-lg-n2 mt-2">
+            <label class="">Format</label>
+            <select class="form-control" name="format" id="choices-remove-button">
+              <option value="" disabled selected="">Choisir</option>
+              {% for format in formats %}
+                <option value="{{ format }}">{{ format }}</option>
               {% endfor %}
-              </div>
-              <div class="row mt-3 ml-2">
-                <div class="pagination">
-                  <span class="step-links">
-                      {% if images.has_previous %}
-                          <a href="?page=1">&laquo; premier</a>
-                          <a href="?page={{ images.previous_page_number }}">précédent</a>
-                      {% endif %}
-              
-                      <span class="current">
-                          Page {{ images.number }} sur {{ images.paginator.num_pages }}.
-                      </span>
-              
-                      {% if images.has_next %}
-                          <a href="?page={{ images.next_page_number }}">suivant</a>
-                          <a href="?page={{ images.paginator.num_pages }}">dernier &raquo;</a>
-                      {% endif %}
-                  </span>
-              </div>
-              </div>
+            </select>
           </div>
+          <div class="col-lg-3 mt-lg-n2 mt-2">
+            <label class="">Paiement</label>
+            <select class="form-control" name="paiement" id="choices-remove-button">
+              <option value="" disabled selected="">Choisir</option>
+              <option value="0">Gratuit</option>
+              <option value="1">Payant</option>
+            </select>
+          </div>
+          <div class="col-lg-3 mt-lg-n2 mt-2">
+            <label class="">&nbsp;</label>
+            <button type="submit" class="btn bg-gradient-dark w-100 mb-0">Rechercher</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+    <div class="container mt-5 pt-5" style="display: flex; flex-wrap: wrap;">
+      <!-- Filter Card (on the left) -->
+      <div class="filter-card card shadow-lg" style="flex: 1;max-width: 300px;padding: 20px;background-color: #f0f0f0;">
+          <ul class="tags">
+            {% for tag in tags %}
+              <li style="list-style: none"><span class="{% random_class %}" style="padding: 6px 12px;font-size: 14px;">{{ tag.name }}</span></li>
+            {% endfor %}
+          </ul>
       </div>
 
-      {% endblock %}
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.9/tagify.min.js" integrity="sha512-E6nwMgRlXtH01Lbn4sgPAn+WoV2UoEBlpgg9Ghs/YYOmxNpnOAS49+14JMxIKxKSH3DqsAUi13vo/y1wo9S/1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-      <script src="{% static 'image_bank/assets/js/plugins/choices.min.js' %}"></script>
-      <script type="text/javascript">
-      </script>
-  </main>
-</div>
+      <!-- Image Section (on the right) -->
+      <div id="images" class="image-section" style="flex: 3;padding: 20px;">
+          <!-- Display searched images here -->
+          <!-- Use CSS grid or other layout techniques to display images -->
+          <!-- Example: -->
+          <div class="row">
+          {% for image in images %}
+          <div class="col-lg-3 col-sm-6">
+            <div class="card card-plain card-blog mt-4">
+              <div class="card-image border-radius-lg position-relative">
+                <a href="javascript:;" hx-get="{% url 'detail-image' image.id %}" hx-trigger="click" hx-target="#content" hx-push-url="true">
+                  <div class="blur-shadow-image">
+                    <img class="img border-radius-lg move-on-hover" {% if image.payment_required %} src="{{ image.image.url | watermark:"django_test,opacity=10,tile=1,rotation=45" }}" {% else %} src="{{ image.image.url }}" {% endif %} alt="{{ image.description }}">
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          </div>
+          <div class="row mt-3 ml-2">
+            <div class="pagination">
+              <span class="step-links">
+                  {% if images.has_previous %}
+                      <a href="?page=1">&laquo; premier</a>
+                      <a href="?page={{ images.previous_page_number }}">précédent</a>
+                  {% endif %}
+          
+                  <span class="current">
+                      Page {{ images.number }} sur {{ images.paginator.num_pages }}.
+                  </span>
+          
+                  {% if images.has_next %}
+                      <a href="?page={{ images.next_page_number }}">suivant</a>
+                      <a href="?page={{ images.paginator.num_pages }}">dernier &raquo;</a>
+                  {% endif %}
+              </span>
+          </div>
+          </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+
 {% endblock %}
