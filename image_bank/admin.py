@@ -8,7 +8,7 @@ class ImageForm(forms.ModelForm):
     
     class Meta:
         model = Image
-        fields = ['name', 'auteur', 'description', 'image', 'licence', 'tags', 'status', 'payment_required', 'price', 'format', 'taille']
+        fields = ['name', 'auteur', 'description', 'image', 'licence', 'status', 'payment_required', 'price', 'format', 'taille']
         widgets = {
             'image': forms.ClearableFileInput(attrs={'accept': 'image/*'}),
         }

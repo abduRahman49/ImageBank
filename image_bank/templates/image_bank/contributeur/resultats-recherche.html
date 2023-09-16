@@ -8,7 +8,7 @@
         <div class="col-lg-3 col-sm-6">
         <div class="card card-plain card-blog mt-4">
             <div class="card-image border-radius-lg position-relative">
-            <a href="javascript:;">
+            <a href="javascript:;" hx-get="{% url 'detail-image' image.id %}" hx-trigger="click" hx-swap="none">
                 <div class="blur-shadow-image">
                 <img class="img border-radius-lg move-on-hover" src="{{ image.image.url }}" alt="{{ image.description }}">
                 </div>

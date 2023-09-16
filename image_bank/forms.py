@@ -11,7 +11,7 @@ class ImageForm(forms.ModelForm):
     
     class Meta:
         model = Image
-        fields = ['name', 'auteur', 'image', 'payment_required', 'price', 'description', 'tags', 'new_tags']
+        fields = ['name', 'auteur', 'image', 'payment_required', 'price', 'description', 'new_tags']
         
         widgets = {
             'new_tags': TagWidget(attrs={'class': 'form-control tag-input'}),

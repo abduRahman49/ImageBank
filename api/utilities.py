@@ -24,29 +24,53 @@ class LicencePagination(PageNumberPagination):
         return response
 
 
-def apply_watermark(input_image_path, output_image_path, watermark_image_path):
-    # Open the original image and watermark image
-    image = Image.open(input_image_path)
-    watermark = Image.open(watermark_image_path)
+def calculate_resolutions(original_width, original_height, scale_low=0.5, scale_medium=1.0, scale_high=2.0):
+    # Calculate low resolution dimensions
+    low_width = int(original_width * scale_low)
+    low_height = int(original_height * scale_low)
 
-    # Get the dimensions of the original image and watermark
-    image_width, image_height = image.size
-    watermark_width, watermark_height = watermark.size
+    # Calculate medium resolution dimensions
+    medium_width = int(original_width * scale_medium)
+    medium_height = int(original_height * scale_medium)
 
-    # Calculate the number of times to repeat the watermark in both dimensions
-    x_repeat = image_width // watermark_width
-    y_repeat = image_height // watermark_height
+    # Calculate high resolution dimensions
+    high_width = int(original_width * scale_high)
+    high_height = int(original_height * scale_high)
 
-    # Create a transparent image with the same size as the original image
-    transparent = Image.new("RGBA", image.size)
+    return {
+        "original": (original_width, original_height),
+        "low": (low_width, low_height),
+        "medium": (medium_width, medium_height),
+        "high": (high_width, high_height)
+    }
 
-    # Paste the watermark at regular intervals to tile it
-    for x in range(x_repeat):
-        for y in range(y_repeat):
-            # Calculate the position to paste the watermark
-            position = (x * watermark_width, y * watermark_height)
-            transparent.paste(watermark, position, watermark)
 
-    # Save the watermarked image
-    transparent.save(output_image_path)
+def resize_to_resolution(image_path, image_resolution, extension="jpg"):
+    from PIL import Image
+    # Open the original image
+    original_image = Image.open(image_path)
+    original_width, original_height = original_image.size
+    # Define a list of resolutions you want to save
+    new_resolution = calculate_resolutions(original_width, original_height)
+    original_image.resize(new_resolution.get(image_resolution), Image.BILINEAR)
+    file_output = f"media/resized_images/image.{extension}"
+    original_image.save(file_output)
+    # Save the resized image
+    return file_output
 
+
+def convert_to_format(image_path, image_format):
+    if image_path.startswith('/'):
+        image_path = image_path[1:]
+    original_image = Image.open(image_path)
+    formats = {
+        "jpg": 'JPEG',
+        "png": 'PNG'
+    }
+    
+    # Define the file name based on the format (e.g., 'image.jpg', 'image.png', etc.)
+    file_name = f'media/reformated_images/image.{formats.get(image_format).lower()}'
+    
+    # Save the image in the specified format
+    original_image.save(file_name, format=formats.get(image_format))
+    return file_name

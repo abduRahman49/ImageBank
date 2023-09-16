@@ -23,6 +23,7 @@ urlpatterns = [
     path('api/v1/delete/images/<int:id>/', views.delete_image, name="delete-image"),
     path('contributeur/images/search/', views.search_images, name="recherche-images"),
     path('api/v1/images/<int:id>/json/', views.get_json_image),
+    path('api/v1/images/<int:id>/download/', views.download_image, name='image-download'),
     path('api/', include('api.urls')),
     path("__debug__/", include(debug_toolbar.urls)),
     path('accounts/', include('allauth.urls')),

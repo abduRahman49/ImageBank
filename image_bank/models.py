@@ -51,7 +51,7 @@ class Image(models.Model):
     auteur = models.CharField(max_length=200)
     title = models.CharField(max_length=200)
     image = models.ImageField(upload_to='images/')
-    watermark = models.ImageField(upload_to='watermarks/', null=True)
+    downloaded = models.ImageField(upload_to='watermarks/', null=True)
     description = models.TextField(blank=True)
     taille = models.IntegerField(null=True)
     format = models.CharField(max_length=200)
@@ -62,7 +62,6 @@ class Image(models.Model):
     payment_required = models.BooleanField(default=False)
     licence = models.CharField(max_length=100, blank=True)
     price = models.FloatField(blank=True, null=True)
-    tags = models.ManyToManyField(Tag, blank=True)
     new_tags = TaggableManager()
     contributor = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='images')
     

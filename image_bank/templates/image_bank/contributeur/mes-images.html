@@ -1,9 +1,5 @@
 {% extends "image_bank/main.html" %}
 {% load static %}
-{% block extra_head %}
-    <link rel="stylesheet" href="{% static 'image_bank/css/style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.9/tagify.css" integrity="sha512-yWu5jVw5P8+IsI7tK+Uuc7pFfQvWiBfFfVlT5r0KP6UogGtZEc4BxDIhNwUysMKbLjqCezf6D8l6lWNQI6MR7Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-{% endblock %}
 
 {% block content %}
 <div id="content">
@@ -24,17 +20,17 @@
           <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
               <ul class="navbar-nav navbar-nav-hover mx-auto">
               <li class="nav-item dropdown dropdown-hover mx-2">
-                  <a hx-get="{% url 'accueil-images' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuPages" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a hx-get="{% url 'accueil-images' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" hx-swap="morphdom"  role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuPages" data-bs-toggle="dropdown" aria-expanded="false">
                   Accueil
                   </a>
               </li>
               <li class="nav-item dropdown dropdown-hover mx-2">
-                  <a hx-get="{% url 'upload-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuAccount" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a hx-get="{% url 'upload-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" hx-swap="morphdom"  role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuAccount" data-bs-toggle="dropdown" aria-expanded="false">
                   Charger images
                   </a>
               </li>
               <li class="nav-item dropdown dropdown-hover mx-2">
-                  <a hx-get="{% url 'images-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuBlocks" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a hx-get="{% url 'images-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" hx-swap="morphdom"  role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuBlocks" data-bs-toggle="dropdown" aria-expanded="false">
                   Mes images
                   </a>
               </li>
@@ -162,7 +158,7 @@
                               </div>
                             </div>
                             <!-- Deletion modal -->
-                            <div class="modal fade" id="deleteModalForm{{ image.id }}" tabindex="-1" aria-labelledby="deleteModalForm" aria-hidden="true">
+                            <div class="modal fade delete-modal" id="deleteModalForm{{ image.id }}" tabindex="-1" aria-labelledby="deleteModalForm" aria-hidden="true">
                               <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
                                 <div class="modal-content bg-gradient-danger">
                                   <div class="modal-header border-0">
@@ -216,7 +212,7 @@
       {% endblock %}
       <script src="{% static 'image_bank/assets/js/plugins/choices.min.js' %}"></script>
       <script type="text/javascript">
-        // window.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('DOMContentLoaded', () => {
           function togglePriceField(modalId) {
               const paymentCheckbox = document.querySelector(`#${modalId} #id_payment_required`);
               const priceField = document.querySelector(`#${modalId} .price`);
@@ -250,7 +246,6 @@
           }
 
           htmx.on('htmx:afterRequest', function (event) {
-            // event.preventDefault();
             document.querySelectorAll('.edit-modal').forEach(modal => {
               const choices = new Choices(modal.querySelector('#id_new_tags'), {
                 searchEnabled: false
@@ -271,7 +266,7 @@
               }
             }
           });
-        // })
+        })
 
       </script>
   </main>

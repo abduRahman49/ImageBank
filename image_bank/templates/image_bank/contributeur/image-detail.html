@@ -4,7 +4,6 @@
 {% load random_class %}
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'image_bank/css/style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.9/tagify.css" integrity="sha512-yWu5jVw5P8+IsI7tK+Uuc7pFfQvWiBfFfVlT5r0KP6UogGtZEc4BxDIhNwUysMKbLjqCezf6D8l6lWNQI6MR7Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
       .tags {
           display: flex;
@@ -21,6 +20,10 @@
 
       ul li {
           list-style: none;
+      }
+
+      .custom-radio .custom-control-input:checked ~ .custom-control-label::before {
+      border-color: #0000; /* Change this to your desired border color */
       }
 
     </style>
@@ -86,7 +89,9 @@
                             <div class="col-xl-5 col-lg-6 text-center">
                               <img class="w-100 border-radius-lg shadow-lg mx-auto" {% if image.payment_required %} src="{{ image.image.url | watermark:"django_test,opacity=10,tile=1,rotation=45" }}" {% else %} src="{{ image.image.url }}" {% endif %} alt="{{ image.description }}">
                               <div class="my-gallery d-flex mt-4 pt-2" itemscope itemtype="http://schema.org/ImageGallery">
+                                <div id="download">
 
+                                </div>
                               </div>
                             
                             </div>
@@ -146,10 +151,52 @@
                             </div>
                             <div class="row mt-4">
                             <div class="col-lg-5">
-                            <button class="btn bg-gradient-primary mb-0 mt-lg-auto w-100" type="button" name="button"><i class="fa fa-download" aria-hidden="true"></i> Télécharger</button>
+                              <div class="dropdown">
+                                <button class="btn bg-gradient-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                  <i class="fa fa-download" aria-hidden="true"></i> Télécharger
+                                </button>
+                                <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton">
+                                  <form hx-post="{% url 'image-download' image.id  %}" hx-trigger="submit" hx-target="#download" hx-swap="innerHTML">
+                                    {% csrf_token %}
+                                    <li>
+                                      <p>Choisissez la résolution:</p>
+                                      <div>
+                                        <input class="form-check-input" type="radio" id="original" name="image_resolution" value="original">
+                                        <label for="original">Originale</label>
+                                      </div>
+                                      <div>
+                                        <input class="form-check-input" type="radio" id="low" name="image_resolution" value="low">
+                                        <label for="low">Faible</label>
+                                      </div>
+                                      <div>
+                                        <input class="form-check-input" type="radio" id="medium" name="image_resolution" value="medium">
+                                        <label for="medium">Moyenne</label>
+                                      </div>
+                                      <div>
+                                        <input class="form-check-input" type="radio" id="high" name="image_resolution" value="high">
+                                        <label for="high">Elevée</label>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <p>Choisissez le format:</p>
+                                      <div>
+                                        <input class="form-check-input" type="radio" id="jpg" name="image_format" value="jpg">
+                                        <label for="jpg">JPEG</label>
+                                      </div>
+                                      <div>
+                                        <input class="form-check-input" type="radio" id="png" name="image_format" value="png">
+                                        <label for="png">PNG</label>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <input type="submit" class="btn bg-gradient-primary" value="Télécharger">
+                                    </li>
+                                  </form>
+                                </ul>
+                              </div>
                             </div>
                             <div class="col-lg-5">
-                              <button class="btn bg-gradient-dark mb-0 mt-lg-auto w-100" type="button" name="button"><i class="fa fa-eye" aria-hidden="true"></i> Voir</button>
+                              <a {% if image.payment_required %} href="{{ image.image.url | watermark:"django_test,opacity=10,tile=1,rotation=45" }}" {% else %} href="{{ image.image.url }}" {% endif %} target="_blank" class="btn bg-gradient-dark mb-0 mt-lg-auto w-100" type="button"><i class="fa fa-eye" aria-hidden="true"></i> Voir</a>
                             </div>
                             </div>
                             </div>

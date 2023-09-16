@@ -1,9 +1,5 @@
 {% extends "image_bank/main.html" %}
 {% load static %}
-{% block extra_head %}
-    <link rel="stylesheet" href="{% static 'image_bank/css/style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.9/tagify.css" integrity="sha512-yWu5jVw5P8+IsI7tK+Uuc7pFfQvWiBfFfVlT5r0KP6UogGtZEc4BxDIhNwUysMKbLjqCezf6D8l6lWNQI6MR7Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-{% endblock %}
 
 {% block content %}
 <div id="content">
@@ -24,17 +20,17 @@
           <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
               <ul class="navbar-nav navbar-nav-hover mx-auto">
               <li class="nav-item dropdown dropdown-hover mx-2">
-                  <a hx-get="{% url 'accueil-images' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuPages" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a hx-get="{% url 'accueil-images' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" hx-swap="morphdom"  role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuPages" data-bs-toggle="dropdown" aria-expanded="false">
                   Accueil
                   </a>
               </li>
               <li class="nav-item dropdown dropdown-hover mx-2">
-                  <a hx-get="{% url 'upload-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuAccount" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a hx-get="{% url 'upload-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" hx-swap="morphdom"  role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuAccount" data-bs-toggle="dropdown" aria-expanded="false">
                   Charger images
                   </a>
               </li>
               <li class="nav-item dropdown dropdown-hover mx-2">
-                  <a hx-get="{% url 'images-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuBlocks" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a hx-get="{% url 'images-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" hx-swap="morphdom"  role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuBlocks" data-bs-toggle="dropdown" aria-expanded="false">
                   Mes images
                   </a>
               </li>
@@ -51,7 +47,7 @@
   <main>
       {% block dynamic_content %}
       <section class="pt-5 mt-5">
-        <div class="container pt-4">
+        <div class="container">
           <div class="row">
             <div class="col-lg-7 mx-auto d-flex justify-content-center flex-column">
               <div class="card d-flex justify-content-center p-4 shadow-lg">
@@ -130,6 +126,12 @@
         const paymentCheckbox = document.querySelector("#id_payment_required");
         const priceField = document.querySelector(".price");
 
+        const auteur = document.querySelector('#id_auteur');
+        new Choices(auteur);
+
+        const licence = document.querySelector('#id_licence');
+        new Choices(licence);
+
         paymentCheckbox.addEventListener('change', () => {
             if (paymentCheckbox.checked) {
                 priceField.style.display = 'block';
@@ -159,7 +161,7 @@
         }).showToast();
         }
 
-        // window.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('DOMContentLoaded', () => {
             initializeTagInputs();
             
             htmx.on('htmx:afterRequest', function (event) {
@@ -178,7 +180,7 @@
               }
             }
           });
-        // })
+        })
 
       </script>
   </main>

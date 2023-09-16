@@ -4,7 +4,6 @@
 {% load random_class %}
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'image_bank/css/style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.9/tagify.css" integrity="sha512-yWu5jVw5P8+IsI7tK+Uuc7pFfQvWiBfFfVlT5r0KP6UogGtZEc4BxDIhNwUysMKbLjqCezf6D8l6lWNQI6MR7Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
       /* Basic styles for layout */
       body {
@@ -14,9 +13,6 @@
       }
 
       /* Remove list-style from ul */
-      ul {
-          list-style: none;
-      }
 
       /* Or, remove list-style from li */
       ul li {
@@ -85,17 +81,17 @@
           <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
               <ul class="navbar-nav navbar-nav-hover mx-auto">
               <li class="nav-item dropdown dropdown-hover mx-2">
-                  <a hx-get="{% url 'accueil-images' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuPages" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a hx-get="{% url 'accueil-images' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" hx-swap="morphdom" role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuPages" data-bs-toggle="dropdown" aria-expanded="false">
                   Accueil
                   </a>
               </li>
               <li class="nav-item dropdown dropdown-hover mx-2">
-                  <a hx-get="{% url 'upload-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuAccount" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a hx-get="{% url 'upload-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" hx-swap="morphdom" role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuAccount" data-bs-toggle="dropdown" aria-expanded="false">
                   Charger images
                   </a>
               </li>
               <li class="nav-item dropdown dropdown-hover mx-2">
-                  <a hx-get="{% url 'images-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuBlocks" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a hx-get="{% url 'images-contributeur' %}" hx-target="#content" hx-trigger="click" hx-push-url="true" hx-swap="morphdom" role="button" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuBlocks" data-bs-toggle="dropdown" aria-expanded="false">
                   Mes images
                   </a>
               </li>
@@ -148,18 +144,18 @@
             </div>
           </form>
         </div>
-        <div class="container mt-5 pt-5">
+        <div class="container mt-5 pt-5" style="display: flex; flex-wrap: wrap;">
           <!-- Filter Card (on the left) -->
-          <div class="filter-card card shadow-lg">
+          <div class="filter-card card shadow-lg" style="flex: 1;max-width: 300px;padding: 20px;background-color: #f0f0f0;">
               <ul class="tags">
                 {% for tag in tags %}
-                  <li><span class="{% random_class %}">{{ tag.name }}</span></li>
+                  <li style="list-style: none"><span class="{% random_class %}" style="padding: 6px 12px;font-size: 14px;">{{ tag.name }}</span></li>
                 {% endfor %}
               </ul>
           </div>
 
           <!-- Image Section (on the right) -->
-          <div id="images" class="image-section">
+          <div id="images" class="image-section" style="flex: 3;padding: 20px;background-color: #ffffff;">
               <!-- Display searched images here -->
               <!-- Use CSS grid or other layout techniques to display images -->
               <!-- Example: -->

@@ -1,12 +1,13 @@
 import numpy as np
+import tempfile
 from PIL import Image as PImage
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .forms import ImageForm, NewUserForm, RegisteredUserForm
 from .models import CustomUser, Image
 from api.serializers import ImageSerializer, CustomUserSerializer
+from api.utilities import convert_to_format, resize_to_resolution
 from taggit.models import Tag
-from django.http import JsonResponse
 from django.db.utils import IntegrityError
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
@@ -14,7 +15,7 @@ from django.contrib.auth import login
 from django.db.models import Q
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, FileResponse, HttpResponse
 from django.core.paginator import Paginator
 
 
@@ -203,6 +204,27 @@ def search_images(request):
     return render(request, 'image_bank/contributeur/resultats-recherche.html', {'images': page_object})
     
 
+@login_required
 def detail_image(request, id):
     image = get_object_or_404(Image, pk=id)
     return render(request, "image_bank/contributeur/image-detail.html", {'image': image})
+
+
+@login_required
+def download_image(request, id):
+    from io import BytesIO
+    from django.core.files import File
+    
+    image_format = request.POST.get('image_format')
+    image_resolution = request.POST.get('image_resolution')
+    image = get_object_or_404(Image, pk=id)
+    
+    converted_image_path = convert_to_format(image.image.url, image_format)
+    final_image_output = resize_to_resolution(converted_image_path, image_resolution, image_format)
+    
+    image.downloaded.save(f'download.{image_format}', File(open(final_image_output, 'rb')), save=True)
+
+    response = f'''
+        <a download href="{image.downloaded.url}" class="btn bg-gradient-dark mb-0 mt-lg-auto w-100">Cliquez ici pour télécharger</a>
+    '''
+    return HttpResponse(response)
