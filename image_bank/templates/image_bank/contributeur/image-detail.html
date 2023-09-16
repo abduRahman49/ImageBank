@@ -104,8 +104,20 @@
                             </div>
                             <br>
                             {% if image.payment_required %}
-                            <h6 class="mb-0 mt-3">Prix</h6>
-                            <h5>{{ image.price }} CFA</h5>
+                            <div class="row">
+                              <div class="col-lg-6">
+                                <h6 class="mb-0 mt-3">Prix</h6>
+                                <h5>{{ image.price }} CFA</h5>
+                              </div>
+                              <div class="col-lg-6">
+                                <h6 class="mb-0 mt-3">Format</h6>
+                                {% if image.format %}
+                                <span class="badge badge-secondary">{{ image.format }}</span>
+                                {% else %}
+                                <span class="badge badge-secondary">Non renseigné</span>
+                                {% endif %}
+                              </div>
+                            </div>
                             {% else %}
                             <div class="row">
                               <div class="col-lg-6">
@@ -151,12 +163,13 @@
                             </div>
                             <div class="row mt-4">
                             <div class="col-lg-5">
+                              {% if image.contributeur.id == request.user.id %}
                               <div class="dropdown">
                                 <button class="btn bg-gradient-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                   <i class="fa fa-download" aria-hidden="true"></i> Télécharger
                                 </button>
                                 <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton">
-                                  <form hx-post="{% url 'image-download' image.id  %}" hx-trigger="submit" hx-target="#download" hx-swap="innerHTML">
+                                  <form hx-post="{% url 'image-download' image.id  %}" hx-trigger="submit" hx-target="#download" hx-swap="outerHTML">
                                     {% csrf_token %}
                                     <li>
                                       <p>Choisissez la résolution:</p>
@@ -194,6 +207,9 @@
                                   </form>
                                 </ul>
                               </div>
+                              {% else %}
+                                <a href="#" class="btn bg-gradient-primary mb-0 mt-lg-auto w-100"><i class="fa fa-money" aria-hidden="true"></i> Acheter</a>
+                              {% endif %}
                             </div>
                             <div class="col-lg-5">
                               <a {% if image.payment_required %} href="{{ image.image.url | watermark:"django_test,opacity=10,tile=1,rotation=45" }}" {% else %} href="{{ image.image.url }}" {% endif %} target="_blank" class="btn bg-gradient-dark mb-0 mt-lg-auto w-100" type="button"><i class="fa fa-eye" aria-hidden="true"></i> Voir</a>

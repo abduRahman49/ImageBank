@@ -96,7 +96,7 @@ def images_contributeur(request):
 @login_required
 def logout_view(request):
     logout(request)
-    return redirect(reverse('sign-in'))
+    return redirect(reverse('index'))
     
 # define a function-based view that return a modelForm from an id sent by the client
 def get_json_image(request, id):

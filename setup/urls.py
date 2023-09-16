@@ -26,7 +26,7 @@ urlpatterns = [
     path('api/v1/images/<int:id>/download/', views.download_image, name='image-download'),
     path('api/', include('api.urls')),
     path("__debug__/", include(debug_toolbar.urls)),
-    path('accounts/', include('allauth.urls')),
+    # path('accounts/', include('allauth.urls')),
     path('', views.index, name='index'),
 ]
 
