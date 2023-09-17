@@ -103,7 +103,7 @@
                     </div>
                     <div class="row mt-4">
                     <div class="col-lg-5">
-                      {% if image.contributeur.id == request.user.id %}
+                      {% if not image.payment_required %}
                       <div class="dropdown">
                         <a class="btn bg-gradient-primary dropdown-toggle stacked-button" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                           <i class="fa fa-download" aria-hidden="true"></i> Télécharger
