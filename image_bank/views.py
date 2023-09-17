@@ -79,6 +79,61 @@ def signin_contributeur(request):
     return render(request, 'image_bank/contributeur/sign-in-cover.html', {'form': form})
 
 
+def signup_user(request):
+    print("entered the function")
+    if request.method == 'POST':
+        form = NewUserForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            try:
+                user = CustomUser.objects.create_user(data.get('username'), data.get('email'), data.get('password'))
+                user.role = "U"
+                user.save()
+                return redirect(reverse('sign-in-user'))
+            except IntegrityError:
+                messages.add_message(request, messages.constants.ERROR, 'Utilisateur déjà existant')
+                return redirect(reverse('sign-up-user'))
+        else:
+            messages.add_message(request, messages.constants.ERROR, form.errors)
+            return redirect(reverse('sign-up-user'))
+    form = NewUserForm()
+    return render(request, 'image_bank/utilisateur/sign-up-cover.html', {'form': form})
+
+
+def signin_user(request):
+    if request.method == 'POST':
+        form = RegisteredUserForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            try:
+                user = CustomUser.objects.get(email=data.get('email'))
+                if user.check_password(data.get('password')):
+                    login(request, user)
+                    return redirect(reverse('index-user'))
+                else:
+                    messages.add_message(request, messages.constants.ERROR, 'Mot de passe incorrect')
+                return redirect(reverse('sign-in-user'))
+            except CustomUser.DoesNotExist:
+                messages.add_message(request, messages.constants.ERROR, 'Utilisateur n\'existe pas')
+                return redirect(reverse('sign-in-user'))
+        else:
+            messages.add_message(request, messages.constants.ERROR, form.errors)
+            return redirect(reverse('sign-in-user'))
+    form = RegisteredUserForm()
+    return render(request, 'image_bank/utilisateur/sign-in-cover.html', {'form': form})
+
+
+@login_required
+def index_user(request):
+    paginator = Paginator(Image.objects.all(), 4)
+    page_number = request.GET.get('page', 1)
+    page_object = paginator.get_page(page_number)
+    expression = Q(format=None) | Q(format="")
+    formats = Image.objects.exclude(expression).values_list('format', flat=True).distinct()
+    tags = Tag.objects.filter(image__isnull=False).distinct()
+    return render(request, 'image_bank/utilisateur/accueil.html', {'images': page_object, 'formats': formats, 'tags': tags})
+
+
 @login_required
 def index_contributeur(request):
     return render(request, 'image_bank/contributeur/charger-images.html')
