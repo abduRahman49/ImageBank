@@ -141,7 +141,7 @@ def index_contributeur(request):
 
 @login_required
 def images_contributeur(request):
-    paginator = Paginator(Image.objects.all(), 4)
+    paginator = Paginator(Image.objects.filter(contributeur=request.user), 4)
     page_number = request.GET.get('page', 1)
     page_object = paginator.get_page(page_number)
     form = ImageForm()
