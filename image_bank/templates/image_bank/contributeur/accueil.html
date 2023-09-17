@@ -111,7 +111,7 @@
       <div class="filter-card card shadow-lg" style="flex: 1;max-width: 300px;padding: 20px;background-color: #f0f0f0;">
           <ul class="tags">
             {% for tag in tags %}
-              <li style="list-style: none" hx-get="#" hx-trigger="click" hx-target="#content" hx-push-url="true" hx-swap="outerHTML"><span class="{% random_class %}" style="padding: 6px 12px;font-size: 14px;">{{ tag.name }}</span></li>
+              <li style="list-style: none" hx-get="{% url 'recherche-images' tag.id %}" hx-trigger="click" hx-target="#images"><span class="{% random_class %}" style="padding: 6px 12px;font-size: 14px;">{{ tag.name }}</span></li>
             {% endfor %}
           </ul>
       </div>

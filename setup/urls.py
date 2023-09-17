@@ -21,6 +21,7 @@ urlpatterns = [
     path('contributeur/images/upload/', views.upload_image, name="upload-contributeur"),
     path('api/v1/edit/images/<int:id>/', views.update_image, name="edit-image"),
     path('api/v1/delete/images/<int:id>/', views.delete_image, name="delete-image"),
+    path('contributeur/images/search/<int:id>/', views.search_images, name="recherche-images"),
     path('contributeur/images/search/', views.search_images, name="recherche-images"),
     path('api/v1/images/<int:id>/json/', views.get_json_image),
     path('api/v1/images/<int:id>/download/', views.download_image, name='image-download'),

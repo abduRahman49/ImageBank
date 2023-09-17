@@ -185,23 +185,33 @@ def accueil_images(request):
 
 
 @login_required
-def search_images(request):
-    resolution = request.POST.get('resolution')
-    format_image = request.POST.get('format')
-    paiement = request.POST.get('paiement')
-    
-    queryset = Image.objects.filter(status='P')
-    if resolution is not None and resolution != "":
-        queryset = queryset.filter(resolutions.get(resolution))
-    if format_image is not None and format_image != "":
-        queryset = queryset.filter(format__icontains=format_image)
-    if paiement is not None and paiement != "":
-        queryset = queryset.filter(payment_required=paiements.get(paiement))
-    
-    paginator = Paginator(queryset, 4)
-    page_number = request.GET.get('page', 1)
-    page_object = paginator.get_page(page_number)
-    return render(request, 'image_bank/contributeur/resultats-recherche.html', {'images': page_object})
+def search_images(request, id=None):
+    if request.method == "POST":
+        resolution = request.POST.get('resolution')
+        format_image = request.POST.get('format')
+        paiement = request.POST.get('paiement')
+        
+        queryset = Image.objects.filter(status='P')
+        if resolution is not None and resolution != "":
+            queryset = queryset.filter(resolutions.get(resolution))
+        if format_image is not None and format_image != "":
+            queryset = queryset.filter(format__icontains=format_image)
+        if paiement is not None and paiement != "":
+            queryset = queryset.filter(payment_required=paiements.get(paiement))
+        
+        paginator = Paginator(queryset, 4)
+        page_number = request.GET.get('page', 1)
+        page_object = paginator.get_page(page_number)
+        return render(request, 'image_bank/contributeur/resultats-recherche.html', {'images': page_object})
+    elif request.method == "GET":
+        tag = get_object_or_404(Tag, pk=id)
+        queryset = Image.objects.filter(new_tags__name__in=[tag.name])
+        paginator = Paginator(queryset, 4)
+        page_number = request.GET.get('page', 1)
+        page_object = paginator.get_page(page_number)
+        return render(request, 'image_bank/contributeur/resultats-recherche.html', {'images': page_object})
+    else:
+        return HttpResponse("Method not Allowed!")
     
 
 @login_required
