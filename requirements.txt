@@ -10,7 +10,7 @@ cssselect2==0.7.0
 decorator==4.4.2
 defusedxml==0.7.1
 Django==4.2
-django-allauth==0.55.2
+django-appconf==1.0.5
 django-autocomplete-light==3.9.7
 django-debug-toolbar==4.2.0
 django-environ==0.11.0
@@ -18,6 +18,8 @@ django-filer==3.0.5
 django-filter==23.2
 django-polymorphic==3.1.0
 django-tagging==0.5.0
+django-taggit==4.0.0
+django-watermark==0.2.0
 django-widget-tweaks==1.4.12
 djangorestframework==3.14.0
 easy-thumbnails==2.8.5
@@ -25,6 +27,7 @@ idna==3.4
 imagestore==3.1.0
 install==1.3.5
 lxml==4.9.3
+numpy==1.25.2
 oauthlib==3.2.2
 orjson==3.9.2
 Pillow==10.0.0
@@ -46,4 +49,3 @@ tinycss2==1.2.1
 tzdata==2023.3
 urllib3==2.0.3
 webencodings==0.5.1
-django-taggit==4.0.0
