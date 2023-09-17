@@ -2,7 +2,16 @@
 {% load static %}
 {% load watermark %}
 {% load random_class %}
-
+{% block extra_head %}
+<style>
+  /* Responsive layout */
+  @media screen and (max-width: 768px) {
+      .stacked-button {
+        margin-top: 12px;
+      }
+  }
+  </style>
+{% endblock %}
 {% block dynamic_content %}
     <div id="content">
       <section>
@@ -96,9 +105,9 @@
                     <div class="col-lg-5">
                       {% if image.contributeur.id == request.user.id %}
                       <div class="dropdown">
-                        <button class="btn bg-gradient-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="btn bg-gradient-primary dropdown-toggle stacked-button" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                           <i class="fa fa-download" aria-hidden="true"></i> Télécharger
-                        </button>
+                        </a>
                         <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton">
                           <form hx-post="{% url 'image-download' image.id  %}" hx-trigger="submit" hx-target="#download" hx-swap="outerHTML">
                             {% csrf_token %}
@@ -143,7 +152,7 @@
                       {% endif %}
                     </div>
                     <div class="col-lg-5">
-                      <a {% if image.payment_required %} href="{{ image.image.url | watermark:"django_test,opacity=10,tile=1,rotation=45" }}" {% else %} href="{{ image.image.url }}" {% endif %} target="_blank" class="btn bg-gradient-dark mb-0 mt-lg-auto w-100" type="button"><i class="fa fa-eye" aria-hidden="true"></i> Voir</a>
+                      <a {% if image.payment_required %} href="{{ image.image.url | watermark:"django_test,opacity=10,tile=1,rotation=45" }}" {% else %} href="{{ image.image.url }}" {% endif %} target="_blank" class="btn bg-gradient-dark mb-0 mt-lg-auto w-100 stacked-button" type="button"><i class="fa fa-eye" aria-hidden="true"></i> Voir</a>
                     </div>
                     </div>
                     <div class="row mt-4">
@@ -171,9 +180,8 @@
 
 {% block extra_js %}
 <script type="text/javascript">
-
     document.querySelector('.fa-arrow-left').addEventListener('click', (e) => {
-        window.history.back();
+      window.history.back();
     })
 
 </script>
