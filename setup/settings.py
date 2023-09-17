@@ -45,12 +45,12 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_filters',
     # allauth for authentication
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
     # other providers for authentication
-    'allauth.socialaccount.providers.auth0',
-    'allauth.socialaccount.providers.google',
+    # 'allauth.socialaccount.providers.auth0',
+    # 'allauth.socialaccount.providers.google',
     'taggit',
     "watermarker",
 ]

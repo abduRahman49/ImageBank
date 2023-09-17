@@ -14,13 +14,6 @@ class CustomUser(User):
 
 class Tag(models.Model):
     name = models.CharField(max_length=50)
-    
-
-class Payment(models.Model):
-    price = models.FloatField()
-    currency = models.CharField(max_length=3)
-    image_title = models.CharField(max_length=200)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="payments")
 
 
 class Licence(models.Model):
@@ -29,6 +22,10 @@ class Licence(models.Model):
     
     def __str__(self):
         return self.name
+    
+
+class Categorie(models.Model):
+    name = models.CharField(max_length=200)
 
 class Image(models.Model):
     # When an image is uploaded to the platform, it has the following three states
@@ -64,4 +61,12 @@ class Image(models.Model):
     price = models.FloatField(blank=True, null=True)
     new_tags = TaggableManager()
     contributor = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='images')
+    categorie = models.ForeignKey(Categorie, on_delete=models.SET_NULL, related_name='images', null=True)
     
+    
+class Payment(models.Model):
+    price = models.FloatField()
+    currency = models.CharField(max_length=3)
+    image = models.ForeignKey(Image, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="payments")
+    service = models.CharField(max_length=200, null=True)

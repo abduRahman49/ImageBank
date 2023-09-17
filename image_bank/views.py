@@ -81,7 +81,7 @@ def signin_contributeur(request):
 
 @login_required
 def index_contributeur(request):
-    return render(request, 'image_bank/contributeur/index.html')
+    return render(request, 'image_bank/contributeur/charger-images.html')
 
 
 @login_required

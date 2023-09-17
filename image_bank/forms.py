@@ -1,4 +1,3 @@
-from allauth.account.forms import SignupForm
 from django import forms
 from .models import Image, Licence, CustomUser
 from django.core import validators

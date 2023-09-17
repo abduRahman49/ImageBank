@@ -1,8 +1,8 @@
-{% extends "image_bank/index.html" %}
+{% extends "image_bank/main.html" %}
 {% load static %}
 
-{% block dynamic_content %}
-  <div id="content">
+{% block content %}
+  <div id="content" hx-swap="morphdom">
     <input type="hidden" id="my-images">
     <section class="pt-6 mt-6">
       <div class="row justify-content-center">
@@ -129,7 +129,7 @@
                             <hr class="horizontal light mt-0">
                             <div class="modal-body">
                               <div class="py-3 text-center text-white">
-                                <i class="ni ni-bell-55 ni-3x"></i>
+                                <i class="fa fa-exclamation-triangle fa-3x" aria-hidden="true"></i>
                                 <h4 class="heading mt-4 text-white">Etes vous sûr de votre action ?</h4>
                                 <p class="text-white opacity-8">Lorsque vous validerez, la suppression de cette image sera définitive</p>
                               </div>
@@ -190,7 +190,6 @@
 
     // Call the function for each modal
   function initChoices() {
-    console.log('initializing choices');
     document.querySelectorAll('.edit-modal').forEach(modal => {
         if(!modal.classList.contains('choice-initialized')) {
           const choices = new Choices(modal.querySelector('#id_new_tags'), {
@@ -203,7 +202,6 @@
   }
 
   function reinitChoices() {
-    console.log('reinitializing choices');
     initChoices();
   }
 

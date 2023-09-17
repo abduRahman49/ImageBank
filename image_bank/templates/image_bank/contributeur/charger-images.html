@@ -1,100 +1,149 @@
-{% extends "image_bank/index.html" %}
+{% extends "image_bank/main.html" %}
 {% load static %}
+{% block extra_head %}
+<style>
+  aside {
+    background-image: url("{% static 'image_bank/assets/img/dusty-blue.jpg' %}")
+  }
+</style>
+{% endblock %}
 
-{% block dynamic_content %}
-  <div id="content">
-    <input type="hidden" id="upload-images">
-    <section class="pt-6 mt-6">
-      <div class="row">
-        <div class="col-lg-7 mx-auto d-flex justify-content-center flex-column">
-          <div class="card d-flex justify-content-center p-4 shadow-lg">
-            <div class="text-center">
-              <h3 class="text-gradient text-primary">Charger des images</h3>
-              <p class="mb-0">
-                Renseignez les informations du formulaire et cliquez sur envoyer
-              </p>
-            </div>
-            <div class="card card-plain">
-              <form hx-post="{% url 'upload-contributeur' %}" hx-trigger="submit" hx-swap="none" role="form" enctype="multipart/form-data" method="post" autocomplete="off">
-                {% csrf_token %}
-                <div class="card-body pb-2">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <label>Nom</label>
-                      <div class="input-group mb-4">
-                        <input name="name" id="id_name" class="form-control" placeholder="Intitulé image" aria-label="Full Name" type="text" >
-                      </div>
+{% block content %}
+<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
+  <div class="sidenav-header">
+    <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+    <a class="navbar-brand m-0" href="#">
+      <img src="{% static 'image_bank/assets/img/logo.png' %}" class="navbar-brand-img h-100" alt="main_logo">
+      <span class="ms-1 font-weight-bold">SEN NATAAL</span>
+    </a>
+  </div>
+  <hr class="horizontal dark mt-0">
+  <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+    <ul class="navbar-nav">
+      <li class="nav-item mt-3">
+        <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Menu</h6>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="#">
+          <span class="nav-link-text ms-1">Charger images</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <span class="nav-link-text ms-1">Mes images</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <span class="nav-link-text ms-1">Profile</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <span class="nav-link-text ms-1">Déconnexion</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</aside>
+<div class="main-content position-relative bg-gray-100 max-height-vh-100 h-100">
+  <div class="container-fluid">
+    <div class="row mt-5 pt-5">
+      <div class="col-lg-7 mx-auto d-flex justify-content-center flex-column">
+        <div class="card d-flex justify-content-center p-4 shadow-lg">
+          <div class="text-center">
+            <h3 class="text-gradient text-info">Charger des images</h3>
+            <p class="mb-0">
+              Renseignez les informations du formulaire et cliquez sur envoyer
+            </p>
+          </div>
+          <div class="card card-plain">
+            <form hx-post="{% url 'upload-contributeur' %}" hx-trigger="submit" hx-swap="none" role="form" enctype="multipart/form-data" method="post" autocomplete="off">
+              {% csrf_token %}
+              <div class="card-body pb-2">
+                <div class="row">
+                  <div class="col-md-6">
+                    <label>Nom</label>
+                    <div class="input-group mb-4">
+                      <input name="name" id="id_name" class="form-control" placeholder="Intitulé image" aria-label="Full Name" type="text" >
                     </div>
-                    <div class="col-md-6 ps-md-2">
-                      <label>Auteur</label>
-                      <select class="form-control" name="auteur" id="id_auteur" placeholder="Auteur">
-                        {% for auteur in form.auteur.field.queryset %}
-                        <option value="{{ auteur.pk }}">{{ auteur.username }}</option>
-                        {% endfor %}
-                      </select>
-                    </div>
                   </div>
-                  <label>Image</label>
-                    <div class="input-group mb-3">
-                        <input id="id_image" type="file" class="form-control" name="image" aria-label="image" >
-                    </div>
-                  <div class="form-group mb-0 mt-md-0 mt-4">
-                    <label>Description</label>
-                    <textarea name="description" id="id_description" class="form-control" rows="4" placeholder="Describe your problem in at least 250 characters"></textarea>
-                  </div>
-                  <div class="form-check form-switch mt-3">
-                    <input id="id_payment_required" class="form-check-input" type="checkbox" name="payment_required" {% if image.payment_required %} checked {% endif %} >
-                    <label>Image payante ?</label>
-                  </div>
-                  <div class="form-group mb-4 price" style="display: none;">
-                      <label>Prix</label>
-                      <input type="number" class="form-control" name="price" id="id_price" >
-                  </div>
-                  <div class="form-group mb-4">
-                    <label>Licence</label>
-                    <select class="form-control" name="licence" id="id_licence" placeholder="Licence">
-                        {% for licence in form.licence.field.queryset %}
-                        <option value="{{ licence.pk }}">{{ licence.name }}</option>
-                        {% endfor %}
+                  <div class="col-md-6 ps-md-2">
+                    <label>Auteur</label>
+                    <select class="form-control" name="auteur" id="id_auteur" placeholder="Auteur">
+                      {% for auteur in form.auteur.field.queryset %}
+                      <option value="{{ auteur.pk }}">{{ auteur.username }}</option>
+                      {% endfor %}
                     </select>
                   </div>
-                  <label>Tags</label>
+                </div>
+                <label>Image</label>
                   <div class="input-group mb-3">
-                    <input id="id_new_tags" name="new_tags" type="text" class="form-control tag-input" aria-label="tags" >
+                      <input id="id_image" type="file" class="form-control" name="image" aria-label="image" >
                   </div>
-                  <div class="row">
-                    <div class="col-md-12 text-center">
-                      <button type="submit" class="btn bg-gradient-primary mt-3 mb-0">Envoyer</button>
-                    </div>
+                <div class="form-group mb-0 mt-md-0 mt-4">
+                  <label>Description</label>
+                  <textarea name="description" id="id_description" class="form-control" rows="4" placeholder="Describe your problem in at least 250 characters"></textarea>
+                </div>
+                <div class="form-check form-switch mt-3">
+                  <input id="id_payment_required" class="form-check-input" type="checkbox" name="payment_required" {% if image.payment_required %} checked {% endif %} >
+                  <label>Image payante ?</label>
+                </div>
+                <div class="form-group mb-4 price" style="display: none;">
+                    <label>Prix</label>
+                    <input type="number" class="form-control" name="price" id="id_price" >
+                </div>
+                <div class="form-group mb-4">
+                  <label>Licence</label>
+                  <select class="form-control" name="licence" id="id_licence" placeholder="Licence">
+                      {% for licence in form.licence.field.queryset %}
+                      <option value="{{ licence.pk }}">{{ licence.name }}</option>
+                      {% endfor %}
+                  </select>
+                </div>
+                <label>Tags</label>
+                <div class="input-group mb-3">
+                  <input id="id_new_tags" name="new_tags" type="text" class="form-control tag-input" aria-label="tags" >
+                </div>
+                <div class="row">
+                  <div class="col-md-12 text-center">
+                    <button type="submit" class="btn bg-gradient-info mt-3 mb-0">Envoyer</button>
                   </div>
                 </div>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}
+<script async defer src="https://buttons.github.io/buttons.js"></script>
 <script src="{% static 'image_bank/assets/js/plugins/choices.min.js' %}"></script>
+<script src="{% static 'image_bank//assets/js/soft-ui-dashboard.min.js' %}"></script>
 <script type="text/javascript">
       function initializePaymentButtons() {
         const paymentCheckbox = document.querySelector("#id_payment_required");
         const priceField = document.querySelector(".price");
 
         const auteur = document.querySelector('#id_auteur');
-        if(!auteur.classList.contains('choice-initialized')) {
+        let auteurChoiceInitialized = false;
+        if(!auteurChoiceInitialized) {
           new Choices(auteur);
           auteur.classList.add('choice-initialized');
         }
+        auteurChoiceInitialized = true;
 
         const licence = document.querySelector('#id_licence');
-        if(!licence.classList.contains('choice-initialized')) {
+        let licenceChoiceInitialized = false;
+        if(!licenceChoiceInitialized) {
           new Choices(licence);
           licence.classList.add('choice-initialized');
         }
+        licenceChoiceInitialized = true;
 
         paymentCheckbox.addEventListener('change', () => {
             if (paymentCheckbox.checked) {
@@ -113,9 +162,13 @@
   
 
       function initializeTagInputs() {
-          const choices = new Choices('#id_new_tags', {
-          searchEnabled: false
-          });
+          let tagInputsInitialized = false;
+          if(!tagInputsInitialized){
+            const choices = new Choices('#id_new_tags', {
+            searchEnabled: false
+            });
+          }
+          tagInputsInitialized = true;
       }
 
       function reinitializeTagInputs() {
@@ -136,10 +189,10 @@
       initializeTagInputs();
       
       document.addEventListener('htmx:afterSwap', function (event) {
-        if(document.querySelector('#upload-images')) {
-          reinitializeTagInputs();
-          reinitializePaymentButtons();
-        }
+        // if(document.querySelector('#upload-images')) {
+        //   reinitializeTagInputs();
+        //   reinitializePaymentButtons();
+        // }
     });
 
     document.addEventListener('htmx:afterRequest', function (event) {
