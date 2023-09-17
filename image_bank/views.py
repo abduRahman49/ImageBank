@@ -125,7 +125,7 @@ def signin_user(request):
 
 @login_required
 def index_user(request):
-    paginator = Paginator(Image.objects.all(), 4)
+    paginator = Paginator(Image.objects.filter(status="V"), 4)
     page_number = request.GET.get('page', 1)
     page_object = paginator.get_page(page_number)
     expression = Q(format=None) | Q(format="")
