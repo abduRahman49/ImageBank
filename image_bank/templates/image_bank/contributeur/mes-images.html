@@ -171,7 +171,6 @@
 {% block extra_js %}
 <script src="{% static 'image_bank/assets/js/plugins/choices.min.js' %}"></script>
 <script type="text/javascript">
-    
     function togglePriceField(modalId) {
         const paymentCheckbox = document.querySelector(`#${modalId} #id_payment_required`);
         const priceField = document.querySelector(`#${modalId} .price`);
