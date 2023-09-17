@@ -17,6 +17,7 @@
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Auteur</th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Type</th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Format</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Statut</th>
                     <th class="text-secondary opacity-7"></th>
                     <th class="text-secondary opacity-7"></th>
                   </tr>
@@ -35,11 +36,14 @@
                       <p class="text-xs font-weight-bold mb-0">{{ image.auteur }}</p>
                     </td>
                     <td class="text-xs font-weight-bold mb-0">
-                      <span {% if image.payment_required %} class="badge badge-sm badge-success" {% else %} class="badge badge-sm badge-secondary" {% endif %}>{% if image.payment_required %} Payant {% else %} Gratuit {% endif %}</span>
+                      <span {% if image.payment_required %} class="badge badge-sm badge-secondary" {% else %} class="badge badge-sm badge-success" {% endif %}>{% if image.payment_required %} Payant {% else %} Gratuit {% endif %}</span>
                     </td>
                     <td>
                         <p class="text-xs font-weight-bold mb-0">{{ image.format }}</p>
-                      </td>
+                    </td>
+                    <td>
+                      <span {% if image.status == 'V' %} class="badge badge-sm badge-success" {% else %} class="badge badge-sm badge-warning" {% endif %}>{% if image.status == 'V' %} Validée {% else %} En attente {% endif %} </span>
+                    </td>
                     <td class="align-middle">
                         <a href="#" class="btn btn-link text-dark px-3 mb-0" data-bs-toggle="modal" data-bs-target="#editModalForm{{ image.id }}">
                             <i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Modifier
