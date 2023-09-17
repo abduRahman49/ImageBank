@@ -171,21 +171,6 @@
 
 {% block extra_js %}
 <script type="text/javascript">
-    function togglePlugin() {
-      console.log("toggling plugin");
-      const plugin = document.querySelector('#plugin-control');
-      const pluginToControl = document.querySelector('#plugin-to-control');
-        plugin.addEventListener('click', () => {
-        pluginToControl.classList.toggle('show');
-      });
-
-      const pluginControlTwo = document.querySelector('.fixed-plugin-close-button');
-        pluginControlTwo.addEventListener('click', () => {
-        pluginToControl.classList.toggle('show');
-      })
-    }
-
-    togglePlugin();
 
     document.querySelector('.fa-arrow-left').addEventListener('click', (e) => {
         window.history.back();
