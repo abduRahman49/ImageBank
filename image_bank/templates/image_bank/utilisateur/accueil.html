@@ -87,7 +87,17 @@
       </li>
       <li class="nav-item">
         <a class="nav-link active" href="#">
-          <span class="nav-link-text ms-1">Profile</span>
+          <span class="nav-link-text ms-1">Images</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <span class="nav-link-text ms-1">Profil</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <span class="nav-link-text ms-1">Paiements</span>
         </a>
       </li>
       <li class="nav-item">
@@ -160,7 +170,7 @@
       <div class="col-lg-3 col-sm-6">
         <div class="card card-plain card-blog mt-4">
           <div class="card-image border-radius-lg position-relative">
-            <a href="javascript:;" hx-get="{% url 'detail-image' image.id %}" hx-trigger="click" hx-target="#content" hx-push-url="true" hx-swap="outerHTML">
+            <a href="javascript:;" hx-get="{% url 'detail-image' image.id %}" hx-trigger="click" hx-target="#content" hx-push-url="true">
               <div class="blur-shadow-image">
                 <img class="img border-radius-lg move-on-hover" {% if image.payment_required %} src="{{ image.image.url | watermark:"django_test,opacity=10,tile=1,rotation=45" }}" {% else %} src="{{ image.image.url }}" {% endif %} alt="{{ image.description }}">
               </div>
@@ -195,5 +205,18 @@
 {% endblock %}
 
 {% block extra_js %}
+<script>
+  document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', (e) => {
+    // Remove 'active' class from all links
+    document.querySelectorAll('.nav-link').forEach(otherLink => {
+      otherLink.classList.remove('active');
+    });
 
+    // Add 'active' class to the clicked link
+    e.target.classList.add('active');
+  });
+});
+
+</script>
 {% endblock %}
