@@ -19,6 +19,7 @@ class ImageForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ImageForm, self).__init__(*args, **kwargs)
         self.fields['new_tags'].required = False
+        self.fields['licence'].required = False
 
 
 class NewUserForm(forms.Form):
