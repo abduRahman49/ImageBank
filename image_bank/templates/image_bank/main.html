@@ -66,4 +66,16 @@
 <script src="{% static 'image_bank/assets/js/soft-design-system-pro.min.js'%}" type="text/javascript"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
+<script>
+    document.querySelectorAll('.nav-link').forEach(link => {
+          link.addEventListener('click', (e) => {
+          // Remove 'active' class from all links
+          document.querySelectorAll('.nav-link').forEach(otherLink => {
+            otherLink.classList.remove('active');
+          });
+          // Add 'active' class to the clicked link
+          e.target.classList.add('active');
+        });
+      });
+</script>
 </html>
