@@ -186,26 +186,24 @@ def get_users(request):
 def upload_image(request):
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            instance = form.save(commit=False)
-            try:
-                with PImage.open(request.FILES['image']) as image:
-                    instance.width = image.width
-                    instance.height = image.height
-                    instance.format = image.format
-                    instance.taille = np.multiply(*image.size)
-                # To change later with the current user's id
-                instance.contributor = CustomUser.objects.get(pk=request.user.id)
-                instance.save()
-                form.save_m2m()
-                return JsonResponse({"message": "Image chargée avec succès", "code_message": 200}, status=200)
-            except IntegrityError:
-                return JsonResponse({"message": "Utilisateur existe déjà", "code_message": 200}, status=200)
-        else:
+        if not form.is_valid():
             return JsonResponse({"message": f"{form.errors}", "code_message": 400}, status=400)
-    else:
-        form = ImageForm()
-        return render(request, "image_bank/contributeur/charger-images.html", {'form': form})
+        instance = form.save(commit=False)
+        try:
+            with PImage.open(request.FILES['image']) as image:
+                instance.width = image.width
+                instance.height = image.height
+                instance.format = image.format
+                instance.taille = np.multiply(*image.size)
+            # To change later with the current user's id
+            instance.contributor = CustomUser.objects.get(pk=request.user.id)
+            instance.save()
+            form.save_m2m()
+            return JsonResponse({"message": "Image chargée avec succès", "code_message": 200}, status=200)
+        except IntegrityError:
+            return JsonResponse({"message": "Utilisateur existe déjà", "code_message": 200}, status=200)
+    form = ImageForm()
+    return render(request, "image_bank/contributeur/charger-images.html", {'form': form})
 
 
 # define a function-based view used to update an image sent by the client using it's id and form data
@@ -216,25 +214,23 @@ def update_image(request, id):
     if request.method == 'POST':
         image = get_object_or_404(Image, pk=id)
         form = ImageForm(request.POST, request.FILES, instance=image)
-        if form.is_valid():
-            instance = form.save(commit=False)
-            try:
-                instance.contributor = CustomUser.objects.get(pk=request.user.id)
-                new_tags = parse_tags(form.cleaned_data['new_tags'])
-                
-                for tag in new_tags:
-                    image.new_tags.add(tag)
-                instance.save()
-                form.save_m2m()
-                return JsonResponse(
-                    {"message": "Image modifiée avec succès", "code_message": 200},
-                )
-            except CustomUser.DoesNotExist:
-                return JsonResponse({"message": "Utilisateur n'existe pas", "code_message": 400}, status=400)
-        else:
+        if not form.is_valid():
             return JsonResponse({"message": f"{form.errors}", "code_message": 400}, status=400)
-    else:
-        return JsonResponse({"message": "Méthode non autorisée", "code_message": 400}, status=400)
+        instance = form.save(commit=False)
+        try:
+            instance.contributor = CustomUser.objects.get(pk=request.user.id)
+            new_tags = parse_tags(form.cleaned_data['new_tags'])
+            
+            for tag in new_tags:
+                image.new_tags.add(tag)
+            instance.save()
+            form.save_m2m()
+            return JsonResponse(
+                {"message": "Image modifiée avec succès", "code_message": 200},
+            )
+        except CustomUser.DoesNotExist:
+            return JsonResponse({"message": "Utilisateur n'existe pas", "code_message": 400}, status=400)
+    return JsonResponse({"message": "Méthode non autorisée", "code_message": 400}, status=400)
     
 
 @login_required
@@ -295,7 +291,6 @@ def detail_image(request, id):
 
 @login_required
 def download_image(request, id):
-    from io import BytesIO
     from django.core.files import File
     
     image_format = request.POST.get('image_format')
