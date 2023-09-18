@@ -21,7 +21,7 @@ from django.core.paginator import Paginator
 
 resolutions = {
     'low': Q(taille__lt=480000),
-    'medium': Q(taille__gte=480000) and Q(taille__lt=2073600),
+    'medium': Q(taille__gte=480000, taille__lt=2073600),
     'high': Q(taille__gte=2073600)
 }
 
@@ -259,7 +259,7 @@ def search_images(request, id=None):
         format_image = request.POST.get('format')
         paiement = request.POST.get('paiement')
         
-        queryset = Image.objects.filter(status='P')
+        queryset = Image.objects.filter(status='V')
         if resolution is not None and resolution != "":
             queryset = queryset.filter(resolutions.get(resolution))
         if format_image is not None and format_image != "":
