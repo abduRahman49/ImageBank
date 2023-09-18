@@ -166,7 +166,9 @@
           let tagInputsInitialized = false;
           if(!tagInputsInitialized){
             const choices = new Choices('#id_new_tags', {
-            searchEnabled: false
+            searchEnabled: false,
+            removeItemButton: true, // Allow removing tags
+            delimiter: ','
             });
           }
           tagInputsInitialized = true;

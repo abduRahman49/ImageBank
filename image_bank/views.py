@@ -209,27 +209,17 @@ def upload_image(request):
 # define a function-based view used to update an image sent by the client using it's id and form data
 @login_required
 def update_image(request, id):
-    from taggit.utils import parse_tags
-    
     if request.method == 'POST':
         image = get_object_or_404(Image, pk=id)
         form = ImageForm(request.POST, request.FILES, instance=image)
         if not form.is_valid():
             return JsonResponse({"message": f"{form.errors}", "code_message": 400}, status=400)
         instance = form.save(commit=False)
-        try:
-            instance.contributor = CustomUser.objects.get(pk=request.user.id)
-            new_tags = parse_tags(form.cleaned_data['new_tags'])
-            
-            for tag in new_tags:
-                image.new_tags.add(tag)
-            instance.save()
-            form.save_m2m()
-            return JsonResponse(
-                {"message": "Image modifiée avec succès", "code_message": 200},
-            )
-        except CustomUser.DoesNotExist:
-            return JsonResponse({"message": "Utilisateur n'existe pas", "code_message": 400}, status=400)
+        instance.save()
+        form.save_m2m()
+        return JsonResponse(
+            {"message": "Image modifiée avec succès", "code_message": 200},
+        )
     return JsonResponse({"message": "Méthode non autorisée", "code_message": 400}, status=400)
     
 

@@ -109,7 +109,7 @@
                                 <p class="mb-0">Veuillez modifier les informations souhaitées</p>
                               </div>
                               <div class="card-body">
-                                <form role="form text-start" hx-post="{% url 'edit-image' image.id %}" hx-trigger="submit" hx-swap="none">
+                                <form id="edit-form" role="form text-start" enctype="multipart/form-data" autocomplete="off">
                                   {% csrf_token %}
                                   <label>Nom</label>
                                   <div class="input-group mb-3">
@@ -121,6 +121,7 @@
                                       <option value="{{ auteur.pk }}" {% if auteur.pk == request.user.pk %} selected {% endif %}>{{ auteur.username }}</option>
                                       {% endfor %}
                                   </select>
+                                  <input type="hidden" name="id" value="{{ image.id }}" id="id_id">
                                   <label>Image</label>
                                   <div class="input-group mb-3">
                                     <input type="file" class="form-control" id="id_image" name="image" value="{{ image.image }}" aria-label="image" >
@@ -141,12 +142,12 @@
                                       <label>Licence</label>
                                       <select class="form-control" name="licence" id="id_licence" placeholder="Licence">
                                           {% for licence in form.licence.field.queryset %}
-                                          <option value="{{ licence.pk }}">{{ licence.name }}</option>
+                                          <option value="{{ licence.id }}" {% if licence.name == image.licence %} selected {% endif %}>{{ licence.name }}</option>
                                           {% endfor %}
                                       </select>
                                   </div>
-                                  <label>Tags</label>
                                   <div class="input-group mb-3">
+                                    <label>Tags</label>
                                     <input id="id_new_tags" name="new_tags" type="text" class="form-control tag-input" value="{% for tag in image.new_tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}" aria-label="tags" >
                                   </div>
                                   <div class="text-center">
@@ -237,7 +238,9 @@
     document.querySelectorAll('.edit-modal').forEach(modal => {
         if(!modal.classList.contains('choice-initialized')) {
           const choices = new Choices(modal.querySelector('#id_new_tags'), {
-          searchEnabled: false
+          searchEnabled: false,
+          removeItemButton: true, // Allow removing tags
+          delimiter: ','
         });
         }
         modal.classList.add('choice-initialized');
@@ -268,21 +271,50 @@
       }
     });
 
-    document.addEventListener('htmx:afterRequest', function (event) {
-      if (event.detail.xhr.status === 200) { // Check if the request was successful (status code 200)
-        // Assuming your response JSON contains a 'message' field
-        const response = JSON.parse(event.detail.xhr.responseText);
-        if (response.message) {
-          showToast(response.message, 'success'); // Show a success toast message
-        }
-      } else if (event.detail.xhr.status === 400) { // If there was an error (status code 400)
-        // Assuming your response JSON contains an 'error' field
-        const response = JSON.parse(event.detail.xhr.responseText);
-        if (response.message) {
-          showToast(response.message, 'error'); // Show an error toast message
-        }
+    document.querySelector('#edit-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      console.log('Form submitted!');
+      const name = document.querySelector('#id_name');
+      const auteur = document.querySelector('#id_auteur');
+      const image = document.querySelector('#id_image');
+      const description = document.querySelector('#id_description');
+      const licence = document.querySelector('#id_licence');
+      const tags = document.querySelector('#id_new_tags');
+      const payment_required = document.querySelector('#id_payment_required');
+      const price = document.querySelector('#id_price');
+      const imageId = document.querySelector('#id_id');
+
+      let formData = new FormData();
+      formData.append('name', name.value);
+      formData.append('auteur', auteur.value);
+      if(image.files.length > 0){
+        formData.append('image', image.files[0]);
       }
+      formData.append('description', description.value);
+      formData.append('licence', licence.value);
+      formData.append('new_tags', tags.value);
+      if(payment_required.checked) {
+        formData.append('payment_required', payment_required.checked);
+        formData.append('price', price.value);
+      }
+      formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+      fetch(`/api/v1/edit/images/${imageId.value}/`, {
+        method: 'POST',
+        body: formData
+      }).then(response => {
+        if(response.ok) {
+          response.json().then(data => {
+            console.log(data);
+            showToast(data.message, data.type);
+            // location.reload();
+          })
+        }
+      })
+
     })
+
+
   // })
 
 </script>
