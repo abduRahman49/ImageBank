@@ -5,8 +5,8 @@ from taggit.forms import TagWidget
 
 
 class ImageForm(forms.ModelForm):
-    licence = forms.ModelChoiceField(queryset=Licence.objects.only('name'))
-    auteur = forms.ModelChoiceField(queryset=CustomUser.objects.only('username'))
+    licence = forms.ModelChoiceField(queryset=Licence.objects.all())
+    auteur = forms.ModelChoiceField(queryset=CustomUser.objects.all())
     
     class Meta:
         model = Image
