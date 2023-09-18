@@ -43,19 +43,18 @@ def login_users(request):
 def signup_contributeur(request):
     if request.method == 'POST':
         form = NewUserForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            try:
-                user = CustomUser.objects.create_user(data.get('username'), data.get('email'), data.get('password'))
-                user.role = "C"
-                user.is_active = False
-                user.save()
-                return redirect(reverse('sign-in-contributeur'))
-            except IntegrityError:
-                messages.add_message(request, messages.constants.ERROR, 'Utilisateur déjà existant')
-                return redirect(reverse('sign-up-contributeur'))
-        else:
+        if not form.is_valid():
             messages.add_message(request, messages.constants.ERROR, form.errors)
+            return redirect(reverse('sign-up-contributeur'))
+        data = form.cleaned_data
+        try:
+            user = CustomUser.objects.create_user(data.get('username'), data.get('email'), data.get('password'))
+            user.role = "C"
+            user.is_active = False
+            user.save()
+            return redirect(reverse('sign-in-contributeur'))
+        except IntegrityError:
+            messages.add_message(request, messages.constants.ERROR, 'Utilisateur déjà existant')
             return redirect(reverse('sign-up-contributeur'))
     form = NewUserForm()
     return render(request, 'image_bank/contributeur/sign-up-cover.html', {'form': form})
@@ -91,19 +90,18 @@ def signin_contributeur(request):
 def signup_user(request):
     if request.method == 'POST':
         form = NewUserForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            try:
-                user = CustomUser.objects.create_user(data.get('username'), data.get('email'), data.get('password'))
-                user.role = "U"
-                user.is_active = False
-                user.save()
-                return redirect(reverse('sign-in-user'))
-            except IntegrityError:
-                messages.add_message(request, messages.constants.ERROR, 'Utilisateur déjà existant')
-                return redirect(reverse('sign-up-user'))
-        else:
+        if not form.is_valid():
             messages.add_message(request, messages.constants.ERROR, form.errors)
+            return redirect(reverse('sign-up-user'))
+        data = form.cleaned_data
+        try:
+            user = CustomUser.objects.create_user(data.get('username'), data.get('email'), data.get('password'))
+            user.role = "U"
+            user.is_active = False
+            user.save()
+            return redirect(reverse('sign-in-user'))
+        except IntegrityError:
+            messages.add_message(request, messages.constants.ERROR, 'Utilisateur déjà existant')
             return redirect(reverse('sign-up-user'))
     form = NewUserForm()
     return render(request, 'image_bank/utilisateur/sign-up-cover.html', {'form': form})
