@@ -140,7 +140,8 @@ def index_user(request):
 
 @login_required
 def index_contributeur(request):
-    return render(request, 'image_bank/contributeur/charger-images.html')
+    form = ImageForm()
+    return render(request, 'image_bank/contributeur/charger-images.html', {'form': form})
 
 
 @login_required
