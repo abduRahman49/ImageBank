@@ -13,7 +13,7 @@
                 <p class="mb-0">Saisissez votre email et votre mot de passe</p>
               </div>
               <div class="card-body">
-                <form method="POST" action="{% url 'sign-in-user' %}">
+                <form method="POST" action="{% url 'sign-in-contributeur' %}">
                   {% csrf_token %}
                   <label>Email</label>
                   <div class="mb-3">
@@ -38,7 +38,7 @@
               <div class="card-footer text-center pt-0 px-lg-2 px-1">
                 <p class="mb-4 text-sm mx-auto">
                   Vous n'avez pas de compte ?
-                  <a href="{% url 'sign-up-user' %}" class="text-info text-gradient font-weight-bold">S'inscrire</a>
+                  <a href="{% url 'sign-up-contributeur' %}" class="text-info text-gradient font-weight-bold">S'inscrire</a>
                 </p>
               </div>
             </div>
