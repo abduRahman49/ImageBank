@@ -52,7 +52,7 @@
     <div class="row justify-content-center mt-5 pt-5">
       <div class="col-lg-10">
         <div class="card">
-          <div class="table-responsive shadow-lg">
+          <div class="table-responsive">
             <table class="table align-items-center mb-0">
               <caption>Table d'images chargées par le contributeur</caption>
               <thead>
@@ -193,26 +193,28 @@
               </tbody>
             </table>
           </div>
-          <div class="pagination mt-3">
-              <span class="step-links">
-                  {% if images.has_previous %}
-                      <a href="?page=1">&laquo; premier</a>
-                      <a href="?page={{ images.previous_page_number }}">précédent</a>
-                  {% endif %}
-          
-                  <span class="current">
-                      Page {{ images.number }} sur {{ images.paginator.num_pages }}.
-                  </span>
-          
-                  {% if images.has_next %}
-                      <a href="?page={{ images.next_page_number }}">suivant</a>
-                      <a href="?page={{ images.paginator.num_pages }}">dernier &raquo;</a>
-                  {% endif %}
-              </span>
-          </div>
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="pagination mt-4 justify-content-center">
+        <span class="step-links">
+            {% if images.has_previous %}
+                <a href="?page=1">&laquo; premier</a>
+                <a href="?page={{ images.previous_page_number }}">précédent</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ images.number }} sur {{ images.paginator.num_pages }}.
+            </span>
+    
+            {% if images.has_next %}
+                <a href="?page={{ images.next_page_number }}">suivant</a>
+                <a href="?page={{ images.paginator.num_pages }}">dernier &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+  </div>
   </div>
 </div>
 {% endblock %}
