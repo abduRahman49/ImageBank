@@ -48,6 +48,7 @@ def signup_contributeur(request):
             try:
                 user = CustomUser.objects.create_user(data.get('username'), data.get('email'), data.get('password'))
                 user.role = "C"
+                user.is_active = False
                 user.save()
                 return redirect(reverse('sign-in-contributeur'))
             except IntegrityError:
@@ -63,28 +64,31 @@ def signup_contributeur(request):
 def signin_contributeur(request):
     if request.method == 'POST':
         form = RegisteredUserForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            try:
-                user = CustomUser.objects.get(email=data.get('email'))
-                if user.check_password(data.get('password')):
-                    login(request, user)
-                    return redirect(reverse('upload-contributeur'))
-                else:
-                    messages.add_message(request, messages.constants.ERROR, 'Mot de passe incorrect')
-                return redirect(reverse('sign-in-contributeur'))
-            except CustomUser.DoesNotExist:
-                messages.add_message(request, messages.constants.ERROR, 'Utilisateur n\'existe pas')
-                return redirect(reverse('sign-in-contributeur'))
-        else:
+        if not form.is_valid():
             messages.add_message(request, messages.constants.ERROR, form.errors)
+            return redirect(reverse('sign-in-contributeur'))
+        data = form.cleaned_data
+        try:
+            user = CustomUser.objects.get(email=data.get('email'))
+            if not user.check_password(data.get('password')):
+                messages.add_message(request, messages.constants.ERROR, 'Mot de passe incorrect')
+                return redirect(reverse('sign-in-contributeur'))
+            if user.role != "C":
+                messages.add_message(request, messages.constants.ERROR, 'Vous n\'avez pas les droits')
+                return redirect(reverse('sign-in-contributeur'))
+            if not user.is_active:
+                messages.add_message(request, messages.constants.ERROR, 'Compte non actif')
+                return redirect(reverse('sign-in-contributeur'))
+            login(request, user)
+            return redirect(reverse('upload-contributeur'))
+        except CustomUser.DoesNotExist:
+            messages.add_message(request, messages.constants.ERROR, 'Utilisateur n\'existe pas')
             return redirect(reverse('sign-in-contributeur'))
     form = RegisteredUserForm()
     return render(request, 'image_bank/contributeur/sign-in-cover.html', {'form': form})
 
 
 def signup_user(request):
-    print("entered the function")
     if request.method == 'POST':
         form = NewUserForm(request.POST)
         if form.is_valid():
@@ -92,6 +96,7 @@ def signup_user(request):
             try:
                 user = CustomUser.objects.create_user(data.get('username'), data.get('email'), data.get('password'))
                 user.role = "U"
+                user.is_active = False
                 user.save()
                 return redirect(reverse('sign-in-user'))
             except IntegrityError:
@@ -107,21 +112,25 @@ def signup_user(request):
 def signin_user(request):
     if request.method == 'POST':
         form = RegisteredUserForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            try:
-                user = CustomUser.objects.get(email=data.get('email'))
-                if user.check_password(data.get('password')):
-                    login(request, user)
-                    return redirect(reverse('user-index'))
-                else:
-                    messages.add_message(request, messages.constants.ERROR, 'Mot de passe incorrect')
-                return redirect(reverse('sign-in-user'))
-            except CustomUser.DoesNotExist:
-                messages.add_message(request, messages.constants.ERROR, 'Utilisateur n\'existe pas')
-                return redirect(reverse('sign-in-user'))
-        else:
+        if not form.is_valid():
             messages.add_message(request, messages.constants.ERROR, form.errors)
+            return redirect(reverse('sign-in-user'))
+        data = form.cleaned_data
+        try:
+            user = CustomUser.objects.get(email=data.get('email'))
+            if not user.check_password(data.get('password')):
+                messages.add_message(request, messages.constants.ERROR, 'Mot de passe incorrect')
+                return redirect(reverse('sign-in-user'))
+            if user.role != "U":
+                messages.add_message(request, messages.constants.ERROR, 'Vous n\'avez pas les droits')
+                return redirect(reverse('sign-in-user'))
+            if not user.is_active:
+                messages.add_message(request, messages.constants.ERROR, 'Compte non actif')
+                return redirect(reverse('sign-in-user'))
+            login(request, user)
+            return redirect(reverse('user-index'))
+        except CustomUser.DoesNotExist:
+            messages.add_message(request, messages.constants.ERROR, 'Utilisateur n\'existe pas')
             return redirect(reverse('sign-in-user'))
     form = RegisteredUserForm()
     return render(request, 'image_bank/utilisateur/sign-in-cover.html', {'form': form})
@@ -129,14 +138,12 @@ def signin_user(request):
 
 @login_required
 def user_index(request):
-    print("Accessed user index view")
     paginator = Paginator(Image.objects.filter(status="V"), 4)
     page_number = request.GET.get('page', 1)
     page_object = paginator.get_page(page_number)
     expression = Q(format=None) | Q(format="")
     formats = Image.objects.exclude(expression).values_list('format', flat=True).distinct()
     tags = Tag.objects.filter(image__isnull=False).distinct()
-    print("Accessed the end")
     return render(request, 'image_bank/utilisateur/accueil.html', {'images': page_object, 'formats': formats, 'tags': tags})
 
 
