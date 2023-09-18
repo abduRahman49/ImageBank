@@ -113,7 +113,7 @@ def signin_user(request):
                 user = CustomUser.objects.get(email=data.get('email'))
                 if user.check_password(data.get('password')):
                     login(request, user)
-                    return redirect(reverse('index-user'))
+                    return redirect(reverse('user-index'))
                 else:
                     messages.add_message(request, messages.constants.ERROR, 'Mot de passe incorrect')
                 return redirect(reverse('sign-in-user'))
@@ -128,13 +128,15 @@ def signin_user(request):
 
 
 @login_required
-def index_user(request):
+def user_index(request):
+    print("Accessed user index view")
     paginator = Paginator(Image.objects.filter(status="V"), 4)
     page_number = request.GET.get('page', 1)
     page_object = paginator.get_page(page_number)
     expression = Q(format=None) | Q(format="")
     formats = Image.objects.exclude(expression).values_list('format', flat=True).distinct()
     tags = Tag.objects.filter(image__isnull=False).distinct()
+    print("Accessed the end")
     return render(request, 'image_bank/utilisateur/accueil.html', {'images': page_object, 'formats': formats, 'tags': tags})
 
 
