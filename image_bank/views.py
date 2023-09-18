@@ -272,15 +272,14 @@ def search_images(request, id=None):
         page_number = request.GET.get('page', 1)
         page_object = paginator.get_page(page_number)
         return render(request, 'image_bank/utilisateur/resultats-recherche.html', {'images': page_object})
-    elif request.method == "GET":
-        tag = get_object_or_404(Tag, pk=id)
-        queryset = Image.objects.filter(new_tags__name__in=[tag.name])
-        paginator = Paginator(queryset, 4)
-        page_number = request.GET.get('page', 1)
-        page_object = paginator.get_page(page_number)
-        return render(request, 'image_bank/utilisateur/resultats-recherche.html', {'images': page_object})
-    else:
-        return HttpResponse("Method not Allowed!")
+
+    tag = get_object_or_404(Tag, pk=id)
+    queryset = Image.objects.filter(new_tags__name__in=[tag.name])
+    paginator = Paginator(queryset, 4)
+    page_number = request.GET.get('page', 1)
+    page_object = paginator.get_page(page_number)
+    return render(request, 'image_bank/utilisateur/resultats-recherche.html', {'images': page_object})
+
     
 
 @login_required
