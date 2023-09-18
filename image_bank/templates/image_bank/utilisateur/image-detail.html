@@ -115,7 +115,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
-                                <form hx-post="{% url 'image-download' image.id  %}" hx-trigger="submit" hx-target="#download" hx-swap="outerHTML">
+                                <form hx-post="{% url 'image-download' image.id  %}" hx-trigger="submit" hx-target="#download" hx-swap="innerHTML">
                                 {% csrf_token %}
 
                               <p>Choisissez la résolution:</p>
