@@ -28,7 +28,7 @@
                     <div class="col-xl-5 col-lg-6 text-center">
                       <img class="w-100 border-radius-lg shadow-lg mx-auto" {% if image.payment_required %} src="{{ image.image.url | watermark:"django_test,opacity=10,tile=1,rotation=45" }}" {% else %} src="{{ image.image.url }}" {% endif %} alt="{{ image.description }}">
                       <div class="my-gallery d-flex mt-4 pt-2" itemscope itemtype="http://schema.org/ImageGallery">
-                        <div id="download">
+                        <div id="download" class="justify-content-center">
 
                         </div>
                       </div>
