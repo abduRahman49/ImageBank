@@ -27,6 +27,7 @@
       max-width: 300px;
       padding: 20px;
       background-color: #f0f0f0;
+      margin-left:170px;
   }
   .image-section {
       flex: 3;
@@ -141,7 +142,7 @@
 <section>
 <div class="container mt-5 pt-5" style="display: flex; flex-wrap: wrap;">
   <!-- Filter Card (on the left) -->
-  <div class="filter-card card shadow-lg" style="flex: 1;max-width: 300px;padding: 20px; margin-left:170px;">
+  <div class="filter-card card shadow-lg">
       <ul class="tags">
         {% for tag in tags %}
           <li style="list-style: none" hx-get="{% url 'recherche-images' tag.id %}" hx-trigger="click" hx-target="#images"><span class="{% random_class %}" style="padding: 6px 12px;font-size: 14px;">{{ tag.name }}</span></li>
