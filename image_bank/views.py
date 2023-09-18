@@ -69,7 +69,7 @@ def signin_contributeur(request):
                 user = CustomUser.objects.get(email=data.get('email'))
                 if user.check_password(data.get('password')):
                     login(request, user)
-                    return redirect(reverse('index-contributeur'))
+                    return redirect(reverse('upload-contributeur'))
                 else:
                     messages.add_message(request, messages.constants.ERROR, 'Mot de passe incorrect')
                 return redirect(reverse('sign-in-contributeur'))
