@@ -36,6 +36,10 @@ def index(request):
     form = ImageForm()
     return render(request, 'image_bank/index.html', {'form': form})
 
+
+def login_users(request):
+    return render(request, 'image_bank/index.html')
+
 def signup_contributeur(request):
     if request.method == 'POST':
         form = NewUserForm(request.POST)

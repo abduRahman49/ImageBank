@@ -14,7 +14,6 @@ urlpatterns = [
     path('accounts/user/signup/', views.signup_user, name='sign-up-user'),
     path('accounts/user/signin/', views.signin_user, name='sign-in-user'),
     path('logout/', views.logout_view, name='sign-out'),
-    # path('users/signup', SignupView.as_view(), name='sign-up'),
     path('contributeur/index/', views.index_contributeur, name='index-contributeur'),
     path('user/index/', views.index_user, name='index-user'),
     path('contributeur/images/', views.images_contributeur, name='images-contributeur'),
@@ -30,6 +29,7 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path("__debug__/", include(debug_toolbar.urls)),
     # path('accounts/', include('allauth.urls')),
+    path('login/', views.login_users, name='login-users'),
     path('', views.index, name='index'),
 ]
 

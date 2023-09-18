@@ -94,6 +94,8 @@ AUTHENTICATION_BACKENDS = [
     # 'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
+LOGIN_URL = "/login"
+
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
