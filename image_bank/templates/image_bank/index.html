@@ -47,12 +47,31 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-6 text-center mx-auto mt-md-n7">
-            <h4 class="text-gradient text-primary fadeIn1 fadeInBottom">Rejoignez nous</h4>
+            <h4 class="text-gradient text-primary fadeIn1 fadeInBottom">Rejoignez-nous</h4>
             <h1 class="text-white fadeIn2 fadeInBottom">Voyagez dans l'univers des images</h1>
             <p class="lead mb-5 fadeIn3 fadeInBottom text-white opacity-6">Dès aujourd'hui, trouvez l'image qu'il vous faut</p>
             <p><span class="text-white">Je suis</span></p>
-            <button type="submit" class="btn bg-white btn-rounded me-2 fadeIn1 fadeInBottom">Utilisateur</button>
-            <button type="submit" class="btn bg-white btn-rounded me-2 fadeIn1 fadeInBottom">Contributeur</button>
+            <div class="row">
+                <div class="col-6">
+                    <div class="btn-group dropstart">
+                        <button type="button" class="btn bg-white btn-rounded me-2 fadeIn1 fadeInBottom dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" >Utilisateur</button>
+                        <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton1">
+                          <li><a class="dropdown-item border-radius-md" href="{% url 'sign-up-user' %}">Inscription</a></li>
+                          <li><a class="dropdown-item border-radius-md" href="{% url 'sign-in-user' %}">Connexion</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="btn-group dropend">
+                        <button type="button" class="btn bg-white btn-rounded me-2 fadeIn1 fadeInBottom dropdown-toggle" id="dropdownMenuButton2" data-bs-toggle="dropdown" >Contributeur</button>
+                        <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton2">
+                          <li><a class="dropdown-item border-radius-md" href="{% url 'sign-up-contributeur' %}">Inscription</a></li>
+                          <li><a class="dropdown-item border-radius-md" href="{% url 'sign-in-contributeur' %}">Connexion</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
           </div>
         </div>
       </div>
@@ -503,17 +522,17 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTTfWur0PDbZWPr7Pmq8K3jiDp0_xUziI"></script>
   <script src="{% static 'image_bank/assets/js/soft-design-system-pro.min.js' %}" type="text/javascript"></script>
   <script>
-    if (document.getElementsByClassName('rellax')) {
-      // Also can pass in optional settings block
-      var rellax = new Rellax('.rellax', {
-        speed: -2,
-        center: false,
-        wrapper: null,
-        round: true,
-        vertical: true,
-        horizontal: false
-      });
-    }
+    // if (document.getElementsByClassName('rellax')) {
+    //   // Also can pass in optional settings block
+    //   var rellax = new Rellax('.rellax', {
+    //     speed: -2,
+    //     center: false,
+    //     wrapper: null,
+    //     round: true,
+    //     vertical: true,
+    //     horizontal: false
+    //   });
+    // }
   </script>
 </body>
 
