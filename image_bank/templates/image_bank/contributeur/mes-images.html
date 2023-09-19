@@ -31,13 +31,13 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link active" hx-get="{% url 'images-contributeur' %}" hx-trigger="click" hx-push-url="true" hx-target="#content">
+        <a class="nav-link active" href="#">
           <span class="nav-link-text ms-1">Mes images</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">
-          <span class="nav-link-text ms-1">Profile</span>
+        <a class="nav-link" hx-get="{% url 'profil' %}" hx-trigger="click" hx-push-url="true" hx-target="#content">
+          <span class="nav-link-text ms-1">Profil</span>
         </a>
       </li>
       <li class="nav-item">

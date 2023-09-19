@@ -24,6 +24,7 @@ urlpatterns = [
     path('api/v1/delete/images/<int:id>/', views.delete_image, name="delete-image"),
     path('contributeur/images/search/<int:id>/', views.search_images, name="recherche-images"),
     path('user/images/search/', views.search_images, name="recherche-images"),
+    path('profil/', views.profil, name='profil'),
     path('api/v1/images/<int:id>/json/', views.get_json_image),
     path('api/v1/images/<int:id>/download/', views.download_image, name='image-download'),
     path('api/', include('api.urls')),

@@ -161,6 +161,10 @@ def images_contributeur(request):
 
 
 @login_required
+def profil(request):
+    return render(request, 'image_bank/profil.html')
+
+@login_required
 def logout_view(request):
     logout(request)
     return redirect(reverse('index'))

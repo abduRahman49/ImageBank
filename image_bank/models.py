@@ -10,6 +10,7 @@ class CustomUser(User):
         CONTRIB = "C", _("Contributor")
         USER = "U", _("User")
     role = models.CharField(max_length=10, choices=ROLE.choices, default=ROLE.USER)
+    profile_pic = models.ImageField(null=True, blank=True)
 
 
 class Tag(models.Model):
