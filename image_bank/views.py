@@ -141,7 +141,7 @@ def user_index(request):
     page_object = paginator.get_page(page_number)
     expression = Q(format=None) | Q(format="")
     formats = Image.objects.exclude(expression).values_list('format', flat=True).distinct()
-    tags = Tag.objects.filter(image__isnull=False).distinct()
+    tags = Tag.objects.filter(image__isnull=False, image__status="V").distinct()
     return render(request, 'image_bank/utilisateur/accueil.html', {'images': page_object, 'formats': formats, 'tags': tags})
 
 
