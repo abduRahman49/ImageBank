@@ -26,17 +26,17 @@
         <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Menu</h6>
       </li>
       <li class="nav-item">
-        <a class="nav-link" hx-get="{% url 'upload-contributeur' %}" hx-trigger="click" hx-push-url="true" hx-target="#content">
+        <a class="nav-link" hx-get="{% url 'upload-contributeur' %}" hx-trigger="click" hx-push-url="true" hx-target="#content" hx-swap="morphdom">
           <span class="nav-link-text ms-1">Charger images</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link active" hx-get="{% url 'images-contributeur' %}" hx-trigger="click" hx-push-url="true" hx-target="#content">
+        <a class="nav-link active" hx-get="{% url 'images-contributeur' %}" hx-trigger="click" hx-push-url="true" hx-target="#content" hx-swap="morphdom">
           <span class="nav-link-text ms-1">Mes images</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" hx-get="{% url 'profil' %}" hx-trigger="click" hx-push-url="true" hx-target="#content">
+        <a class="nav-link" hx-get="{% url 'profil' %}" hx-trigger="click" hx-push-url="true" hx-target="#content" hx-swap="morphdom">
           <span class="nav-link-text ms-1">Profil</span>
         </a>
       </li>
