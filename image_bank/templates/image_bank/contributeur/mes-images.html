@@ -1,5 +1,6 @@
 {% extends "image_bank/main.html" %}
 {% load static %}
+{% load cool_paginate %}
 
 {% block extra_head %}
 <style>
@@ -198,7 +199,7 @@
     </div>
     <div class="row">
       <div class="pagination mt-4 justify-content-center">
-        <span class="step-links">
+        <!-- <span class="step-links">
             {% if images.has_previous %}
                 <a href="?page=1">&laquo; premier</a>
                 <a href="?page={{ images.previous_page_number }}">précédent</a>
@@ -212,7 +213,8 @@
                 <a href="?page={{ images.next_page_number }}">suivant</a>
                 <a href="?page={{ images.paginator.num_pages }}">dernier &raquo;</a>
             {% endif %}
-        </span>
+        </span> -->
+        {% cool_paginate page_obj=images %}
     </div>
   </div>
   </div>

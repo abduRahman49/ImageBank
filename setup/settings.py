@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.auth0',
     # 'allauth.socialaccount.providers.google',
     'taggit',
-    "watermarker",
+    'watermarker',
+    'django_cool_paginator'
 ]
 
 MIDDLEWARE = [
@@ -78,7 +79,6 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                # 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
@@ -94,8 +94,12 @@ AUTHENTICATION_BACKENDS = [
     # 'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
+# The default page to be redirected to if user is not logged-in
 LOGIN_URL = "/login"
 
+
+COOL_PAGINATOR_NEXT_NAME = ">>"
+COOL_PAGINATOR_PREVIOUS_NAME = "<<"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
