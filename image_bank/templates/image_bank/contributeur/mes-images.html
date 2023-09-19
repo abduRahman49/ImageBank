@@ -199,21 +199,6 @@
     </div>
     <div class="row">
       <div class="pagination mt-4 justify-content-center">
-        <!-- <span class="step-links">
-            {% if images.has_previous %}
-                <a href="?page=1">&laquo; premier</a>
-                <a href="?page={{ images.previous_page_number }}">précédent</a>
-            {% endif %}
-    
-            <span class="current">
-                Page {{ images.number }} sur {{ images.paginator.num_pages }}.
-            </span>
-    
-            {% if images.has_next %}
-                <a href="?page={{ images.next_page_number }}">suivant</a>
-                <a href="?page={{ images.paginator.num_pages }}">dernier &raquo;</a>
-            {% endif %}
-        </span> -->
         {% cool_paginate page_obj=images %}
     </div>
   </div>

@@ -1,4 +1,5 @@
 {% load watermark %}
+{% load cool_paginate %}
 
 <div id="images" class="image-section">
     <!-- Display searched images here -->
@@ -23,23 +24,9 @@
         Pas de résultats
     {% endif %}
     </div>
-    <div class="row mt-3 ml-2">
+    <div class="row mt-4 ml-2">
         <div class="pagination">
-            <span class="step-links">
-                {% if images.has_previous %}
-                    <a href="?page=1">&laquo; premier</a>
-                    <a href="?page={{ images.previous_page_number }}">précédent</a>
-                {% endif %}
-        
-                <span class="current">
-                    Page {{ images.number }} sur {{ images.paginator.num_pages }}.
-                </span>
-        
-                {% if images.has_next %}
-                    <a href="?page={{ images.next_page_number }}">suivant</a>
-                    <a href="?page={{ images.paginator.num_pages }}">dernier &raquo;</a>
-                {% endif %}
-            </span>
+            {% cool_paginate page_obj=images %}
         </div>
     </div>
     <!-- Add more images as needed -->
