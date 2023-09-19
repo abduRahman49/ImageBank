@@ -33,7 +33,7 @@
 {% block content %}
 <aside id="sidebar" class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3" id="sidenav-main">
   <div class="sidenav-header">
-    <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+    <i class="fa fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
     <a class="navbar-brand m-0" href="#">
       <img src="{% static 'image_bank/assets/img/logo.png' %}" class="navbar-brand-img h-100" alt="main_logo">
       <span class="ms-1 font-weight-bold">SEN NATAAL</span>
@@ -47,17 +47,17 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" hx-get="{% url 'upload-contributeur' %}" hx-trigger="click" hx-push-url="true" hx-target="#content">
-          <span class="nav-link-text ms-1">Charger images <i class="fa fa-upload" aria-hidden="true"></i></span>
+          <span class="nav-link-text ms-1">Charger images</span>
         </a>
       </li>
       <li class="nav-item" >
         <a class="nav-link" hx-get="{% url 'images-contributeur' %}" hx-trigger="click" hx-push-url="true" hx-target="#content">
-          <span class="nav-link-text ms-1">Mes images <i class="fa fa-picture-o" aria-hidden="true"></i></span>
+          <span class="nav-link-text ms-1">Mes images</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link active" href="#">
-          <span class="nav-link-text ms-1">Profil <i class="fa fa-user" aria-hidden="true"></i></span>
+        <a class="nav-link active" hx-get="{% url 'profil' %}" hx-trigger="click" hx-push-url="true" hx-target="#content">
+          <span class="nav-link-text ms-1">Profil</span>
         </a>
       </li>
       <li class="nav-item">
@@ -67,15 +67,30 @@
       </li>
     </ul>
   </div>
-  <div class="sidenav-footer position-absolute w-100">
-    <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
-      <i class="fa fa-cog py-10 mx-auto"> </i>
-    </a>
-  </div>
 </aside>
 <div class="main-content position-relative bg-gray-100 max-height-vh-100 h-100">
+      <!-- Navbar -->
+      <nav class="navbar navbar-main navbar-expand-lg bg-transparent shadow-none position-absolute px-4 w-100 z-index-2">
+        <div class="container-fluid py-1">
+          <div class="collapse navbar-collapse me-md-0 me-sm-4 mt-sm-0 mt-2" id="navbar">
+            <ul class="navbar-nav justify-content-end">
+              <li class="nav-item d-xl-none ps-3 pe-0 d-flex align-items-center">
+                <a href="javascript:;" class="nav-link text-white p-0">
+                  <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                    <div class="sidenav-toggler-inner">
+                      <i class="sidenav-toggler-line bg-dark"></i>
+                      <i class="sidenav-toggler-line bg-dark"></i>
+                      <i class="sidenav-toggler-line bg-dark"></i>
+                    </div>
+                  </a>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
     <div class="container-fluid">
-      <div class="row justify-space-between py-2 mt-4">
+      <!-- <div class="row justify-space-between py-2 mt-4">
         <div class="col-lg-6 mx-auto">
           <div class="nav-wrapper position-relative end-0">
             <ul class="nav nav-pills nav-fill p-1" role="tablist">
@@ -92,7 +107,7 @@
             </ul>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
 </div>
 {% endblock %}
@@ -110,19 +125,20 @@
   });
 
 
-  document.querySelectorAll('.nav-tabs').forEach(link => {
-    link.addEventListener('click', (e) => {
-      document.querySelectorAll('.nav-tabs').forEach(otherLink => {
-        otherLink.classList.remove('active');
-        // otherLink.setAttribute('aria-selected', false);
-      })
-      e.target.classList.add('active');
-      // e.target.setAttribute('aria-selected', true);
-    })
-  });
+  // document.querySelectorAll('.nav-tabs').forEach(link => {
+  //   link.addEventListener('click', (e) => {
+  //     document.querySelectorAll('.nav-tabs').forEach(otherLink => {
+  //       otherLink.classList.remove('active');
+  //       // otherLink.setAttribute('aria-selected', false);
+  //     })
+  //     e.target.classList.add('active');
+  //     // e.target.setAttribute('aria-selected', true);
+  //   })
+  // });
 
-  document.querySelector('.fixed-plugin-button').addEventListener('click', () => {
-    document.querySelector('#sidebar').classList.toggle('active');
-  });
+  // document.querySelector('.fixed-plugin-button').addEventListener('click', () => {
+  //   document.querySelector('#sidebar').classList.toggle('active');
+  // });
+  
 </script>
 {% endblock %}
