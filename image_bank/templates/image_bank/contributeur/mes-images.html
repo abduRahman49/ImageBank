@@ -216,11 +216,13 @@
         </div>
       </div>
     </div>
+    {% if images %}
     <div class="row">
       <div class="pagination mt-4 justify-content-center">
         {% cool_paginate page_obj=images %}
+      </div>
     </div>
-  </div>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

@@ -24,10 +24,12 @@
         Pas de résultats
     {% endif %}
     </div>
+    {% if images %}
     <div class="row mt-4 ml-2">
         <div class="pagination">
             {% cool_paginate page_obj=images %}
         </div>
     </div>
+    {% endif %}
     <!-- Add more images as needed -->
 </div>
