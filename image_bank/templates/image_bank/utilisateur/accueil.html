@@ -213,25 +213,5 @@
 {% endblock %}
 
 {% block extra_js %}
-<script>
-  document.querySelectorAll('.nav-link').forEach(link => {
-  link.addEventListener('click', (e) => {
-    // Remove 'active' class from all links
-    document.querySelectorAll('.nav-link').forEach(otherLink => {
-      otherLink.classList.remove('active');
-    });
-
-    // Add 'active' class to the clicked link
-    e.target.classList.add('active');
-  });
-});
-
-  document.querySelector('#iconSidenav').addEventListener('click', (e) => {
-      document.querySelector('body').classList.toggle('g-sidenav-pinned');
-  });
-
-   document.querySelector('#iconNavbarSidenav').addEventListener('click', (e) => {
-      document.querySelector('body').classList.toggle('g-sidenav-pinned');
-  })
-</script>
+<script type="text/javascript" src="{% static 'image_bank/js/user/home_script.js' %}"></script>
 {% endblock %}

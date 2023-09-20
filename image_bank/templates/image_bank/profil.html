@@ -25,6 +25,24 @@
       <li class="nav-item mt-3">
         <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Menu</h6>
       </li>
+      {% if request.user.role == "U"  %}
+      <li class="nav-item">
+        <a class="nav-link active" href="#">
+          <span class="nav-link-text ms-1">Images</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" hx-get="{% url 'profil' %}" hx-trigger="click" hx-push-url="true" hx-target="#content">
+          <span class="nav-link-text ms-1">Profil</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <span class="nav-link-text ms-1">Paiements</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        {% else %}
       <li class="nav-item">
         <a class="nav-link" hx-get="{% url 'upload-contributeur' %}" hx-trigger="click" hx-push-url="true" hx-target="#content">
           <span class="nav-link-text ms-1">Charger images</span>
@@ -40,6 +58,7 @@
           <span class="nav-link-text ms-1">Profil</span>
         </a>
       </li>
+      {% endif %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'sign-out' %}">
           <span class="nav-link-text ms-1">Déconnexion <i class="fa fa-power-off" aria-hidden="true"></i></span> 
@@ -93,32 +112,5 @@
 {% endblock %}
 
 {% block extra_js %}
-<script>
-  
-  document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', (e) => {
-      document.querySelectorAll('.nav-link').forEach(otherLink => {
-        otherLink.classList.remove('active');
-      })
-      e.target.classList.add('active');
-    })
-  });
-
-
-  // document.querySelectorAll('.nav-tabs').forEach(link => {
-  //   link.addEventListener('click', (e) => {
-  //     document.querySelectorAll('.nav-tabs').forEach(otherLink => {
-  //       otherLink.classList.remove('active');
-  //       // otherLink.setAttribute('aria-selected', false);
-  //     })
-  //     e.target.classList.add('active');
-  //     // e.target.setAttribute('aria-selected', true);
-  //   })
-  // });
-
-  document.querySelector('#iconSidenav').addEventListener('click', (e) => {
-    document.querySelector('body').classList.toggle('g-sidenav-pinned');
-   });
-  
-</script>
+<script type="text/javascript" src="{% static 'image_bank/js/profil.js' %}"></script>
 {% endblock %}
