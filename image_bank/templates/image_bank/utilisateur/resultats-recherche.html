@@ -11,7 +11,7 @@
         <div class="col-lg-3 col-sm-6">
         <div class="card card-plain card-blog mt-4">
             <div class="card-image border-radius-lg position-relative">
-            <a href="javascript:;" hx-get="{% url 'detail-image' image.id %}" hx-trigger="click" hx-target="#content" hx-push-url="true" hx-swap="outerHTML">
+            <a href="javascript:;" hx-get="{% url 'detail-image' image.id %}" hx-trigger="click" hx-target="#content" hx-push-url="true">
                 <div class="blur-shadow-image">
                 <img class="img border-radius-lg move-on-hover" {% if image.payment_required %} src="{{ image.image.url | watermark:"django_test,opacity=10,tile=1,rotation=45" }}" {% else %} src="{{ image.image.url }}" {% endif %} alt="{{ image.description }}">
                 </div>
