@@ -3,7 +3,7 @@ import tempfile
 from PIL import Image as PImage
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .forms import ImageForm, NewUserForm, RegisteredUserForm
+from .forms import ImageForm, NewUserForm, RegisteredUserForm, UploadPictureForm
 from .models import Image, ImageBankUser
 from api.serializers import ImageSerializer, CustomUserSerializer
 from api.utilities import convert_to_format, resize_to_resolution
@@ -346,10 +346,18 @@ def reset_password(request):
     
 @login_required
 def edit_picture(request):
-    picture = request.FILES.get('picture')
-    user = ImageBankUser.objects.get(pk=request.user.id)
-    user.profile_pic = picture
-    user.save()
+    if request.method == 'POST':
+        user = ImageBankUser.objects.get(pk=request.user.id)
+        form = UploadPictureForm(request.POST, request.FILES, instance=user)
+        if not form.is_valid():
+            return JsonResponse(
+                {"message": f"Une erreur est survenue, les erreurs sont {form.errors}", "code_message": 400,},
+            )
+        form.save()
+        return JsonResponse(
+            {"message": "Photo modifiée avec succès", "code_message": 200},
+        )
     return JsonResponse(
-        {"message": "Photo modifiée avec succès", "code_message": 200},
+        {"message": "Méthode non autorisée", "code_message": 405},
+        status=405
     )

@@ -48,3 +48,10 @@ class RegisteredUserForm(forms.Form):
         min_length=8,
         widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': 'form-control', 'aria-label': 'Password'})
     )
+    
+
+class UploadPictureForm(forms.ModelForm):
+    
+    class Meta:
+        model = ImageBankUser
+        fields = ['profile_pic']
