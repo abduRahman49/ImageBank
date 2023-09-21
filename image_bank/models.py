@@ -3,7 +3,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth import get_user_model
 from taggit.managers import TaggableManager
+from django.conf import settings
 
 
 # This is a custom model used for authentication purpose
@@ -13,6 +15,12 @@ from taggit.managers import TaggableManager
 #         USER = "U", _("User")
 #     role = models.CharField(max_length=10, choices=ROLE.choices, default=ROLE.USER)
 #     profile_pic = models.ImageField(null=True, blank=True)
+    
+#     user_ptr = models.OneToOneField(
+#         settings.AUTH_USER_MODEL,
+#         on_delete=models.CASCADE,
+#         parent_link=True,
+#     )
 
 
 class ImageBankUser(AbstractUser):
@@ -20,27 +28,12 @@ class ImageBankUser(AbstractUser):
         CONTRIB = "C", _("Contributor")
         USER = "U", _("User")
     role = models.CharField(max_length=10, choices=ROLE.choices, default=ROLE.USER)
-    profile_pic = models.ImageField(null=True, blank=True)
+    profile_pic = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
     
-    groups = models.ManyToManyField(
-        Group,
-        verbose_name=_("groups"),
-        blank=True,
-        help_text=_(
-            "The groups this user belongs to. A user will get all permissions "
-            "granted to each of their groups."
-        ),
-        related_name="image_bank_user_set",
-        related_query_name="image_bank_user",
-    )
-    user_permissions = models.ManyToManyField(
-        Permission,
-        verbose_name=_("user permissions"),
-        blank=True,
-        help_text=_("Specific permissions for this user."),
-        related_name="image_bank_user_set",
-        related_query_name="image_bank_user",
-    )
+    @property
+    def image_url(self):
+        if self.profile_pic and hasattr(self.profile_pic, 'url'):
+            return self.profile_pic.url
 
 
 class Tag(models.Model):
