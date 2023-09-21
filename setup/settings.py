@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'rest_framework',
     'api',
-    'debug_toolbar',
+    # 'debug_toolbar',
     'django_filters',
     # allauth for authentication
     # 'allauth',
@@ -66,7 +66,7 @@ MIDDLEWARE = [
     # Add the account middleware:
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'allauth.account.middleware.AccountMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'setup.urls'

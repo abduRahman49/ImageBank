@@ -1,6 +1,5 @@
   
 document.querySelector('#iconSidenav').addEventListener('click', (e) => {
-    console.log('button clicked!')
     document.querySelector('body').classList.toggle('g-sidenav-pinned');
 });
 

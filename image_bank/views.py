@@ -299,3 +299,43 @@ def download_image(request, id):
         <a download href="{image.downloaded.url}" class="btn bg-gradient-dark mb-0 mt-lg-auto w-100">Cliquez ici pour télécharger</a>
     '''
     return HttpResponse(response)
+
+
+@login_required
+def edit_password(request):
+    return render(request, 'image_bank/edit-password.html')
+
+
+@login_required
+def edit_profile(request):
+    return render(request, 'image_bank/edit-profile.html')
+
+
+@login_required
+def check_password(request):
+    password = request.POST.get('password')
+    user = CustomUser.objects.get(pk=request.user.id)
+    if user.check_password(password):
+        response = '''
+            <label class="form-label">Entrez votre nouveau mot de passe</label>
+                <div class="input-group mb-4">
+                <input id="new-input" class="form-control" placeholder="Mot de passe" aria-label="User password" type="password" name="new_password" >
+            </div>
+        '''
+        return HttpResponse(response)
+    else:
+        response = '''
+            <div class="alert alert-danger" role="alert">Mot de passe incorrect</div>
+        '''
+        return HttpResponse(response)
+    
+
+@login_required
+def reset_password(request):
+    new_password = request.POST.get('new_password')
+    user = CustomUser.objects.get(pk=request.user.id)
+    user.set_password(new_password)
+    user.save()
+    return JsonResponse(
+        {"message": "Mot de passe modifié avec succès", "code_message": 200},
+    )
