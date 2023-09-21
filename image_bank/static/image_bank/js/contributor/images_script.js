@@ -77,7 +77,6 @@ document.querySelector('#edit-form').addEventListener('submit', (e) => {
   }).then(response => {
     if(response.ok) {
       response.json().then(data => {
-        console.log(data);
         showToast(data.message, data.type);
       })
     }

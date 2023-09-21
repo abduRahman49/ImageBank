@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from image_bank.models import Image, Tag, Licence, CustomUser
+from image_bank.models import Image, Tag, Licence, ImageBankUser
 from taggit.serializers import (TagListSerializerField,
                                 TaggitSerializer)
 
@@ -25,5 +25,5 @@ class ImageSerializer(TaggitSerializer, serializers.ModelSerializer):
 
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CustomUser
+        model = ImageBankUser
         fields = ['username']

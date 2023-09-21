@@ -4,7 +4,7 @@ from PIL import Image as PImage
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .forms import ImageForm, NewUserForm, RegisteredUserForm
-from .models import CustomUser, Image
+from .models import Image, ImageBankUser
 from api.serializers import ImageSerializer, CustomUserSerializer
 from api.utilities import convert_to_format, resize_to_resolution
 from taggit.models import Tag
@@ -48,7 +48,7 @@ def signup_contributeur(request):
             return redirect(reverse('sign-up-contributeur'))
         data = form.cleaned_data
         try:
-            user = CustomUser.objects.create_user(data.get('username'), data.get('email'), data.get('password'))
+            user = ImageBankUser.objects.create_user(data.get('username'), data.get('email'), data.get('password'))
             user.role = "C"
             user.is_active = False
             user.save()
@@ -68,7 +68,7 @@ def signin_contributeur(request):
             return redirect(reverse('sign-in-contributeur'))
         data = form.cleaned_data
         try:
-            user = CustomUser.objects.get(email=data.get('email'))
+            user = ImageBankUser.objects.get(email=data.get('email'))
             if not user.check_password(data.get('password')):
                 messages.add_message(request, messages.constants.ERROR, 'Mot de passe incorrect')
                 return redirect(reverse('sign-in-contributeur'))
@@ -80,7 +80,7 @@ def signin_contributeur(request):
                 return redirect(reverse('sign-in-contributeur'))
             login(request, user)
             return redirect(reverse('upload-contributeur'))
-        except CustomUser.DoesNotExist:
+        except ImageBankUser.DoesNotExist:
             messages.add_message(request, messages.constants.ERROR, 'Utilisateur n\'existe pas')
             return redirect(reverse('sign-in-contributeur'))
     form = RegisteredUserForm()
@@ -95,7 +95,7 @@ def signup_user(request):
             return redirect(reverse('sign-up-user'))
         data = form.cleaned_data
         try:
-            user = CustomUser.objects.create_user(data.get('username'), data.get('email'), data.get('password'))
+            user = ImageBankUser.objects.create_user(data.get('username'), data.get('email'), data.get('password'))
             user.role = "U"
             user.is_active = False
             user.save()
@@ -115,7 +115,7 @@ def signin_user(request):
             return redirect(reverse('sign-in-user'))
         data = form.cleaned_data
         try:
-            user = CustomUser.objects.get(email=data.get('email'))
+            user = ImageBankUser.objects.get(email=data.get('email'))
             if not user.check_password(data.get('password')):
                 messages.add_message(request, messages.constants.ERROR, 'Mot de passe incorrect')
                 return redirect(reverse('sign-in-user'))
@@ -127,7 +127,7 @@ def signin_user(request):
                 return redirect(reverse('sign-in-user'))
             login(request, user)
             return redirect(reverse('user-index'))
-        except CustomUser.DoesNotExist:
+        except ImageBankUser.DoesNotExist:
             messages.add_message(request, messages.constants.ERROR, 'Utilisateur n\'existe pas')
             return redirect(reverse('sign-in-user'))
     form = RegisteredUserForm()
@@ -181,7 +181,7 @@ def get_json_image(request, id):
 
 
 def get_users(request):
-    users = CustomUser.objects.all()
+    users = ImageBankUser.objects.all()
     serializer = CustomUserSerializer(users, many=True)
     return JsonResponse({"users": serializer.data, "code_message": 200}, status=200)
     
@@ -200,7 +200,7 @@ def upload_image(request):
                 instance.format = image.format
                 instance.taille = np.multiply(*image.size)
             # To change later with the current user's id
-            instance.contributor = CustomUser.objects.get(pk=request.user.id)
+            instance.contributor = ImageBankUser.objects.get(pk=request.user.id)
             instance.save()
             form.save_m2m()
             return JsonResponse({"message": "Image chargée avec succès", "code_message": 200}, status=200)
@@ -314,7 +314,7 @@ def edit_profile(request):
 @login_required
 def check_password(request):
     password = request.POST.get('password')
-    user = CustomUser.objects.get(pk=request.user.id)
+    user = ImageBankUser.objects.get(pk=request.user.id)
     if user.check_password(password):
         response = '''
             <label class="form-label">Entrez votre nouveau mot de passe</label>
@@ -332,10 +332,24 @@ def check_password(request):
 
 @login_required
 def reset_password(request):
+    from django.contrib.auth import update_session_auth_hash
+    
     new_password = request.POST.get('new_password')
-    user = CustomUser.objects.get(pk=request.user.id)
+    user = ImageBankUser.objects.get(pk=request.user.id)
     user.set_password(new_password)
     user.save()
+    update_session_auth_hash(request, user)
     return JsonResponse(
         {"message": "Mot de passe modifié avec succès", "code_message": 200},
+    )
+    
+    
+@login_required
+def edit_picture(request):
+    picture = request.FILES.get('picture')
+    user = ImageBankUser.objects.get(pk=request.user.id)
+    user.profile_pic = picture
+    user.save()
+    return JsonResponse(
+        {"message": "Photo modifiée avec succès", "code_message": 200},
     )

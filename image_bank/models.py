@@ -1,16 +1,46 @@
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.models import AbstractUser
 from taggit.managers import TaggableManager
 
 
 # This is a custom model used for authentication purpose
-class CustomUser(User):
+# class CustomUser(User):
+#     class ROLE(models.TextChoices):
+#         CONTRIB = "C", _("Contributor")
+#         USER = "U", _("User")
+#     role = models.CharField(max_length=10, choices=ROLE.choices, default=ROLE.USER)
+#     profile_pic = models.ImageField(null=True, blank=True)
+
+
+class ImageBankUser(AbstractUser):
     class ROLE(models.TextChoices):
         CONTRIB = "C", _("Contributor")
         USER = "U", _("User")
     role = models.CharField(max_length=10, choices=ROLE.choices, default=ROLE.USER)
     profile_pic = models.ImageField(null=True, blank=True)
+    
+    groups = models.ManyToManyField(
+        Group,
+        verbose_name=_("groups"),
+        blank=True,
+        help_text=_(
+            "The groups this user belongs to. A user will get all permissions "
+            "granted to each of their groups."
+        ),
+        related_name="image_bank_user_set",
+        related_query_name="image_bank_user",
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        verbose_name=_("user permissions"),
+        blank=True,
+        help_text=_("Specific permissions for this user."),
+        related_name="image_bank_user_set",
+        related_query_name="image_bank_user",
+    )
 
 
 class Tag(models.Model):
@@ -61,7 +91,7 @@ class Image(models.Model):
     licence = models.CharField(max_length=100, blank=True)
     price = models.FloatField(blank=True, null=True)
     new_tags = TaggableManager()
-    contributor = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='images')
+    contributor = models.ForeignKey(ImageBankUser, on_delete=models.CASCADE, related_name='images')
     categorie = models.ForeignKey(Categorie, on_delete=models.SET_NULL, related_name='images', null=True)
     
     
@@ -69,5 +99,5 @@ class Payment(models.Model):
     price = models.FloatField()
     currency = models.CharField(max_length=3)
     image = models.ForeignKey(Image, on_delete=models.SET_NULL, null=True)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="payments")
+    user = models.ForeignKey(ImageBankUser, on_delete=models.CASCADE, related_name="payments")
     service = models.CharField(max_length=200, null=True)

@@ -29,6 +29,7 @@ urlpatterns = [
     path('profile/picture/edit/', views.edit_profile, name='edit-profile'),
     path('password/check/', views.check_password, name='check-password'),
     path('password/reset/', views.reset_password, name='reset-password'),
+    path('picture/edit', views.edit_picture, name='edit-picture'),
     path('api/v1/images/<int:id>/json/', views.get_json_image),
     path('api/v1/images/<int:id>/download/', views.download_image, name='image-download'),
     path('api/', include('api.urls')),

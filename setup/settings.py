@@ -131,7 +131,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Model on which authentication will be based
-# AUTH_USER_MODEL = 'image_bank.CustomUser'
+AUTH_USER_MODEL = 'image_bank.ImageBankUser'
 
 
 # Internationalization

@@ -1,12 +1,12 @@
 from django import forms
-from .models import Image, Licence, CustomUser
+from .models import Image, Licence, ImageBankUser
 from django.core import validators
 from taggit.forms import TagWidget
 
 
 class ImageForm(forms.ModelForm):
     licence = forms.ModelChoiceField(queryset=Licence.objects.all())
-    auteur = forms.ModelChoiceField(queryset=CustomUser.objects.all())
+    auteur = forms.ModelChoiceField(queryset=ImageBankUser.objects.all())
     
     class Meta:
         model = Image

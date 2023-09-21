@@ -1,8 +1,52 @@
-<div class="row gx-4">
-    <div class="col-auto">
-      <div class="avatar avatar-xl position-relative">
-        <!-- <img alt="profile_image" class="w-100 border-radius-lg shadow-sm"> -->
-        <input type="file" class="w-100 border-radius-lg shadow-sm">
+  <div class="card card-plain">
+    <form role="form" id="reset-form" method="post" hx-post="{% url 'edit-picture' %}" hx-swap="none" hx-trigger="submit" enctype="multipart/form-data"  autocomplete="off">
+      {% csrf_token %}
+        <div class="card-body pb-2">
+        <div class="row justify-content-center">
+          <div class="col-md-6 text-center" >
+            <p><label class="form-label" for="picture">Sélectionnez votre photo de profil</label></p>
+            <div class="avatar avatar-xl position-relative">
+                <input type="file" class="w-100 border-radius-lg shadow-sm" name="picture" id="picture">
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+      <div class="row">
+          <div class="col-md-12 text-center">
+            <button type="submit" class="btn bg-gradient-info mt-3 mb-0">Modifier</button>
+          </div>
+      </div>
+      </div>
+    </form>
   </div>
+
+  <script type="text/javascript">
+
+    function showToast(message, type) {
+        Toastify({
+            text: message,
+            duration: 3000, // Set the duration for how long the toast message should appear (in milliseconds)
+            gravity: 'top', // Set the position where the toast should appear
+            position: 'center', // Set the position where the toast should appear
+            close: true, // Allow users to close the toast manually
+            backgroundColor: type === 'error' ? 'red' : 'green', // Customize the background color based on the message type
+        }).showToast();
+    }
+    
+    htmx.on('htmx:afterRequest', function(e){
+        if (event.detail.xhr.status === 200) { // Check if the request was successful (status code 200)
+        // Assuming your response JSON contains a 'message' field
+        const response = JSON.parse(event.detail.xhr.responseText);
+        if (response.message) {
+        showToast(response.message, 'success'); // Show a success toast message
+        }
+        location.reload();
+    } else if (event.detail.xhr.status === 400) { // If there was an error (status code 400)
+        // Assuming your response JSON contains an 'error' field
+        const response = JSON.parse(event.detail.xhr.responseText);
+        if (response.message) {
+        showToast(response.message, 'error'); // Show an error toast message
+        }
+    }
+    })
+  </script>

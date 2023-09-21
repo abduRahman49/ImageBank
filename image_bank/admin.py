@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Image, Payment, CustomUser, Tag, Licence
+from .models import Image, Payment, ImageBankUser, Tag, Licence
 from django import forms
 # Register your models here.
 
@@ -18,6 +18,6 @@ class ImageModelAdmin(admin.ModelAdmin):
 
 admin.site.register(Image, ImageModelAdmin)
 admin.site.register(Payment)
-admin.site.register(CustomUser)
+admin.site.register(ImageBankUser)
 admin.site.register(Tag)
 admin.site.register(Licence)

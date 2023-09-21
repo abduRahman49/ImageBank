@@ -1,5 +1,5 @@
 from rest_framework.pagination import PageNumberPagination
-from image_bank.models import Image, Licence, CustomUser
+from image_bank.models import Image, Licence, ImageBankUser
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -45,4 +45,4 @@ class LicenceModelViewset(viewsets.ModelViewSet):
 class AuteurModelViewset(viewsets.ModelViewSet):
     serializer_class = CustomUserSerializer
     pagination_class = LicencePagination
-    queryset = CustomUser.objects.only('username')
+    queryset = ImageBankUser.objects.only('username')
