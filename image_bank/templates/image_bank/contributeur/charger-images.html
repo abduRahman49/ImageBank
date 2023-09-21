@@ -91,7 +91,7 @@
                     <label>Auteur</label>
                     <select class="form-control" name="auteur" id="id_auteur" placeholder="Auteur">
                       {% for auteur in form.auteur.field.queryset %}
-                      <option value="{{ auteur.pk }}" {% if auteur.pk == request.user.pk %} selected {% endif %}>{{ auteur.username }}</option>
+                      <option value="{{ auteur.pk }}" {% if auteur.pk == user.pk %} selected {% endif %}>{{ auteur.username }}</option>
                       {% endfor %}
                     </select>
                   </div>
