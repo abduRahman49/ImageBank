@@ -347,17 +347,10 @@ def reset_password(request):
 @login_required
 def edit_picture(request):
     if request.method == 'POST':
+        picture = request.FILES.get('picture')
         user = ImageBankUser.objects.get(pk=request.user.id)
-        form = UploadPictureForm(request.POST, request.FILES, instance=user)
-        if not form.is_valid():
-            return JsonResponse(
-                {"message": f"Une erreur est survenue, les erreurs sont {form.errors}", "code_message": 400,},
-            )
-        form.save()
+        user.profile_pic = picture
+        user.save()
         return JsonResponse(
             {"message": "Photo modifiée avec succès", "code_message": 200},
         )
-    return JsonResponse(
-        {"message": "Méthode non autorisée", "code_message": 405},
-        status=405
-    )
