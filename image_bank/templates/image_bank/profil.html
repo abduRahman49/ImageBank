@@ -7,11 +7,11 @@
     background-image: url("{% static 'image_bank/assets/img/dusty-blue.jpg' %}")
   }
 
-  #picture::file-selector-button {
+  /* #picture::file-selector-button {
   display: none;
-  }
+  } */
 
-  #picture {
+  /* #picture {
     color: transparent;
     width: 100%;
     padding: 20px;
@@ -23,7 +23,7 @@
 
   #picture::before {
     content: "{% static 'image_bank/assets/img/logo.png' %}";
-  }
+  } */
 
 </style>
 {% endblock %}
@@ -123,7 +123,7 @@
           </li>
         </ul>
       </div>
-      
+
       <div id="tab-contents" role="tabpanel" hx-get="/profile/password/edit/" hx-trigger="load"></div>
     </div>
 </div>
