@@ -1,3 +1,8 @@
+{% extends "image_bank/profil.html" %}
+{% load static %}
+
+{% block panes %}  
+  
   <div class="card card-plain">
     <form role="form" id="reset-form" method="post" hx-post="{% url 'edit-picture' %}" hx-swap="none" hx-trigger="submit" enctype="multipart/form-data"  autocomplete="off">
       {% csrf_token %}
@@ -50,3 +55,5 @@
     }
     })
   </script>
+
+{% endblock %}
