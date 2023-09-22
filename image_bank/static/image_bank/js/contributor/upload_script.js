@@ -59,7 +59,7 @@ htmx.on('#form', 'htmx:xhr:progress', function(evt) {
       htmx.find('#progress').setAttribute('value', evt.detail.loaded/evt.detail.total * 100)
 });
 
-document.addEventListener('htmx:afterRequest', function (event) {
+htmx.on('htmx:afterRequest', function (event) {
     if (event.detail.xhr.status === 200) { // Check if the request was successful (status code 200)
         // Assuming your response JSON contains a 'message' field
         const response = JSON.parse(event.detail.xhr.responseText);

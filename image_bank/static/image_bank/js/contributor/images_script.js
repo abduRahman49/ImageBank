@@ -62,6 +62,7 @@ document.querySelector('#edit-form').addEventListener('submit', (e) => {
   if(image.files.length > 0){
     formData.append('image', image.files[0]);
   }
+  
   formData.append('description', description.value);
   formData.append('licence', licence.value);
   formData.append('new_tags', tags.value);

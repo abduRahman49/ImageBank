@@ -4,7 +4,7 @@ from PIL import Image as PImage
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .forms import ImageForm, NewUserForm, RegisteredUserForm, UploadPictureForm
-from .models import Image, ImageBankUser
+from .models import Image, ImageBankUser, Licence
 from api.serializers import ImageSerializer, CustomUserSerializer
 from api.utilities import convert_to_format, resize_to_resolution
 from taggit.models import Tag
@@ -200,11 +200,17 @@ def upload_image(request):
                 instance.taille = np.multiply(*image.size)
             # To change later with the current user's id
             instance.contributor = ImageBankUser.objects.get(pk=request.user.id)
+            licence_id = request.POST.get('licence')
+            if licence_id:
+                licence = Licence.objects.get(pk=licence_id)
+                instance.licence = licence
             instance.save()
             form.save_m2m()
             return JsonResponse({"message": "Image chargée avec succès", "code_message": 200}, status=200)
         except IntegrityError:
             return JsonResponse({"message": "Utilisateur existe déjà", "code_message": 200}, status=200)
+        except Licence.DoesNotExist:
+            return JsonResponse({"message": "Licence non trouvée", "code_message": 404}, status=404)
     form = ImageForm()
     return render(request, "image_bank/contributeur/charger-images.html", {'form': form})
 
@@ -218,6 +224,13 @@ def update_image(request, id):
         if not form.is_valid():
             return JsonResponse({"message": f"{form.errors}", "code_message": 400}, status=400)
         instance = form.save(commit=False)
+        licence_id = request.POST.get('licence')
+        if licence_id:
+            try:
+                licence = Licence.objects.get(pk=licence_id)
+                instance.licence = licence
+            except Licence.DoesNotExist:
+                return JsonResponse({"message": "Licence non trouvée", "code_message": 404}, status=404)
         instance.save()
         form.save_m2m()
         return JsonResponse(
