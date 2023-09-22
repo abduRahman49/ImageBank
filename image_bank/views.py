@@ -97,7 +97,6 @@ def signup_user(request):
         try:
             user = ImageBankUser.objects.create_user(data.get('username'), data.get('email'), data.get('password'))
             user.role = "U"
-            user.is_active = False
             user.save()
             return redirect(reverse('sign-in-user'))
         except IntegrityError:

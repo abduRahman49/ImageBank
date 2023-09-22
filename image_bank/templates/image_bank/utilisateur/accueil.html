@@ -130,12 +130,12 @@
         <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Menu</h6>
       </li>
       <li class="nav-item">
-        <a class="nav-link active" href="#">
+        <a class="nav-link active" hx-get="{% url 'user-index' %}" hx-trigger="click" hx-target="#content" hx-push-url="true" >
           <span class="nav-link-text ms-1">Images</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" hx-get="{% url 'profil' %}" hx-trigger="click" hx-push-url="true" hx-target="#content">
+        <a class="nav-link" hx-get="{% url 'profil' %}" hx-trigger="click" hx-push-url="true" hx-target="#content" >
           <span class="nav-link-text ms-1">Profil</span>
         </a>
       </li>
