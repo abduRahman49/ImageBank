@@ -31,14 +31,17 @@ paiements = {
 }
 
 # Create your views here.
-@login_required
+
 def index(request):
-    form = ImageForm()
-    return render(request, 'image_bank/index.html', {'form': form})
+    images = Image.objects.all()
+    serializer = ImageSerializer(images, many=True)
+    return render(request, 'image_bank/index.html', {'images': serializer.data})
 
 
 def login_users(request):
-    return render(request, 'image_bank/index.html')
+    images = Image.objects.all()
+    serializer = ImageSerializer(images, many=True)
+    return render(request, 'image_bank/index.html', {'images': serializer.data})
 
 def signup_contributeur(request):
     if request.method == 'POST':

@@ -16,11 +16,11 @@ class LicenceSerializer(serializers.ModelSerializer):
 
 
 class ImageSerializer(TaggitSerializer, serializers.ModelSerializer):
-    tags = TagListSerializerField()
+    new_tags = TagListSerializerField()
 
     class Meta:
         model = Image
-        fields = ['id', 'image', 'auteur', 'name', 'description', 'price', 'licence', 'tags']
+        fields = ['id', 'image', 'auteur', 'name', 'description', 'price', 'licence', 'new_tags', 'width', 'height']
 
 
 class CustomUserSerializer(serializers.ModelSerializer):

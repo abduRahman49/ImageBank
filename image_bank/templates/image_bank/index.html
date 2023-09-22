@@ -36,6 +36,22 @@
   <!-- Nepcha Analytics (nepcha.com) -->
   <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.1/photoswipe.min.css" integrity="sha512-LFWtdAXHQuwUGH9cImO9blA3a3GfQNkpF2uRlhaOpSbDevNyK1rmAjs13mtpjvWyi+flP7zYWboqY+8Mkd42xA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    /* Center images vertically and horizontally */
+    .img-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%; /* Ensure images are centered vertically */
+    }
+  </style>
 </head>
 
 <body class="career">
@@ -191,6 +207,31 @@
       </div>
     </div>
   </section>
+  <!-- -------   START CONTENT 1 - title & description and 6 IMAGES   -------- -->
+<section class="py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-8 mx-auto text-center mb-5">
+        <h2>Aperçu de quelques images </h2>
+        <p>
+          <span class="badge rounded-pill badge-primary mb-2">Co-working</span>
+        </p>
+      </div>
+    </div>
+    <div class="row min-vh-25" id="gallery">
+      <!-- les images ici => {{ images }} -->
+      {% for image in images %}
+        <a href="{{ image.image }}" 
+          data-pswp-width="{{ image.width }}" 
+          data-pswp-height="{{ image.height }}" 
+          target="_blank">
+          <img src="{{ image.image }}" alt="{{ image.description }}" class="img-fluid" />
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<!-- -------   END CONTENT 1 - title & description and 6 IMAGES   -------- -->
   <!-- START Testimonials w/ bg image & faded gradient & company logo -->
   <section class="pt-4 pb-7 position-relative">
     <div class="container-fluid">
@@ -521,18 +562,19 @@
   <!--  Google Maps Plugin    -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTTfWur0PDbZWPr7Pmq8K3jiDp0_xUziI"></script>
   <script src="{% static 'image_bank/assets/js/soft-design-system-pro.min.js' %}" type="text/javascript"></script>
-  <script>
-    // if (document.getElementsByClassName('rellax')) {
-    //   // Also can pass in optional settings block
-    //   var rellax = new Rellax('.rellax', {
-    //     speed: -2,
-    //     center: false,
-    //     wrapper: null,
-    //     round: true,
-    //     vertical: true,
-    //     horizontal: false
-    //   });
-    // }
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.1/photoswipe.esm.min.js" integrity="sha512-AP4Y/4wbGu7PdY7tVG2soQcBNLx4CuzmPoKrmZoawUS52M5+Kx6JxBEz3yjJelle8ewkp4sdI5OZr+9Qspip/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.1/photoswipe-lightbox.esm.min.js" integrity="sha512-MbIdoX8mldW9oEZ9AUcS4VUqMD30kuKYYoTHFxCBUv8LHz1Jk+Qc/i7qYPvE7vBMyeiVQmzrEM5cbSXR0eLCXw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.1/umd/photoswipe.umd.min.js" integrity="sha512-m2BznVd7zykdDpAPbISr1tEfxzg6dDUQstIQZOXsssO3oDy7zzHXP0VHNGRw7KK9fLoXh/n86nHatuhSotrvog==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="module">
+    import PhotoSwipeLightbox from '/static/image_bank/js/photoswipe-lightbox.esm.min.js';
+
+    const lightbox = new PhotoSwipeLightbox({
+      gallery: '#gallery',
+      children: 'a',
+      pswpModule: PhotoSwipe
+    });
+
+    lightbox.init();
   </script>
 </body>
 

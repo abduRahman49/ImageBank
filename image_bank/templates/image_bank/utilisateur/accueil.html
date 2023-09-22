@@ -209,50 +209,49 @@
         </div>
       </div>
     </form>
-  </div>
-</div>
-</section>
-<section>
-<div class="container mt-5 pt-5" style="display: flex; flex-wrap: wrap;">
-  <!-- Filter Card (on the left) -->
-  <div class="filter-card card shadow-lg">
-      <ul class="tags">
-        {% for tag in tags %}
-          <li style="list-style: none" hx-get="{% url 'recherche-images' tag.id %}" hx-trigger="click" hx-target="#images"><span class="{% random_class %}" style="padding: 6px 12px;font-size: 14px;">{{ tag.name }}</span></li>
-        {% endfor %}
-      </ul>
-  </div>
-
-  <!-- Image Section (on the right) -->
-  <div id="images" class="image-section" style="flex: 3;padding: 20px;">
-      <!-- Display searched images here -->
-      <!-- Use CSS grid or other layout techniques to display images -->
-      <!-- Example: -->
-      <div class="row">
-      {% for image in images %}
-      <div class="col-lg-3 col-sm-6">
-        <div class="card card-plain card-blog mt-4">
-          <div class="card-image border-radius-lg position-relative">
-            <a href="javascript:;" hx-get="{% url 'detail-image' image.id %}" hx-trigger="click" hx-target="#content" hx-push-url="true">
-              <div class="blur-shadow-image">
-                <img class="img border-radius-lg move-on-hover" {% if image.payment_required %} src="{{ image.image.url | watermark:"django_test,opacity=10,tile=1,rotation=45" }}" {% else %} src="{{ image.image.url }}" {% endif %} alt="{{ image.description }}">
+  </section>
+  <section>
+    <div class="row">
+      <div class="col">
+        <div class="card shadow-lg mt-4">
+          <ul class="tags">
+            {% for tag in tags %}
+              <li style="list-style: none" hx-get="{% url 'recherche-images' tag.id %}" hx-trigger="click" hx-target="#images"><span class="{% random_class %}" style="padding: 6px 12px;font-size: 14px;">{{ tag.name }}</span></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <!-- Image Section (on the right) -->
+      <div id="images" class="image-section" style="flex: 3;padding: 20px;">
+          <div class="row">
+          {% for image in images %}
+          <div class="col-lg-3 col-sm-6">
+            <div class="card card-plain card-blog mt-4">
+              <div class="card-image border-radius-lg position-relative">
+                <a href="javascript:;" hx-get="{% url 'detail-image' image.id %}" hx-trigger="click" hx-target="#content" hx-push-url="true">
+                  <div class="blur-shadow-image">
+                    <img class="img border-radius-lg move-on-hover" {% if image.payment_required %} src="{{ image.image.url | watermark:"django_test,opacity=10,tile=1,rotation=45" }}" {% else %} src="{{ image.image.url }}" {% endif %} alt="{{ image.description }}">
+                  </div>
+                </a>
               </div>
-            </a>
+            </div>
           </div>
-        </div>
+          {% endfor %}
+          </div>
+          {% if images %}
+          <div class="row mt-4 ml-2">
+            <div class="pagination">
+              {% cool_paginate page_obj=images %}
+            </div>
+          </div>
+          {% endif %}
       </div>
-      {% endfor %}
-      </div>
-      {% if images %}
-      <div class="row mt-4 ml-2">
-        <div class="pagination">
-          {% cool_paginate page_obj=images %}
-        </div>
-      </div>
-      {% endif %}
+    </div>
+    </section>
   </div>
 </div>
-</section>
 {% endblock %}
 
 {% block extra_js %}
