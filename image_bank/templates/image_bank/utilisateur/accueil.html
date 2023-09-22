@@ -216,7 +216,7 @@
         <div class="card shadow-lg mt-4">
           <ul class="tags">
             {% for tag in tags %}
-              <li style="list-style: none" hx-get="{% url 'recherche-images' tag.id %}" hx-trigger="click" hx-target="#images"><span class="{% random_class %}" style="padding: 6px 12px;font-size: 14px;">{{ tag.name }}</span></li>
+              <li style="list-style: none" hx-get="{% url 'recherche-images' tag.id %}" hx-trigger="click" hx-target="#images"><span class="badge bg-info" style="padding: 6px 12px;font-size: 14px;">{{ tag.name }}</span></li>
             {% endfor %}
           </ul>
         </div>
