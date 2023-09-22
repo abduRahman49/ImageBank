@@ -219,17 +219,16 @@
       </div>
     </div>
     <div class="row min-vh-25" id="gallery">
-      <!-- les images ici => {{ images }} -->
-      
+      <!-- les images ici => {{ images }} --> 
       {% for image in images %}
-      <div class="col-sm-4 col-5 mb-sm-0 mb-3">
-        <a href="{{ image.image }}" 
-          data-pswp-width="{{ image.width }}" 
-          data-pswp-height="{{ image.height }}" 
-          target="_blank">
-          <img src="{{ image.image }}" alt="{{ image.description }}" class="img-fluid" />
-        </a>
-      </div>
+        <div class="col-sm-4 col-5 mb-sm-0 mb-3">
+          <a href="{{ image.image }}" 
+            data-pswp-width="{{ image.width }}" 
+            data-pswp-height="{{ image.height }}" 
+            target="_blank">
+            <img src="{{ image.image }}" alt="{{ image.description }}" class="img-fluid" />
+          </a>
+        </div>
       {% endfor %}
     </div>
   </div>
