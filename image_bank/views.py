@@ -33,13 +33,13 @@ paiements = {
 # Create your views here.
 
 def index(request):
-    images = Image.objects.all()
+    images = Image.objects.all()[:6]
     serializer = ImageSerializer(images, many=True)
     return render(request, 'image_bank/index.html', {'images': serializer.data})
 
 
 def login_users(request):
-    images = Image.objects.all()
+    images = Image.objects.all()[:6]
     serializer = ImageSerializer(images, many=True)
     return render(request, 'image_bank/index.html', {'images': serializer.data})
 
